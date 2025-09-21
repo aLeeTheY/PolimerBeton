@@ -450,7 +450,7 @@ footer {
         p {
             transform-origin: center right;
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 transform-origin: center center;
             }
         }
@@ -482,7 +482,12 @@ footer {
         #copyright-info {
             text-align: left;
 
-            @include media-breakpoint-down(sm) {
+            // span {
+            //     display: inline;
+            //     white-space: pre-wrap;
+            // }
+
+            @include media-breakpoint-down(md) {
                 text-align: center;
                 line-height: 1em;
             }
@@ -499,7 +504,7 @@ footer {
             //     text-align: center;
             // }
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 margin-top: var(--my-text-paragraph-margin-top);
 
                 text-align: center;
