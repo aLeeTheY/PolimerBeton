@@ -47,4 +47,10 @@ body {
     padding: 0 !important;
 
     background-color: var(--finally-bc-color);
+
+    min-width: 304px;
+    width: 100%;
+
+    height: auto;
+    min-height: 100vh;
 }
