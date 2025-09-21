@@ -1,0 +1,27 @@
+# This is a basic workflow to help you get started with Actions
+name: Update polimerbeton-vrn.ru content by SSH
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+    update-site-content:
+        name: Update content in my site
+        runs-on: ubuntu-latest
+        steps:
+            - name: Connect to remote server with SSH protocol
+            uses: appleboy/ssh-action@v1
+            with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.HOST_USER }}
+                key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
+                port: ${{ secrets.HOST_SSH_PORT }}
+                script: whoami
