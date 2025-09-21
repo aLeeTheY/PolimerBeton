@@ -51,6 +51,9 @@ section {
 }
 
 .container {
+    min-width: 304px;
+    width: 100%;
+
     z-index: 10;
 
     @include media-breakpoint-down(sm) {
