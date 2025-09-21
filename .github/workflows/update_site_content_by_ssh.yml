@@ -30,7 +30,7 @@ jobs:
                       cd ${{ secrets.HOST_WORKDIR }}
                       git pull
 
-                      docker-compose -f docker-compose.prod.selinux.yml down web
+                      docker-compose -f docker-compose.prod.selinux.yml down
                       docker-compose -f docker-compose.prod.selinux.yml build --no-cache web
                       docker-compose -f docker-compose.prod.selinux.yml up -d --force-recreate
 
