@@ -12,8 +12,11 @@ html {
 
     margin: 0 auto;
 
+    min-width: 304px;
     width: 100%;
+
     height: auto;
+    min-height: 100vh;
 
     font-size: var(--base-font-size);
 }
