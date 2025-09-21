@@ -34,9 +34,9 @@ jobs:
                       docker-compose -f docker-compose.prod.selinux.yml build --no-cache web
                       docker-compose -f docker-compose.prod.selinux.yml up -d --force-recreate
 
-                      docker container prune --all --force
-                      docker image prune --all --force
-                      docker network prune --all --force
+                      docker container prune --force
+                      docker network prune --force
 
+                      docker image prune --all --force
                       docker system prune --all --force
                       exit
