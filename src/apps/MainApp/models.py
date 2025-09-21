@@ -115,7 +115,8 @@ class Request(models.Model):
 
     # Дата и время данного обращения
     request_datetime = models.DateTimeField(
-        auto_now_add=True,
+        # auto_now_add=True,
+        default=timezone.now,
         null=False,
         verbose_name=_("Date and time of registration for this request"),
     )
