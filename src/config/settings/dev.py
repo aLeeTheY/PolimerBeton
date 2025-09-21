@@ -33,17 +33,23 @@ SITE_ID = config("SITE_ID", default=1, cast=int)
 
 # ? --- BASIC EMAIL SERVICE DATA
 # ? ----------------------------
-SENDER_EMAIL = config("SENDER_EMAIL")
-SENDER_EMAIL_PASSWORD = config("SENDER_EMAIL_PASSWORD")
+SENDER_EMAIL = config("SENDER_EMAIL", default="<set_your_sender_email>")
+SENDER_EMAIL_PASSWORD = config(
+    "SENDER_EMAIL_PASSWORD", default="<set_your_sender_email_password>"
+)
 
-RECIPIENT_EMAIL = config("RECIPIENT_EMAIL")
+RECIPIENT_EMAIL = config("RECIPIENT_EMAIL", default="<set_your_recipient_email>")
 
 # ? --- MAILJET HTTP SERVER SETTINGS
 # ? --------------------------------
 USE_MAILJET_HTTP_SERVER = config("USE_MAILJET_HTTP_SERVER", default=False, cast=bool)
 
-MAILJET_APIKEY_PUBLIC = config("MAILJET_APIKEY_PUBLIC")
-MAILJET_APIKEY_PRIVATE = config("MAILJET_APIKEY_PRIVATE")
+MAILJET_APIKEY_PUBLIC = config(
+    "MAILJET_APIKEY_PUBLIC", default="<set_your_public_apikey>"
+)
+MAILJET_APIKEY_PRIVATE = config(
+    "MAILJET_APIKEY_PRIVATE", default="<set_your_private_apikey>"
+)
 
 # ? --- DJANGO SMTP SERVER SETTINGS
 # ? -------------------------------

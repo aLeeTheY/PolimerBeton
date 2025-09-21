@@ -163,7 +163,8 @@ class RequestAdmin(admin.ModelAdmin):
     )
     list_filter = ("request_datetime",)
     ordering = ("-request_datetime",)
-    readonly_fields = ("request_id", "request_datetime")
+    # readonly_fields = ("request_id", "request_datetime")
+    readonly_fields = ["request_id"]
 
     def get_readonly_fields(self, request, obj=None):
         if obj:  # Editing an existing object
