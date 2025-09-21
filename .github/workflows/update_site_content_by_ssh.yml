@@ -24,4 +24,19 @@ jobs:
                   username: ${{ secrets.HOST_USER }}
                   key: ${{ secrets.HOST_SSH_PRIVATE_KEY }}
                   port: ${{ secrets.HOST_SSH_PORT }}
-                  script: whoami
+                  script: |
+                      set -e
+
+                      cd ${{ secrets.HOST_WORKDIR }}
+                      git pull
+
+                      docker-compose -f docker-compose.prod.selinux.yml down web
+                      docker-compose -f docker-compose.prod.selinux.yml build --no-cache web
+                      docker-compose -f docker-compose.prod.selinux.yml up -d --force-recreate
+
+                      docker container prune --all --force
+                      docker image prune --all --force
+                      docker network prune --all --force
+
+                      docker system prune --all --force
+                      exit
