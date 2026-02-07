@@ -26,17 +26,20 @@ jobs:
                   port: ${{ secrets.HOST_SSH_PORT }}
                   script: |
                       set -e
-
                       cd ${{ secrets.HOST_WORKDIR }}
+
+                      # 1. Забираем код
                       git pull
 
-                      docker-compose -f docker-compose.prod.selinux.yml down
-                      docker-compose -f docker-compose.prod.selinux.yml build --no-cache web
-                      docker-compose -f docker-compose.prod.selinux.yml up -d --force-recreate
+                      # 2. Предварительная очистка (освобождаем место под билд)
+                      docker builder prune -f
+                      docker image prune -f
 
-                      docker container prune --force
-                      docker network prune --force
+                      # 3. Собираем ТОЛЬКО web (используем кэш!) + убираем --no-cache, чтобы экономить место и время
+                      docker compose -f docker-compose.prod.yml build web
 
-                      docker image prune --all --force
-                      docker system prune --all --force
-                      exit
+                      # 4. Перезапускаем контейнеры (up -d сам пересоздаст только изменившиеся контейнеры)
+                      docker compose -f docker-compose.prod.yml up -d
+
+                      # 5. Финальная очистка
+                      docker system prune -f
