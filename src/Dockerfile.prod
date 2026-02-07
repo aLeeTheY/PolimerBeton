@@ -4,7 +4,7 @@ FROM node:24.8-alpine AS frontend_builder
 WORKDIR /usr/src/polimerbeton
 
 COPY package.json package-lock.json /usr/src/polimerbeton/
-RUN npm install --omit=dev
+RUN npm install --omit=dev && npm cache clean --force
 
 #? --- Stage 2. Build the Django backend
 #? -------------------------------------
@@ -43,7 +43,7 @@ WORKDIR $APP_HOME
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get install -y netcat-openbsd ca-certificates && \
+    apt-get install -y --no-install-recommends netcat-openbsd ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy Node.js runtime form frontend_builder
