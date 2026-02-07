@@ -181,6 +181,12 @@ node_modules/
 *.dev*
 *.prod*
 
+!*.prod.yml
+!*.prod.selinux.yml
+
+!*.dev.yml
+!*.staging.yml
+
 !Dockerfile.prod
 !entrypoint.prod.sh
 !docker-compose.prod.yml
