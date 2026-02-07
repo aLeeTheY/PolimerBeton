@@ -47,13 +47,13 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends netcat-openbsd ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy Node.js runtime form frontend_builder (added --chown=warden:warden)
-COPY --from=frontend_builder --chown=warden:warden /usr/local/bin/node /usr/local/bin/
+# Copy Node.js runtime form frontend_builder
+COPY --from=frontend_builder /usr/local/bin/node /usr/local/bin/
 # COPY --from=frontend_builder /usr/local/lib/node_modules /usr/local/lib/node_modules
 
-# Copy installed dependencies from "builders" stage (Node.js and Poetry) (added --chown=warden:warden)
-COPY --from=frontend_builder --chown=warden:warden /usr/src/polimerbeton/node_modules $APP_HOME/node_modules
-COPY --from=backend_builder --chown=warden:warden /usr/local /usr/local
+# Copy installed dependencies from "builders" stage (Node.js and Poetry)
+COPY --from=frontend_builder /usr/src/polimerbeton/node_modules $APP_HOME/node_modules
+COPY --from=backend_builder /usr/local /usr/local
 
 # Setup Python environment variables
 # and add Node.js dependencies BINs to PATH
@@ -66,15 +66,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # RUN sed -i 's/\r$//g' $APP_HOME/scripts/entrypoint.prod.sh
 # RUN chmod +x $APP_HOME/scripts/entrypoint.prod.sh
 
-# Copy project (added --chown=warden:warden)
-COPY --chown=warden:warden . $APP_HOME
+# Copy project
+COPY . $APP_HOME
 
 # Setup entrypoint.prod.sh
 RUN sed -i 's/\r$//g' $APP_HOME/scripts/entrypoint.prod.sh && \
     chmod +x $APP_HOME/scripts/entrypoint.prod.sh
 
 # Chown all the files to the app user
-# RUN chown -R warden:warden $APP_HOME
+RUN chown -R warden:warden $APP_HOME
 
 # Change to the app user
 USER warden
