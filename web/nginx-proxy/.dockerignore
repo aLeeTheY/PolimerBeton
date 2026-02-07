@@ -1,6 +1,9 @@
-# Default ignore
+#? Default ignore
 .git
 .gitignore
+
+#? Ignore GitHub actions folder
+.github/
 
 .DS_Store
 

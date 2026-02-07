@@ -194,3 +194,6 @@ project/
 #? Ignore all .git folders and files
 *.git*
 .git/
+
+#? Ignore GitHub actions folder
+.github/
