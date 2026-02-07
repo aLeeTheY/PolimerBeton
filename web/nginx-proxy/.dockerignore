@@ -1,0 +1,7 @@
+# Default ignore
+.git
+.gitignore
+
+.DS_Store
+
+*.log
