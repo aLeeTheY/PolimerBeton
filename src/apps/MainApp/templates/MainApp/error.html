@@ -4,7 +4,7 @@
 <!--? Django load static & compress --->
 {% load static %} {% load compress %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
     <head>
         <!-- Charset UTF-8 --->
@@ -32,10 +32,10 @@
         <meta name="revisit-after" content="30 days" />
 
         <!-- Author --->
-        <meta name="author" content="Vladimir Nikulin" />
+        <meta name="author" content="aLeeTheY" />
 
         <!-- Copyright --->
-        <meta name="copyright" content="2024, TIDOFF Studio" />
+        <meta name="copyright" content="2024-{% now 'Y' %} aLeeTheY" />
 
         <!-- Title --->
         <title>Упс! Что-то пошло не так!</title>
@@ -65,10 +65,10 @@
             href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic&family=Montserrat:ital,wght@0,100..900;1,100..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Pattaya&family=Raleway:ital,wght@0,100..900;1,100..900&family=Russo+One&family=Tenor+Sans&display=swap"
             rel="stylesheet"
             media="print"
-            onload="this.media='screen'" />
+            onload="this.media = 'screen'" />
 
         <!-- BoxIcons CSS --->
-        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" media="print" onload="this.media='screen'" />
+        <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" media="print" onload="this.media = 'screen'" />
 
         <!-- Page CSS --->
         {% compress css file error %}
@@ -714,11 +714,11 @@
                 </div>
                 <div class="row align-items-center justify-content-between copyright">
                     <div class="col-12 col-sm-6" id="copyright-info">
-                        <small>&copy <span class="d-none d-sm-inline">Copyright</span> 2024-{% now "Y" %} Vladimir Nikulin</small>
+                        <small>&copy <span class="d-none d-sm-inline">Copyright</span> 2024-{% now "Y" %} aLeeTheY</small>
                     </div>
                     <div class="col-12 col-sm-5" id="copyright-email">
                         <p>
-                            <small><a href="mailto:mail.jorey@gmail.com">mail.jorey@gmail.com</a></small>
+                            <small><a href="mailto:aleethey@gmail.com">aleethey@gmail.com</a></small>
                         </p>
                     </div>
                 </div>
