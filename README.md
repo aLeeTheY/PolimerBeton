@@ -141,7 +141,7 @@
 | FRONTEND             | [![HTML][HTML-logo]][HTML-url] [![Sass][Sass-logo]][Sass-url] [![TypeScript][TypeScript-logo]][TypeScript-url] [![Bootstrap][Bootstrap-logo]][Bootstrap-url] |
 | BACKEND              |                                                                                    [![Python][Python-logo]][Python-url] [![Django][Django-logo]][Django-url] |
 | DATABASE             |                                                                                                                   [![Postgres][Postgres-logo]][Postgres-url] |
-| VCS <sup>[[1]]</sup> |                                                                                                                                  [![Git][Git-logo]][Git-url] |
+| [VCS][VCS-url] |                                                                                                                                  [![Git][Git-logo]][Git-url] |
 | DEPLOYMENT           |                                                                                                                         [![Docker][Docker-logo]][Docker-url] |
 
 </div>
@@ -172,7 +172,7 @@
 - **Оркестрация микросервисов**: Проектирование отказоустойчивого взаимодействия между контейнерами Django, PostgreSQL, Nginx и Let's Encrypt в единой изолированной сети Docker.
 - **Автоматизация деплоя Django**: CI/CD скрипт в GitHub Actions обновляет ветку `main` и пересобирает контейнер Django без вмешательства в остальные сервисы (_автоматическое выполнение можно включить при необходимости_).
 - **SEO и доступность**: Проведение аудита и оптимизация HTML-структуры для достижения 100/100 баллов по метрикам Accessibility и SEO в Google Lighthouse.
-- **Отказоустойчивость уведомлений**: Реализация надежной системы доставки лидов через SMTP с возможностью альтернативной интеграции с Mailjet <sup>[[2]]</sup> API.
+- **Отказоустойчивость уведомлений**: Реализация надежной системы доставки лидов через SMTP с возможностью альтернативной интеграции с Mailjet API.
 
 ### Полученные навыки
 
@@ -329,7 +329,7 @@ https://polimerbeton-vrn.ru/admin/
 
 ## Лицензия
 
-Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY).<br />
+Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)<br />
 Проект распространяется по лицензии [MIT][license-url] (см. файл `LICENSE` для получения подробной информации).
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
@@ -338,7 +338,7 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY).<br />
 
 ## Контакты
 
-- GitHub: @aLeeTheY
+- GitHub: [aLeeTheY](https://github.com/aLeeTheY)
 - Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
@@ -347,7 +347,7 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY).<br />
 
 ## Благодарности
 
-@aLeeTheY выражает благодарность разработчикам и сообществам следующих проектов:
+[aLeeTheY](https://github.com/aLeeTheY) выражает благодарность разработчикам и сообществам следующих проектов:
 
 - [Figma](https://www.figma.com/)
 - [Visual Studio Code](https://code.visualstudio.com/)
@@ -413,5 +413,5 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY).<br />
 [Firefox-url]: https://www.firefox.com/
 [Yandex-logo]: https://img.shields.io/badge/Yandex%20Browser-fc3f1d?style=for-the-badge&logo=yandex&logoColor=white
 [Yandex-url]: https://browser.yandex.com/
-[1]: https://en.wikipedia.org/wiki/Version_control
-[2]: https://www.mailjet.com/
+[VCS-url]: https://en.wikipedia.org/wiki/Version_control
+[Mailjet-url]: https://www.mailjet.com/
