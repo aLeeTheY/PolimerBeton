@@ -126,18 +126,18 @@
 
 <div align="center">
 
-<!-- [![Превью сайта - PolimerBeton][website-preview]](https://aLeeTheY.github.io/PolimerBeton/) -->
+[![Превью сайта - PolimerBeton][website-preview]](https://polimerbeton-vrn.ru/)
 
 </div>
 
-<div align="center">
+<!-- <div align="center">
   <a href="https://polimerbeton-vrn.ru/">
     <img src="project/preview/website_preview.gif"
          alt="Превью сайта - PolimerBeton"
-         style="border: 1px solid #d1d9e0;"
+         style="border: 1px solid #d1d9e0 !important;"
          width="100%">
   </a>
-</div>
+</div> -->
 
 ### Используемые технологии
 
@@ -421,3 +421,4 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [Yandex-url]: https://browser.yandex.com/
 [VCS-url]: https://en.wikipedia.org/wiki/Version_control
 [Mailjet-url]: https://www.mailjet.com/
+[website-preview]: project/preview/website_preview.gif
