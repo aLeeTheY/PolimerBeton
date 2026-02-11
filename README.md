@@ -329,8 +329,9 @@ https://polimerbeton-vrn.ru/admin/
 
 ## Лицензия
 
-Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)<br />
-Проект распространяется по лицензии [MIT][license-url] (см. файл `LICENSE` для получения подробной информации).
+Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
+
+Проект распространяется по лицензии [MIT][license-url]
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
