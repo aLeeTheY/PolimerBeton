@@ -38,9 +38,9 @@
     Многостраничный адаптивный рекламный сайт с формой обратной связи и базой данных клиентов.
     <br />
     <br />
-    <a href="ZAPOLNIT">Дизайн (макет)</a>
-    &middot;
-    <a href="https://aLeeTheY.github.io/PolimerBeton/">Демо</a>
+    <!-- <a href="ZAPOLNIT">Дизайн (макет)</a>
+    &middot; -->
+    <a href="https://polimerbeton-vrn.ru/"">Демо</a>
     &middot;
     <a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Сообщить об ошибке</a>
   </p>
@@ -126,8 +126,17 @@
 
 <div align="center">
 
-[![Превью сайта - PolimerBeton][website-preview]](https://aLeeTheY.github.io/PolimerBeton/)
+<!-- [![Превью сайта - PolimerBeton][website-preview]](https://aLeeTheY.github.io/PolimerBeton/) -->
 
+</div>
+
+<div align="center">
+  <a href="https://polimerbeton-vrn.ru/">
+    <img src="project/preview/website_preview.gif"
+         alt="Превью сайта - PolimerBeton"
+         style="border: 1px solid #909692;"
+         width="100%">
+  </a>
 </div>
 
 ### Используемые технологии
@@ -136,13 +145,13 @@
 
 <div align="center">
 
-| Часть проекта        |                                                                                                                                                   Технологии |
-| :------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------: |
-| FRONTEND             | [![HTML][HTML-logo]][HTML-url] [![Sass][Sass-logo]][Sass-url] [![TypeScript][TypeScript-logo]][TypeScript-url] [![Bootstrap][Bootstrap-logo]][Bootstrap-url] |
-| BACKEND              |                                                                                    [![Python][Python-logo]][Python-url] [![Django][Django-logo]][Django-url] |
-| DATABASE             |                                                                                                                   [![Postgres][Postgres-logo]][Postgres-url] |
+| Часть проекта  |                                                                                                                                                   Технологии |
+| :------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| FRONTEND       | [![HTML][HTML-logo]][HTML-url] [![Sass][Sass-logo]][Sass-url] [![TypeScript][TypeScript-logo]][TypeScript-url] [![Bootstrap][Bootstrap-logo]][Bootstrap-url] |
+| BACKEND        |                                                                                    [![Python][Python-logo]][Python-url] [![Django][Django-logo]][Django-url] |
+| DATABASE       |                                                                                                                   [![Postgres][Postgres-logo]][Postgres-url] |
 | [VCS][VCS-url] |                                                                                                                                  [![Git][Git-logo]][Git-url] |
-| DEPLOYMENT           |                                                                                                                         [![Docker][Docker-logo]][Docker-url] |
+| DEPLOYMENT     |                                                                                                                         [![Docker][Docker-logo]][Docker-url] |
 
 </div>
 
@@ -381,7 +390,6 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [issues-url]: https://github.com/aLeeTheY/PolimerBeton/issues
 [license-shield]: https://img.shields.io/github/license/aLeeTheY/PolimerBeton.svg?style=for-the-badge
 [license-url]: https://github.com/aLeeTheY/PolimerBeton/blob/main/LICENSE
-[website-preview]: project/preview/website_preview.gif
 [HTML-logo]: https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white&style=for-the-badge
 [HTML-url]: https://html.spec.whatwg.org/
 [Sass-logo]: https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=for-the-badge
