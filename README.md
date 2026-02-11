@@ -1,5 +1,7 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 <a id="readme-top"></a>
+
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -7,8 +9,6 @@
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -18,267 +18,400 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
+<div align="center">
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
+</div>
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h1 align="center">Space Tourism Website</h1>
+  <h1 align="center">PolimerBeton</h1>
 
   <p align="center">
-    A multi-page website built using a Figma layout. It supports desktops, tablets and phones.
+    Многостраничный адаптивный рекламный сайт с формой обратной связи и базой данных клиентов.
     <br />
     <br />
-    <a href="https://www.frontendmentor.io/challenges/space-tourism-multipage-website-gRWj1URZ3">Original Layout</a>
+    <a href="ZAPOLNIT">Дизайн (макет)</a>
     &middot;
-    <a href="https://ableeweean.github.io/Space-Tourism-Website/">View Demo</a>
+    <a href="https://aLeeTheY.github.io/PolimerBeton/">Демо</a>
     &middot;
-    <a href="https://github.com/aBLeeWeeAN/Space-Tourism-Website/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Сообщить об ошибке</a>
   </p>
+
+[![Русский](https://img.shields.io/badge/Русский-blue)](README.md)
+[![English](https://img.shields.io/badge/English-blue)](README.en-US.md)
+
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <br />
 <details>
-  <summary>Table of Contents</summary>
+  <summary>Содержание</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#о-проекте">О проекте</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#supported-browsers">Supported Browsers</a></li>
+        <li><a href="#ключевые-особенности">Ключевые особенности</a></li>
+        <li><a href="#используемые-технологии">Используемые технологии</a></li>
+        <li><a href="#поддерживаемые-браузеры">Поддерживаемые браузеры</a></li>
+        <li><a href="#сложности-при-разработке">Сложности при разработке</a></li>
+        <li><a href="#полученные-навыки">Полученные навыки</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#начало-работы">Начало работы</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#build-static-files">Build Static Files</a></li>
+        <li><a href="#предварительные-требования">Предварительные требования</a></li>
+        <li>
+          <a href="#сборка-и-развертывание-приложения">Сборка и развертывание приложения</a>
+          <ul>
+            <li><a href="#создание-суперпользователя">Создание суперпользователя</a></li>
+            <li><a href="#устранение-проблем-опционально">Устранение проблем (опционально)</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#author">Author</a></li>
+    <li>
+      <a href="#использование">Использование</a>
+      <ul>
+        <li><a href="#панель-администратора">Панель администратора</a></li>
+      </ul>
+    </li>
+    <li><a href="#дорожная-карта">Дорожная карта</a></li>
+    <li><a href="#лицензия">Лицензия</a></li>
+    <li><a href="#контакты">Контакты</a></li>
+    <li><a href="#благодарности">Благодарности</a></li>
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
 
-This project is part of my portfolio and demonstrates my skills in creating websites based on client-provided mockups - either in [Figma](https://www.figma.com/) or [Photoshop](https://www.adobe.com/products/photoshop.html).
+## О проекте
 
-The main goal was to build a clean, high-performance front-end foundation without relying on external UI frameworks or a CMS backend.
+Основная цель проекта — создание быстрого рекламного лендинга с формой обратной связи. Сайт позволяет клиентам оставлять заявки, а владельцу — мгновенно получать уведомления о новых заказах.
 
-Key technical notes:
+### Ключевые особенности
 
-* **Responsiveness**: Implemented purely with CSS media queries.
-* **Content**: All content is static (no [WordPress][WordPress-url] or similar CMS).
-* **Build Process**: [Sass/SCSS][Sass-url] and [TypeScript][TypeScript-url] source files are compiled into standard [CSS][CSS-url] and [JavaScript][JavaScript-url]. This approach keeps the source code organized and makes the project versatile as a starting template for other front-end solutions.
+**Дизайн и интерфейс**
 
-You can see a **preview of the website** in the image below:
+- **Эксклюзивность**: Полностью авторский дизайн страниц (_Figma_).
+- **Адаптивность**: Интерфейс построен на базе **Bootstrap** и **Bootstrap Icons** с полной поддержкой мобильных устройств.
+- **Dark Mode**: Поддержка темной темы (автоматическое переключение + ручной режим).
+- **UX/UI**: Плавные анимации для улучшения визуального восприятия.
 
-[![Space Tourism Website Preview][website-preview]](https://ableeweean.github.io/Space-Tourism-Website/)
+**Безопасность и данные**
 
+- **Шифрование**: Защита данных клиентов на уровне полей базы данных (**Field-level Encryption**).
+- **Защита окружения**: Строгое разделение конфигураций через файлы `.env` (**Zero-config** в коде).
 
+**Развертывание и инфраструктура**
 
-### Built With
+- **Контейнеризация**: Полная изоляция через **Docker**, позволяющая развернуть проект в течение 15 минут.
+- **CI/CD Workflow**: Автоматизация обновления проекта через **GitHub Actions** и **SSH**.
 
-This website is made using the following technologies:
+**Производительность и масштабируемость**
 
-* [![HTML][HTML-logo]][HTML-url]
-* [![CSS][CSS-logo]][CSS-url]
-* [![JavaScript][JavaScript-logo]][JavaScript-url]
-* [![Sass][Sass-logo]][Sass-url]
-* [![TypeScript][TypeScript-logo]][TypeScript-url]
-* [![Node.js][Node.js-logo]][Node.js-url]
-* [![Git][Git-logo]][Git-url]
+- **Оптимизация статики**: Использование формата `.webp` и адаптивная подгрузка изображений в зависимости от разрешения экрана.
+- **Backend**: Связка **Django + Nginx** для стабильной и быстрой работы сервера.
+- **Бизнес-логика**: Автоматическая отправка уведомлений о заказах через **SMTP** (_опционально — [**Mailjet**][Mailjet-url]_).
 
+Ниже можно посмотреть **превью сайта** (_нажмите на картинку, чтобы перейти к демо_):
 
+<div align="center">
 
-### Supported Browsers
+[![Превью сайта - PolimerBeton][website-preview]](https://aLeeTheY.github.io/PolimerBeton/)
 
-Below is a list of browsers in which this website was tested and rendered correctly:
+</div>
 
-* [![Opera GX][OperaGX-logo]][OperaGX-url]
-* [![Google Chrome][GoogleChrome-logo]][GoogleChrome-url]
-* [![Microsoft Edge][MicrosoftEdge-logo]][MicrosoftEdge-url]
-* [![Firefox][Firefox-logo]][Firefox-url]
-* [![Arc][Arc-logo]][Arc-url]
-* [![Brave][Brave-logo]][Brave-url]
-* [![Vivaldi][Vivaldi-logo]][Vivaldi-url]
+### Используемые технологии
+
+Проект создан с использованием следующих инструментов и технологий:
+
+<div align="center">
+
+| Часть проекта        |                                                                                                                                                   Технологии |
+| :------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| FRONTEND             | [![HTML][HTML-logo]][HTML-url] [![Sass][Sass-logo]][Sass-url] [![TypeScript][TypeScript-logo]][TypeScript-url] [![Bootstrap][Bootstrap-logo]][Bootstrap-url] |
+| BACKEND              |                                                                                    [![Python][Python-logo]][Python-url] [![Django][Django-logo]][Django-url] |
+| DATABASE             |                                                                                                                   [![Postgres][Postgres-logo]][Postgres-url] |
+| VCS <sup>[[1]]</sup> |                                                                                                                                  [![Git][Git-logo]][Git-url] |
+| DEPLOYMENT           |                                                                                                                         [![Docker][Docker-logo]][Docker-url] |
+
+</div>
+
+### Поддерживаемые браузеры
+
+Проект проверен на корректность отображения и стабильность работы скриптов в актуальных версиях следующих браузеров:
+
+<div align="center">
+
+[![Google Chrome][GoogleChrome-logo]][GoogleChrome-url]
+[![Microsoft Edge][MicrosoftEdge-logo]][MicrosoftEdge-url]
+[![Yandex][Yandex-logo]][Yandex-url]
+[![Firefox][Firefox-logo]][Firefox-url]
+[![Opera][Opera-logo]][Opera-url]
+
+</div>
 
 <br />
 
 > [!IMPORTANT]
-> Browser compatibility was verified for the 1.0.0 release. The site displayed correctly in the latest versions of all major browsers at that time.
-> 
-> **Last verification date: 3 December 2025**
+> Информация актуальна для версии **[2.0.4](https://github.com/aLeeTheY/PolimerBeton/releases/tag/2.0.4)**. На момент проверки проект корректно отображался в последних стабильных версиях всех [указанных браузеров](#поддерживаемые-браузеры).
+>
+> **Дата последней проверки: 11 февраля 2026**
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+### Сложности при разработке
 
+- **Оркестрация микросервисов**: Проектирование отказоустойчивого взаимодействия между контейнерами Django, PostgreSQL, Nginx и Let's Encrypt в единой изолированной сети Docker.
+- **Автоматизация деплоя Django**: CI/CD скрипт в GitHub Actions обновляет ветку `main` и пересобирает контейнер Django без вмешательства в остальные сервисы (_автоматическое выполнение можно включить при необходимости_).
+- **SEO и доступность**: Проведение аудита и оптимизация HTML-структуры для достижения 100/100 баллов по метрикам Accessibility и SEO в Google Lighthouse.
+- **Отказоустойчивость уведомлений**: Реализация надежной системы доставки лидов через SMTP с возможностью альтернативной интеграции с Mailjet <sup>[[2]]</sup> API.
 
+### Полученные навыки
+
+- **UI/UX дизайн**: Проектирование пользовательских интерфейсов в Figma, подготовка дизайн-макетов к верстке, создание адаптивных графических ассетов.
+- **Fullstack разработка**: Проектирование реляционных баз данных в PostgreSQL, разработка серверной логики на Django, создание строго типизированного фронтенда с использованием Sass, Bootstrap и TypeScript.
+- **DevOps и инфраструктура**: Контейнеризация приложений через Docker, управление конфигурациями сред (development/staging/production), настройка сетевого взаимодействия микросервисов.
+- **Системное администрирование**: Развертывание приложений на Linux-серверах, конфигурирование Nginx или Apache в качестве обратного прокси, внедрение SSL-сертификатов через Let's Encrypt для обеспечения безопасности.
+- **Оптимизация производительности**: Минификация HTML, CSS и JS с использованием `django-htmlmin` и `django-compressor`, внедрение современных графических форматов для минимизации времени загрузки и отрисовки страниц (LCP/FCP).
+- **CI/CD**: Настройка автоматизированного деплоя через GitHub Actions, управление удалёнными серверами по протоколу SSH.
+- **Документация и GitHub**: Оформление документации и README.md файлов с использованием Markdown, ведение версионного контроля через Git.
+
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
 <!-- GETTING STARTED -->
-## Getting Started
 
-Please follow the steps below to build and view this website locally.
+## Начало работы
 
+_Следуйте приведённым ниже инструкциям для корректного развёртывания проекта._
 
+### Предварительные требования
 
-### Prerequisites
+Установите [Docker][Docker-url] и плагин [Docker Compose][Docker-Compose-url]. Затем скачайте данный репозиторий в виде ZIP-архива или клонируйте его с помощью [Git][Git-url]:
 
-First, install [Node.js][Node.js-url]. Then, download this repository as a ZIP archive or clone it using [Git][Git-url] to a folder on your system. To clone it, you can use the following Git command:
+```sh
+git clone https://github.com/aLeeTheY/PolimerBeton
+```
 
-* git
+Перейдите в каталог проекта. Далее откройте папку **env/** и создайте конфигурационные файлы на основе соответствующих шаблонов **.template**. Поддерживаются три окружения: **development**, **staging** и **production**. Например, для окружения **production** выполните:
 
-  ```sh
-  git clone https://github.com/aBLeeWeeAN/Space-Tourism-Website
-  ```
+```sh
+cp .env.prod.template .env.prod
+cp .env.prod.db.template .env.prod.db
+cp .env.prod.proxy-companion.template .env.prod.proxy-companion
+```
 
-Navigate to the project folder in your terminal and run the following command to install all project dependencies:
+После этого в **каждом** из созданных файлов замените значения всех переменных, содержащих плейсхолдеры вида "**<...>**", на собственные. Например, для файла `.env.prod.db`:
 
-* npm
+<div align="center">
 
-  ```sh
-  npm install
-  ```
+| Исходное значение                            | Пример заполнения                              |   Обязательность    |
+| :------------------------------------------- | :--------------------------------------------- | :-----------------: |
+| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | (**_обязательно_**) |
+| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | (**_обязательно_**) |
+| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   (_опционально_)   |
 
-### Build Static Files
+</div>
 
-_Please follow the steps below to build the static site files._
+<!-- Более подробная информация о плейсхолдерах приведена в разделе [Переменные окружения](#переменные-окружения). -->
 
-To compile Sass/SCSS files into CSS and TypeScript files into JavaScript, run the following build command (you can ignore any warnings):
+### Сборка и развертывание приложения
 
-* npm
+Выберите соответствующий файл конфигурации (**docker-compose.\*.yml**) и запустите сборку с последующим запуском контейнеров:
 
-  ```sh
-  npm run build:release
-  ```
+```sh
+docker compose -f docker-compose.prod.yml up -d --build
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+#### Создание суперпользователя
 
+После успешного запуска контейнеров создайте **суперпользователя** для административной панели Django:
 
+```sh
+docker exec -it polimerbeton-web python manage.py createsuperuser
+```
+
+Следуйте инструкциям в консоли. После выполнения этих шагов проект считается успешно развёрнутым.
+
+#### Устранение проблем (_опционально_)
+
+_При недостатке оперативной памяти или дискового пространства сборка может завершиться с ошибкой. В этом случае рекомендуется **увеличить** доступные ресурсы. Если это невозможно, можно попробовать выполнить сборку поэтапно._
+
+> [!CAUTION]
+> Все команды ниже выполняются на ваш страх и риск!
+>
+> Если вы не уверены в своих действиях, рекомендуется обратиться к системному администратору.
+
+Очистите старые образы и кэш сборщика:
+
+```sh
+docker image prune
+docker builder prune
+```
+
+Соберите основной контейнер **web**:
+
+```sh
+docker compose -f docker-compose.prod.yml build web
+```
+
+Снова выполните очистку:
+
+```sh
+docker image prune
+docker builder prune
+```
+
+Запустите сборку оставшихся контейнеров и инициируйте старт проекта:
+
+```sh
+docker compose -f docker-compose.prod.yml up -d
+```
+
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
 <!-- USAGE EXAMPLES -->
-## Usage
 
-After completing the steps in the [**Getting Started**](#getting-started) section, you can view the site manually by opening the **_index.html_** file from the **_public/_** folder in any [supported browser](#supported-browsers).
+## Использование
 
-Alternatively, to launch a local development server, use the following command:
+После завершения этапа [**Начало работы**](#начало-работы) проект будет доступен по вашему доменному имени (или на `localhost`, если используется конфигурация для разработки).
 
-* npm
+### Панель администратора
 
-  ```sh
-  npm run server
-  ```
+Для доступа к административному интерфейсу перейдите по адресу:
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+```
+https://polimerbeton-vrn.ru/admin/
+```
 
+Для входа используйте учётные данные superuser. Если суперпользователь ещё не создан, выполните [соответствующую команду](#создание-суперпользователя) в работающем контейнере.
 
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
+
+<!-- ROADMAP -->
+
+## Дорожная карта
+
+- [x] Проектирование интерфейсов в **Figma**:
+  - [x] Главная страница (`index.html`)
+  - [x] Политика конфиденциальности (`privacy.html`)
+  - [x] Страница успешной отправки (`success.html`)
+  - [x] Страница ошибки (`error.html`)
+- [x] Адаптивная верстка с использованием **Bootstrap** и поддержкой **тёмной темы**
+- [x] Интеграция верстки в шаблоны **Django**
+- [x] Проектирование архитектуры БД в **PostgreSQL** (клиенты и заказы)
+- [x] Настройка логики взаимодействия `django-admin` с моделями данных
+- [x] Реализация подсистемы обработки форм и регистрации клиентов
+- [x] Разработка сервиса уведомлений по протоколу **SMTP**
+- [x] Разработка альтернативного сервиса уведомлений через **Mailjet** API
+- [x] Внедрение механизмов **шифрования и защиты персональных данных**
+- [x] Контейнеризация и деплой с использованием **Docker**:
+  - [x] Конфигурация сред окружения (`.env.dev`, `.env.staging`, `.env.prod`)
+  - [x] Оптимизация образов (**Dockerfile** и **Dockerfile.prod**)
+  - [x] Оркестрация микросервисов (**Django**, **PostgreSQL**, **Let's Encrypt**, **Nginx**) через `docker-compose`
+- [x] Автоматизация **CI/CD** через **GitHub Actions**:
+  - [x] Автоматическая сборка и деплой при обновлении ветки `main`
+- [ ] Интернационализация (i18n):
+  - [ ] Поддержка английского языка (English)
+
+Полный список планируемых функций и известных проблем доступен в разделе [Issues][issues-url].
+
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
 <!-- LICENSE -->
-## License
 
-Copyright © 2025 [Vladimir Nikulin](https://github.com/aBLeeWeeAN).<br />
-This project is [MIT][license-url] licensed.
+## Лицензия
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY).<br />
+Проект распространяется по лицензии [MIT][license-url] (см. файл `LICENSE` для получения подробной информации).
 
-
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
 <!-- CONTACT -->
-## Author
 
-👤 **Vladimir Nikulin**
+## Контакты
 
-* Github: [@aBLeeWeeAN](https://github.com/aBLeeWeeAN)
-* Email: [mail.jorey@gmail.com](mailto:mail.jorey@gmail.com)
+- GitHub: @aLeeTheY
+- Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
+<!-- ACKNOWLEDGMENTS -->
 
+## Благодарности
+
+@aLeeTheY выражает благодарность разработчикам и сообществам следующих проектов:
+
+- [Figma](https://www.figma.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Django](https://www.djangoproject.com/)
+- [Python](https://www.python.org/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Bootstrap Icons](https://icons.getbootstrap.com/)
+- [Sass](https://sass-lang.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Let's Encrypt](https://letsencrypt.org/)
+- [Docker](https://www.docker.com/)
+- [Nginx](https://nginx.org/)
+- [Git](https://git-scm.com/)
+- [GitHub](https://github.com/)
+- [GitHub Actions](https://github.com/features/actions)
+- [Mailjet](https://www.mailjet.com/)
+
+Без этих инструментов, разработка данного проекта была бы **невозможна**.
+
+<p align="right">(<a href="#readme-top">наверх</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
+[contributors-shield]: https://img.shields.io/github/contributors/aLeeTheY/PolimerBeton.svg?style=for-the-badge
+[contributors-url]: https://github.com/aLeeTheY/PolimerBeton/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/aLeeTheY/PolimerBeton.svg?style=for-the-badge
+[forks-url]: https://github.com/aLeeTheY/PolimerBeton/network/members
+[stars-shield]: https://img.shields.io/github/stars/aLeeTheY/PolimerBeton.svg?style=for-the-badge
+[stars-url]: https://github.com/aLeeTheY/PolimerBeton/stargazers
+[issues-shield]: https://img.shields.io/github/issues/aLeeTheY/PolimerBeton.svg?style=for-the-badge
+[issues-url]: https://github.com/aLeeTheY/PolimerBeton/issues
+[license-shield]: https://img.shields.io/github/license/aLeeTheY/PolimerBeton.svg?style=for-the-badge
+[license-url]: https://github.com/aLeeTheY/PolimerBeton/blob/main/LICENSE
+[website-preview]: project/preview/website_preview.gif
 [HTML-logo]: https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white&style=for-the-badge
 [HTML-url]: https://html.spec.whatwg.org/
-
-[CSS-logo]: https://img.shields.io/badge/CSS-639?logo=css&logoColor=fff&style=for-the-badge
-[CSS-url]: https://www.w3.org/TR/css/#css
-
-[JavaScript-logo]: https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=for-the-badge
-[JavaScript-url]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
-
 [Sass-logo]: https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=for-the-badge
 [Sass-url]: https://sass-lang.com/
-
+[Bootstrap-logo]: https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=fff&style=for-the-badge
+[Bootstrap-url]: https://getbootstrap.com/
 [TypeScript-logo]: https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=for-the-badge
 [TypeScript-url]: https://www.typescriptlang.org/
-
-[Node.js-logo]: https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white&style=for-the-badge
-[Node.js-url]: https://nodejs.org/
-
+[Python-logo]: https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&style=for-the-badge
+[Python-url]: https://www.python.org/
+[Django-logo]: https://img.shields.io/badge/Django-%23092E20.svg?logo=django&logoColor=white&style=for-the-badge
+[Django-url]: https://www.djangoproject.com/
+[Docker-logo]: https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge
+[Docker-url]: https://www.docker.com/
+[Docker-Compose-url]: https://docs.docker.com/compose/
+[Postgres-logo]: https://img.shields.io/badge/Postgres-%23316192.svg?logo=postgresql&logoColor=white&style=for-the-badge
+[Postgres-url]: https://www.postgresql.org/
 [Git-logo]: https://img.shields.io/badge/Git-F05032?logo=git&logoColor=fff&style=for-the-badge
 [Git-url]: https://git-scm.com/
-
-
-
-[contributors-shield]: https://img.shields.io/github/contributors/aBLeeWeeAN/Space-Tourism-Website.svg?style=for-the-badge
-[contributors-url]: https://github.com/aBLeeWeeAN/Space-Tourism-Website/graphs/contributors
-
-[forks-shield]: https://img.shields.io/github/forks/aBLeeWeeAN/Space-Tourism-Website.svg?style=for-the-badge
-[forks-url]: https://github.com/aBLeeWeeAN/Space-Tourism-Website/network/members
-
-[stars-shield]: https://img.shields.io/github/stars/aBLeeWeeAN/Space-Tourism-Website.svg?style=for-the-badge
-[stars-url]: https://github.com/aBLeeWeeAN/Space-Tourism-Website/stargazers
-
-[issues-shield]: https://img.shields.io/github/issues/aBLeeWeeAN/Space-Tourism-Website.svg?style=for-the-badge
-[issues-url]: https://github.com/aBLeeWeeAN/Space-Tourism-Website/issues
-
-[license-shield]: https://img.shields.io/github/license/aBLeeWeeAN/Space-Tourism-Website.svg?style=for-the-badge
-[license-url]: https://github.com/aBLeeWeeAN/Space-Tourism-Website/blob/main/LICENSE
-
-
-
-[website-preview]: public/assets/images/website_preview.png
-
-
-
-[OperaGX-logo]: https://img.shields.io/badge/Opera%20GX-EE2950?logo=operagx&logoColor=fff&style=for-the-badge
-[OperaGX-url]: https://www.opera.com/gx/
-
+[Opera-logo]: https://img.shields.io/badge/Opera-FF1B2D?logo=Opera&logoColor=white&style=for-the-badge
+[Opera-url]: https://www.opera.com/
 [GoogleChrome-logo]: https://img.shields.io/badge/Google%20Chrome-4285F4?logo=GoogleChrome&logoColor=white&style=for-the-badge
 [GoogleChrome-url]: https://www.google.com/chrome/
-
 [MicrosoftEdge-logo]: https://custom-icon-badges.demolab.com/badge/Microsoft%20Edge-2771D8?logo=edge-white&logoColor=white&style=for-the-badge
 [MicrosoftEdge-url]: https://www.microsoft.com/en-us/edge/
-
 [Firefox-logo]: https://img.shields.io/badge/Firefox-FF7139?logo=firefoxbrowser&logoColor=white&style=for-the-badge
 [Firefox-url]: https://www.firefox.com/
-
-[Arc-logo]: https://img.shields.io/badge/Arc-FCBFBD?logo=arc&logoColor=000&style=for-the-badge
-[Arc-url]: https://arc.net/
-
-[Brave-logo]: https://img.shields.io/badge/Brave-FB542B?logo=Brave&logoColor=white&style=for-the-badge
-[Brave-url]: https://brave.com/
-
-[Vivaldi-logo]: https://img.shields.io/badge/Vivaldi-EF3939?logo=Vivaldi&logoColor=white&style=for-the-badge
-[Vivaldi-url]: https://vivaldi.com/
-
-
-
-[WordPress-url]: https://wordpress.com/
-
-
-
+[Yandex-logo]: https://img.shields.io/badge/Yandex%20Browser-fc3f1d?style=for-the-badge&logo=yandex&logoColor=white
+[Yandex-url]: https://browser.yandex.com/
+[1]: https://en.wikipedia.org/wiki/Version_control
+[2]: https://www.mailjet.com/
