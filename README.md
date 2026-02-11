@@ -134,7 +134,7 @@
   <a href="https://polimerbeton-vrn.ru/">
     <img src="project/preview/website_preview.gif"
          alt="Превью сайта - PolimerBeton"
-         style="border: 1px solid #909692;"
+         style="border: 1px solid #d1d9e0;"
          width="100%">
   </a>
 </div>
