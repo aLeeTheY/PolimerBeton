@@ -265,11 +265,11 @@ cp .env.prod.proxy-companion.template .env.prod.proxy-companion
 
 <div align="center">
 
-| Исходное значение                            | Пример заполнения                              | Обязательность  |
-| :------------------------------------------- | :--------------------------------------------- | :-------------: |
-| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **обязательно** |
-| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **обязательно** |
-| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   опционально   |
+| Исходное значение                            | Пример заполнения                              |  Обязательность   |
+| :------------------------------------------- | :--------------------------------------------- | :---------------: |
+| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **_обязательно_** |
+| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **_обязательно_** |
+| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   _опционально_   |
 
 </div>
 

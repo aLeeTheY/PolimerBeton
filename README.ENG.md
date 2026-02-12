@@ -234,11 +234,11 @@ For example, for the `.env.prod.db` file:
 
 <div align="center">
 
-| Original Value                               | Example Value                                  | Requirement  |
-| :------------------------------------------- | :--------------------------------------------- | :----------: |
-| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **Required** |
-| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **Required** |
-| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   Optional   |
+| Original Value                               | Example Value                                  |  Requirement   |
+| :------------------------------------------- | :--------------------------------------------- | :------------: |
+| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **_Required_** |
+| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **_Required_** |
+| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   _Optional_   |
 
 </div>
 
