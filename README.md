@@ -149,7 +149,7 @@
   - [![TypeScript][TypeScript-logo]][TypeScript-url]
   - [![Bootstrap][Bootstrap-logo]][Bootstrap-url]
 
-  - **BUILD & TOOLS**:
+  - **BUILD TOOLS**:
     - [![Node.js][NodeJS-logo]][NodeJS-url]
     - [![Npm][Npm-logo]][Npm-url]
 
@@ -157,7 +157,7 @@
   - [![Python][Python-logo]][Python-url]
   - [![Django][Django-logo]][Django-url]
 
-  - **BUILD & TOOLS**:
+  - **BUILD TOOLS**:
     - [![Poetry][Poetry-logo]][Poetry-url]
 
 - **DATABASE**:
