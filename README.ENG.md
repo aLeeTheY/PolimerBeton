@@ -219,7 +219,7 @@ git clone https://github.com/aLeeTheY/PolimerBeton
 ```
 
 Navigate to the project directory. Open the `env/` folder and create configuration files based on the corresponding `.template` files. Three environments are supported: **development**, **staging** and **production**.
-<br/>
+
 For example, for the **production** environment:
 
 ```sh
@@ -229,7 +229,7 @@ cp .env.prod.proxy-companion.template .env.prod.proxy-companion
 ```
 
 After that, in **each** of the created files, replace all placeholder values in the format `<...>` with your own values.
-<br/>
+
 For example, for the `.env.prod.db` file:
 
 <div align="center">
@@ -305,7 +305,7 @@ After completing the [Getting Started](#getting-started) stage, the project will
 ### Admin Panel
 
 To access the administrative interface, navigate to the `admin/` page.
-<br/>
+
 For example:
 
 ```
