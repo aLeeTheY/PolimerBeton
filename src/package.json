@@ -4,15 +4,15 @@
     "description": "TODO: napisat opisanye",
     "private": true,
     "type": "module",
-    "homepage": "https://github.com/aBLeeWeeAN/PolimerBeton#readme",
+    "homepage": "https://github.com/aLeeTheY/PolimerBeton#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/aBLeeWeeAN/PolimerBeton.git"
+        "url": "git+https://github.com/aLeeTheY/PolimerBeton.git"
     },
     "author": {
         "name": "Vladimir Nikulin",
-        "email": "mail.jorey@gmail.com",
-        "url": "https://github.com/aBLeeWeeAN"
+        "email": "aleethey@gmail.com",
+        "url": "https://github.com/aLeeTheY"
     },
     "license": "MIT",
     "scripts": {
