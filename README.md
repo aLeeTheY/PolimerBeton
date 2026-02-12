@@ -144,44 +144,35 @@
 Проект создан с использованием следующих инструментов и технологий:
 
 - **FRONTEND**:
-
   - [![HTML][HTML-logo]][HTML-url]
   - [![Sass][Sass-logo]][Sass-url]
   - [![TypeScript][TypeScript-logo]][TypeScript-url]
   - [![Bootstrap][Bootstrap-logo]][Bootstrap-url]
 
   - **BUILD & TOOLS**:
-
     - [![Node.js][NodeJS-logo]][NodeJS-url]
     - [![Npm][Npm-logo]][Npm-url]
 
 - **BACKEND**:
-
   - [![Python][Python-logo]][Python-url]
   - [![Django][Django-logo]][Django-url]
 
   - **BUILD & TOOLS**:
-
     - [![Poetry][Poetry-logo]][Poetry-url]
 
 - **DATABASE**:
-
   - [![Postgres][Postgres-logo]][Postgres-url]
 
 - **VERSION CONTROL SYSTEM**:
-
   - [![Git][Git-logo]][Git-url]
 
 - **DEPLOYMENT**:
-
   - [![Docker][Docker-logo]][Docker-url]
 
 - **WEB SERVER**:
-
   - [![Nginx][Nginx-logo]][Nginx-url]
-  
-- **CI/CD**:
 
+- **CI/CD**:
   - [![GitHub Actions][GitHubActions-logo]][GitHubActions-url]
 
 <!-- <div align="center">
@@ -384,7 +375,7 @@ https://polimerbeton-vrn.ru/admin/
 ## Лицензия
 
 Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
-
+<br/>
 Проект распространяется по лицензии [MIT][license-url]
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
@@ -393,8 +384,9 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 
 ## Контакты
 
-- GitHub: [aLeeTheY](https://github.com/aLeeTheY)
-- Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
+GitHub: [aLeeTheY](https://github.com/aLeeTheY)
+<br/>
+Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
@@ -479,9 +471,13 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [MicrosoftEdge-url]: https://www.microsoft.com/en-us/edge/
 [Firefox-logo]: https://img.shields.io/badge/Firefox-FF7139?logo=firefoxbrowser&logoColor=white&style=for-the-badge
 [Firefox-url]: https://www.firefox.com/
+
 <!-- [Yandex-logo]: https://img.shields.io/badge/Yandex_Browser-D1300D?style=for-the-badge -->
+
 [Yandex-logo]: https://custom-icon-badges.demolab.com/badge/Yandex%20Browser-F03911?logo=yandex-browser&style=for-the-badge
 [Yandex-url]: https://browser.yandex.com/
+
 <!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
+
 [Mailjet-url]: https://www.mailjet.com/
 [website-preview]: project/preview/website_preview.gif
