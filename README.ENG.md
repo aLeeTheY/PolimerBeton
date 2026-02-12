@@ -304,9 +304,7 @@ After completing the [Getting Started](#getting-started) stage, the project will
 
 ### Admin Panel
 
-To access the administrative interface, navigate to the `admin/` page.
-
-For example:
+To access the administrative interface, navigate to the `admin/` page:
 
 ```
 https://your-domain/admin/
