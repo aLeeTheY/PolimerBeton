@@ -143,7 +143,48 @@
 
 Проект создан с использованием следующих инструментов и технологий:
 
-<div align="center">
+- **FRONTEND**:
+
+  - [![HTML][HTML-logo]][HTML-url]
+  - [![Sass][Sass-logo]][Sass-url]
+  - [![TypeScript][TypeScript-logo]][TypeScript-url]
+  - [![Bootstrap][Bootstrap-logo]][Bootstrap-url]
+
+  - **BUILD & TOOLS**:
+
+    - [![Node.js][NodeJS-logo]][NodeJS-url]
+    - [![Npm][Npm-logo]][Npm-url]
+
+- **BACKEND**:
+
+  - [![Python][Python-logo]][Python-url]
+  - [![Django][Django-logo]][Django-url]
+
+  - **BUILD & TOOLS**:
+
+    - [![Poetry][Poetry-logo]][Poetry-url]
+
+- **DATABASE**:
+
+  - [![Postgres][Postgres-logo]][Postgres-url]
+
+- **VERSION CONTROL SYSTEM**:
+
+  - [![Git][Git-logo]][Git-url]
+
+- **DEPLOYMENT**:
+
+  - [![Docker][Docker-logo]][Docker-url]
+
+- **WEB SERVER**:
+
+  - [![Nginx][Nginx-logo]][Nginx-url]
+  
+- **CI/CD**:
+
+  - [![GitHub Actions][GitHubActions-logo]][GitHubActions-url]
+
+<!-- <div align="center">
 
 | Часть проекта  |                                                                                                                                                   Технологии |
 | :------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------: |
@@ -153,13 +194,19 @@
 | [VCS][VCS-url] |                                                                                                                                  [![Git][Git-logo]][Git-url] |
 | DEPLOYMENT     |                                                                                                                         [![Docker][Docker-logo]][Docker-url] |
 
-</div>
+</div> -->
 
 ### Поддерживаемые браузеры
 
 Проект проверен на корректность отображения и стабильность работы скриптов в актуальных версиях следующих браузеров:
 
-<div align="center">
+- [![Google Chrome][GoogleChrome-logo]][GoogleChrome-url]
+- [![Microsoft Edge][MicrosoftEdge-logo]][MicrosoftEdge-url]
+- [![Yandex][Yandex-logo]][Yandex-url]
+- [![Firefox][Firefox-logo]][Firefox-url]
+- [![Opera][Opera-logo]][Opera-url]
+
+<!-- <div align="center">
 
 [![Google Chrome][GoogleChrome-logo]][GoogleChrome-url]
 [![Microsoft Edge][MicrosoftEdge-logo]][MicrosoftEdge-url]
@@ -167,7 +214,7 @@
 [![Firefox][Firefox-logo]][Firefox-url]
 [![Opera][Opera-logo]][Opera-url]
 
-</div>
+</div> -->
 
 > [!IMPORTANT]
 > Информация актуальна для версии **[2.0.4](https://github.com/aLeeTheY/PolimerBeton/releases/tag/2.0.4)**. На момент проверки проект корректно отображался в последних стабильных версиях всех [указанных браузеров](#поддерживаемые-браузеры).
@@ -185,11 +232,12 @@
 
 - **UI/UX дизайн**: Проектирование пользовательских интерфейсов в Figma, подготовка дизайн-макетов к верстке, создание адаптивных графических ассетов.
 - **Fullstack разработка**: Проектирование реляционных баз данных в PostgreSQL, разработка серверной логики на Django, создание строго типизированного фронтенда с использованием Sass, Bootstrap и TypeScript.
-- **DevOps и инфраструктура**: Контейнеризация приложений через Docker, управление конфигурациями сред (development/staging/production), настройка сетевого взаимодействия микросервисов.
+- **DevOps и инфраструктура**: Контейнеризация приложений через Docker, управление конфигурациями сред (development/staging/production), настройка сетевого взаимодействия контейнеров.
 - **Системное администрирование**: Развертывание приложений на Linux-серверах, конфигурирование Nginx или Apache в качестве обратного прокси, внедрение SSL-сертификатов через Let's Encrypt для обеспечения безопасности.
 - **Оптимизация производительности**: Минификация HTML, CSS и JS с использованием `django-htmlmin` и `django-compressor`, внедрение современных графических форматов для минимизации времени загрузки и отрисовки страниц (LCP/FCP).
 - **CI/CD**: Настройка автоматизированного деплоя через GitHub Actions, управление удалёнными серверами по протоколу SSH.
 - **Документация и GitHub**: Оформление документации и README.md файлов с использованием Markdown, ведение версионного контроля через Git.
+- **Управление зависимостями и сборка**: Использование [Npm][Npm-url] и [Poetry][Poetry-url] для установки, обновления и фиксации версий библиотек через lock-файлы, обеспечивая воспроизводимость среды разработки.
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
 
@@ -291,7 +339,7 @@ docker compose -f docker-compose.prod.yml up -d
 
 ### Панель администратора
 
-Для доступа к административному интерфейсу перейдите по адресу:
+Для доступа к административному интерфейсу перейдите на страницу `admin/`. Например:
 
 ```
 https://polimerbeton-vrn.ru/admin/
@@ -336,7 +384,7 @@ https://polimerbeton-vrn.ru/admin/
 ## Лицензия
 
 Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
-<br />
+
 Проект распространяется по лицензии [MIT][license-url]
 
 <p align="right">(<a href="#readme-top">наверх</a>)</p>
@@ -360,10 +408,13 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Django](https://www.djangoproject.com/)
 - [Python](https://www.python.org/)
+- [Poetry](https://python-poetry.org/)
 - [Bootstrap](https://getbootstrap.com/)
 - [Bootstrap Icons](https://icons.getbootstrap.com/)
 - [Sass](https://sass-lang.com/)
 - [TypeScript](https://www.typescriptlang.org/)
+- [Node.js](https://nodejs.org/)
+- [Npm](https://www.npmjs.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Let's Encrypt](https://letsencrypt.org/)
 - [Docker](https://www.docker.com/)
@@ -372,6 +423,7 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 - [GitHub](https://github.com/)
 - [GitHub Actions](https://github.com/features/actions)
 - [Mailjet](https://www.mailjet.com/)
+- [Chocolatey](https://chocolatey.org/)
 
 Без этих инструментов, разработка данного проекта была бы **невозможна**.
 
@@ -402,6 +454,8 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [Python-url]: https://www.python.org/
 [Django-logo]: https://img.shields.io/badge/Django-%23092E20.svg?logo=django&logoColor=white&style=for-the-badge
 [Django-url]: https://www.djangoproject.com/
+[Poetry-logo]: https://custom-icon-badges.demolab.com/badge/Poetry-1F293A?logo=poetry&style=for-the-badge
+[Poetry-url]: https://python-poetry.org/
 [Docker-logo]: https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge
 [Docker-url]: https://www.docker.com/
 [Docker-Compose-url]: https://docs.docker.com/compose/
@@ -409,6 +463,14 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [Postgres-url]: https://www.postgresql.org/
 [Git-logo]: https://img.shields.io/badge/Git-F05032?logo=git&logoColor=fff&style=for-the-badge
 [Git-url]: https://git-scm.com/
+[Nginx-logo]: https://img.shields.io/badge/nginx-009639?logo=nginx&logoColor=fff&style=for-the-badge
+[Nginx-url]: https://nginx.org/
+[GitHubActions-logo]: https://img.shields.io/badge/GitHub_Actions-2088FF?logo=github-actions&logoColor=white&style=for-the-badge
+[GitHubActions-url]: https://github.com/features/actions
+[NodeJS-logo]: https://img.shields.io/badge/Node.js-6DA55F?logo=node.js&logoColor=white&style=for-the-badge
+[NodeJS-url]: https://nodejs.org/
+[Npm-logo]: https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=fff&style=for-the-badge
+[Npm-url]: https://www.npmjs.com/
 [Opera-logo]: https://img.shields.io/badge/Opera-FF1B2D?logo=Opera&logoColor=white&style=for-the-badge
 [Opera-url]: https://www.opera.com/
 [GoogleChrome-logo]: https://img.shields.io/badge/Google%20Chrome-4285F4?logo=GoogleChrome&logoColor=white&style=for-the-badge
@@ -417,8 +479,9 @@ Copyright © 2025 [aLeeTheY](https://github.com/aLeeTheY)
 [MicrosoftEdge-url]: https://www.microsoft.com/en-us/edge/
 [Firefox-logo]: https://img.shields.io/badge/Firefox-FF7139?logo=firefoxbrowser&logoColor=white&style=for-the-badge
 [Firefox-url]: https://www.firefox.com/
-[Yandex-logo]: https://img.shields.io/badge/Yandex%20Browser-fc3f1d?style=for-the-badge&logo=yandex&logoColor=white
+<!-- [Yandex-logo]: https://img.shields.io/badge/Yandex_Browser-D1300D?style=for-the-badge -->
+[Yandex-logo]: https://custom-icon-badges.demolab.com/badge/Yandex%20Browser-F03911?logo=yandex-browser&style=for-the-badge
 [Yandex-url]: https://browser.yandex.com/
-[VCS-url]: https://en.wikipedia.org/wiki/Version_control
+<!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
 [Mailjet-url]: https://www.mailjet.com/
 [website-preview]: project/preview/website_preview.gif
