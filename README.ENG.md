@@ -182,7 +182,7 @@ The project has been tested for correct rendering and script stability in the la
 > [!IMPORTANT]
 > This information applies to version **[2.0.4](https://github.com/aLeeTheY/PolimerBeton/releases/tag/2.0.4)**. At the time of verification, the project was rendered correctly in the latest stable versions of all [supported browsers](#supported-browsers).
 >
-> **Last verification date: February 13, 2026**
+> **Last verification date: March 1, 2026**
 
 ### Development Challenges
 
@@ -454,4 +454,4 @@ Without these tools, the development of this project would have been **impossibl
 <!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
 
 [Mailjet-url]: https://www.mailjet.com/
-[website-preview]: project/preview/website_preview.gif
+[website-preview]: project/preview/combined.gif

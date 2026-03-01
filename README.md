@@ -133,15 +133,6 @@
 
 </div>
 
-<!-- <div align="center">
-  <a href="https://polimerbeton-vrn.ru/">
-    <img src="project/preview/website_preview.gif"
-         alt="Превью сайта - PolimerBeton"
-         style="border: 1px solid #d1d9e0 !important;"
-         width="100%">
-  </a>
-</div> -->
-
 ### Используемые технологии
 
 Проект создан с использованием следующих инструментов и технологий:
@@ -213,7 +204,7 @@
 > [!IMPORTANT]
 > Информация актуальна для версии **[2.0.4](https://github.com/aLeeTheY/PolimerBeton/releases/tag/2.0.4)**. На момент проверки проект корректно отображался в последних стабильных версиях всех [указанных браузеров](#поддерживаемые-браузеры).
 >
-> **Дата последней проверки: 13 февраля 2026**
+> **Дата последней проверки: 1 марта 2026**
 
 ### Сложности при разработке
 
@@ -487,4 +478,4 @@ Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
 <!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
 
 [Mailjet-url]: https://www.mailjet.com/
-[website-preview]: project/preview/website_preview.gif
+[website-preview]: project/preview/combined.gif
