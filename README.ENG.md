@@ -125,7 +125,7 @@ The main goal of this project is to create a fast promotional landing page with 
 
 ### Preview
 
-Below you can see a **website preview** (_click the image to open the live demo_):
+Below you can see a **website preview** (_**Desktop + Mobile**, click the image to open the live demo_):
 
 <div align="center">
 
