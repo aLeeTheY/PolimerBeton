@@ -331,12 +331,14 @@ Log in using your superuser credentials. If a superuser has not yet been created
 - [x] **SMTP** notification service implementation
 - [x] Alternative notification service via **Mailjet** API
 - [x] Implementation of **personal data encryption and protection** mechanisms
+- [x] Implementation of a **Cookie Consent** management mechanism
+- [x] Integration of third-party analytics (**Google Analytics + Yandex Metrica**) in compliance with Cookie policies
 - [x] **Docker** containerization and deployment:
   - [x] Environment configuration (`.env.dev`, `.env.staging`, `.env.prod`)
   - [x] **Docker image optimization** (`Dockerfile` and `Dockerfile.prod`)
   - [x] Microservice orchestration (**Django**, **PostgreSQL**, **Let's Encrypt**, **Nginx**) via `docker-compose`
 - [x] **CI/CD** automation via **GitHub Actions**:
-  - [x] Automatic build and deployment on `main` branch updates
+  - [x] Automated build and deployment on updates to the `main` branch
 - [ ] Internationalization (i18n):
   - [ ] English language support
 
