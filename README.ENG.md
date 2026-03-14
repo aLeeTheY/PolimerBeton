@@ -592,4 +592,4 @@ Without these tools, the development of this project would have been **impossibl
 <!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
 
 [Mailjet-url]: https://www.mailjet.com/
-[website-preview]: project/preview/combined.gif
+[website-preview]: project/preview/preview.gif

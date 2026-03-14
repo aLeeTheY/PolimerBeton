@@ -616,4 +616,4 @@ Email: [aleethey@gmail.com](mailto:aleethey@gmail.com)
 <!-- [VCS-url]: https://en.wikipedia.org/wiki/Version_control -->
 
 [Mailjet-url]: https://www.mailjet.com/
-[website-preview]: project/preview/combined.gif
+[website-preview]: project/preview/preview.gif
