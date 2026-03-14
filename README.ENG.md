@@ -27,6 +27,9 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
+![GitHub Last Commit][last-commit-shield]
+![GitHub Repo Size][repo-size-shield]
+
 </div>
 
 <!-- PROJECT LOGO -->
@@ -35,7 +38,7 @@
   <h1 align="center">PolimerBeton</h1>
 
   <p align="center">
-    Multi-page responsive promotional website with a contact form and client database.
+    📬 Multi-page responsive promotional website with a contact form and client database.
     <br />
     <br />
     <!-- <a href="ZAPOLNIT">Дизайн (макет)</a>
@@ -58,12 +61,11 @@
     <li>
       <a href="#about-the-project">About the Project</a>
       <ul>
-        <li><a href="#key-features">Key Features</a></li>
         <li><a href="#preview">Preview</a></li>
+        <li><a href="#key-features">Key Features</a></li>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#project-structure">Project Structure</a></li>
         <li><a href="#supported-browsers">Supported Browsers</a></li>
-        <li><a href="#development-challenges">Development Challenges</a></li>
-        <li><a href="#key-skills">Key Skills</a></li>
       </ul>
     </li>
     <li>
@@ -85,6 +87,8 @@
         <li><a href="#admin-panel">Admin Panel</a></li>
       </ul>
     </li>
+    <li><a href="#development-challenges">Development Challenges</a></li>
+    <li><a href="#key-skills">Key Skills</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -97,6 +101,16 @@
 ## About the Project
 
 The main goal of this project is to create a fast promotional landing page with a contact form. The website allows clients to submit requests, while the owner instantly receives notifications about new orders.
+
+### Preview
+
+Below you can see a **website preview** (_**Desktop + Mobile**, click the image to open the live demo_):
+
+<div align="center">
+
+[![Website Preview][website-preview]](https://polimerbeton-vrn.ru/)
+
+</div>
 
 ### Key Features
 
@@ -122,16 +136,6 @@ The main goal of this project is to create a fast promotional landing page with 
 - **Static Optimization**: Use of `.webp` format and adaptive image loading depending on screen resolution.
 - **Backend**: **Django + Nginx** stack for stable and high-performance server operation.
 - **Business Logic**: Automatic order notifications via **SMTP** (optionally — [**Mailjet**][Mailjet-url]).
-
-### Preview
-
-Below you can see a **website preview** (_**Desktop + Mobile**, click the image to open the live demo_):
-
-<div align="center">
-
-[![Website Preview - PolimerBeton][website-preview]](https://polimerbeton-vrn.ru/)
-
-</div>
 
 ### Built With
 
@@ -169,6 +173,132 @@ The project was built using the following tools and technologies:
 - **CI/CD**:
   - [![GitHub Actions][GitHubActions-logo]][GitHubActions-url]
 
+### Project Structure
+
+Main directories and files:
+
+```text
+PolimerBeton/
+│
+├── .github/
+│   └── workflows/
+│       └── update_website_by_ssh.prod.yml      # GitHub CI/CD workflow: update website on hosting when pushing to `main` branch
+│
+├── env/                                        # .env file templates for different environments (dev, prod, staging)
+│   ├── .env.dev.template
+│   ├── .env.prod.db.template
+│   ├── .env.prod.proxy-companion.template
+│   ├── .env.prod.template
+│   ├── .env.staging.db.template
+│   ├── .env.staging.proxy-companion.template
+│   └── .env.staging.template
+│
+├── project/                                    # miscellaneous project files
+│   ├── database/                               # DB schema
+│   ├── design/                                 # design mockups
+│   └── preview/                                # repository preview files
+│
+├── src/
+│   ├── apps/
+│   │   └── MainApp/                            # core Django application
+│   │       │
+│   │       ├── migrations/                     # database migrations
+│   │       │
+│   │       ├── static/                         # source static files (to be compiled / collected)
+│   │       │   ├── favicons/
+│   │       │   ├── images/
+│   │       │   ├── scss/
+│   │       │   └── ts/
+│   │       │
+│   │       ├── templates/                      # page templates
+│   │       │   │
+│   │       │   ├── email/
+│   │       │   │   └── message_template.html   # email template
+│   │       │   │
+│   │       │   ├── MainApp/
+│   │       │   │   ├── error.html
+│   │       │   │   ├── index.html
+│   │       │   │   ├── privacy.html
+│   │       │   │   └── success.html
+│   │       │   │
+│   │       │   └── service/                    # files for search engines and bots
+│   │       │       └── robots.txt
+│   │       │
+│   │       ├── templatetags/                   # custom template tags
+│   │       │
+│   │       ├── __init__.py
+│   │       ├── admin.py                        # admin panel customization
+│   │       ├── apps.py
+│   │       ├── context_processors.py           # additional context processors for templates
+│   │       ├── fields.py                       # custom fields for models or forms
+│   │       ├── forms.py                        # form classes
+│   │       ├── models.py                       # database models
+│   │       ├── runners.py                      # one‑time scripts
+│   │       ├── sitemaps.py                     # sitemap configuration
+│   │       ├── tasks.py                        # background tasks
+│   │       ├── tests.py                        # unit tests
+│   │       ├── urls.py                         # URL routing for the app
+│   │       ├── utils.py                        # helper functions
+│   │       └── views.py                        # request handlers (views)
+│   │
+│   ├── config/                                 # Django configuration files
+│   │   │
+│   │   ├── settings/
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py                         # common Django settings
+│   │   │   ├── dev.py                          # development / pre‑production settings
+│   │   │   └── prod.py                         # production settings
+│   │   │
+│   │   ├── __init__.py
+│   │   ├── asgi.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   │
+│   ├── locales/                                # internationalization files
+│   ├── scripts/                                # entrypoint and utility scripts
+│   │
+│   ├── .dockerignore
+│   ├── Dockerfile                              # Docker image build for development
+│   ├── Dockerfile.prod                         # Docker image build for production
+│   ├── manage.py                               # entry point for Django commands
+│   ├── package-lock.json                       # lockfile for Node.js dependencies
+│   ├── package.json                            # dependencies and scripts for frontend
+│   ├── poetry.lock                             # lockfile for Python dependencies
+│   ├── pyproject.toml                          # project description and Python dependencies
+│   └── tsconfig.json                           # TypeScript configuration
+│
+├── web/                                        # web server configuration files
+│   │
+│   ├── apache/                                 # Apache configs (if needed for compatibility)
+│   │   └── .htaccess
+│   │
+│   ├── nginx/                                  # main nginx configuration
+│   │   ├── Dockerfile
+│   │   └── nginx.conf
+│   │
+│   ├── nginx-proxy/                            # nginx‑proxy (automatic SSL / reverse proxy)
+│   │   │
+│   │   ├── vhost.d/
+│   │   │   └── default
+│   │   │
+│   │   ├── .dockerignore
+│   │   ├── custom.conf
+│   │   ├── Dockerfile
+│   │   └── Dockerfile.prod
+│   │
+│   └── templates/                              # templates for docker‑gen (used by nginx‑proxy)
+│       └── docker-gen/
+│
+├── .gitignore
+├── docker-compose.prod.selinux.yml
+├── docker-compose.prod.yml                     # production deployment
+├── docker-compose.staging.yml                  # staging deployment
+├── docker-compose.yml                          # development deployment
+├── LICENSE
+├── README.ENG.md
+└── README.md
+```
+
 ### Supported Browsers
 
 The project has been tested for correct rendering and script stability in the latest stable versions of the following browsers:
@@ -183,24 +313,6 @@ The project has been tested for correct rendering and script stability in the la
 > This information applies to version **[2.0.4](https://github.com/aLeeTheY/PolimerBeton/releases/tag/2.0.4)**. At the time of verification, the project was rendered correctly in the latest stable versions of all [supported browsers](#supported-browsers).
 >
 > **Last verification date: March 1, 2026**
-
-### Development Challenges
-
-- **Microservice Orchestration**: Designing fault-tolerant interaction between Django, PostgreSQL, Nginx, and Let's Encrypt containers within a unified isolated Docker network.
-- **Django Deployment Automation**: A CI/CD script in GitHub Actions updates the `main` branch and rebuilds the Django container without affecting other services (_automatic execution can be enabled if needed_).
-- **SEO and Accessibility**: Conducting audits and optimizing the HTML structure to achieve 100/100 scores in Google Lighthouse for Accessibility and SEO.
-- **Flexible Notification Delivery**: Primary channel — SMTP; if SMTP ports are blocked, notifications can be sent via the Mailjet API over HTTPS.
-
-### Key Skills
-
-- **UI/UX Design**: Designing user interfaces in Figma, preparing layouts for development, creating adaptive graphical assets.
-- **Fullstack Development**: Designing relational databases in PostgreSQL, implementing backend logic in Django, building a strictly typed frontend using Sass, Bootstrap, and TypeScript.
-- **DevOps & Infrastructure**: Containerizing applications with Docker, managing environment configurations (development/staging/production), configuring container networking.
-- **System Administration**: Deploying applications on Linux servers, configuring Nginx or Apache as a reverse proxy, implementing SSL certificates via Let's Encrypt for secure communication.
-- **Performance Optimization**: Minifying HTML, CSS, and JS using `django-htmlmin` and `django-compressor`, implementing modern image formats to reduce loading and rendering time (LCP/FCP).
-- **CI/CD**: Setting up automated deployment with GitHub Actions, managing remote servers via SSH.
-- **Documentation and GitHub**: Writing documentation and README.md files using Markdown, maintaining version control with Git.
-- **Dependency Management & Build Process**: Using [Npm][Npm-url] and [Poetry][Poetry-url] to install, update, and lock dependency versions via lock files, ensuring reproducible development environments.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -314,6 +426,28 @@ Log in using your superuser credentials. If a superuser has not yet been created
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Development Challenges
+
+- **Microservice Orchestration**: Designing fault-tolerant interaction between Django, PostgreSQL, Nginx, and Let's Encrypt containers within a unified isolated Docker network.
+- **Django Deployment Automation**: A CI/CD script in GitHub Actions updates the `main` branch and rebuilds the Django container without affecting other services (_automatic execution can be enabled if needed_).
+- **SEO and Accessibility**: Conducting audits and optimizing the HTML structure to achieve 100/100 scores in Google Lighthouse for Accessibility and SEO.
+- **Flexible Notification Delivery**: Primary channel — SMTP; if SMTP ports are blocked, notifications can be sent via the Mailjet API over HTTPS.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Key Skills
+
+- **UI/UX Design**: Designing user interfaces in Figma, preparing layouts for development, creating adaptive graphical assets.
+- **Fullstack Development**: Designing relational databases in PostgreSQL, implementing backend logic in Django, building a strictly typed frontend using Sass, Bootstrap, and TypeScript.
+- **DevOps & Infrastructure**: Containerizing applications with Docker, managing environment configurations (development/staging/production), configuring container networking.
+- **System Administration**: Deploying applications on Linux servers, configuring Nginx or Apache as a reverse proxy, implementing SSL certificates via Let's Encrypt for secure communication.
+- **Performance Optimization**: Minifying HTML, CSS, and JS using `django-htmlmin` and `django-compressor`, implementing modern image formats to reduce loading and rendering time (LCP/FCP).
+- **CI/CD**: Setting up automated deployment with GitHub Actions, managing remote servers via SSH.
+- **Documentation and GitHub**: Writing documentation and README.md files using Markdown, maintaining version control with Git.
+- **Dependency Management & Build Process**: Using [Npm][Npm-url] and [Poetry][Poetry-url] to install, update, and lock dependency versions via lock files, ensuring reproducible development environments.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- ROADMAP -->
 
 ## Roadmap
@@ -410,6 +544,8 @@ Without these tools, the development of this project would have been **impossibl
 [issues-url]: https://github.com/aLeeTheY/PolimerBeton/issues
 [license-shield]: https://img.shields.io/github/license/aLeeTheY/PolimerBeton.svg?style=for-the-badge
 [license-url]: https://github.com/aLeeTheY/PolimerBeton/blob/main/LICENSE
+[last-commit-shield]: https://img.shields.io/github/last-commit/aLeeTheY/PolimerBeton?style=for-the-badge
+[repo-size-shield]: https://img.shields.io/github/repo-size/aLeeTheY/PolimerBeton?style=for-the-badge
 [HTML-logo]: https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white&style=for-the-badge
 [HTML-url]: https://html.spec.whatwg.org/
 [Sass-logo]: https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=for-the-badge
