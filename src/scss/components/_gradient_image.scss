@@ -200,7 +200,7 @@
         }
 
         @include bs.media-breakpoint-down(sm) {
-            min-width: 200px;
+            min-width: mixin.fluid-with-range(180px, 250px, xxs, sm);
 
             #My-Legal-Doc__1 &,
             #My-Legal-Doc__3 &,
@@ -222,10 +222,6 @@
             #My-Legal-Doc__6 & {
                 --start-angle: 0deg;
             }
-        }
-
-        @include bs.media-breakpoint-down(xs) {
-            min-width: 180px;
         }
     }
 

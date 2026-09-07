@@ -91,11 +91,11 @@
     --color__global__primary--active: #{color.scale(#4a148c, $lightness: -32%)};
     --color__global__primary--disabled: #{color.mix(#4a148c, #fff, $weight: 38%, $method: rgb)};
 
-    --color__global__error: #b00020;
-    // --color__global__error--focus: #{color.mix(#fff, #d50020, $weight: 3.5%, $method: rgb)};
-    --color__global__error--hover: #{color.scale(#b00020, $lightness: -8%)};
-    --color__global__error--active: #{color.scale(#b00020, $lightness: -16%)};
-    --color__global__error--disabled: #{color.mix(#fff, #b00020, $weight: 38%, $method: rgb)};
+    --color__global__error: #780000;
+    --color__global__error--focus: #e65100;
+    --color__global__error--hover: #{color.scale(#780000, $lightness: -8%)};
+    --color__global__error--active: #{color.scale(#780000, $lightness: -16%)};
+    --color__global__error--disabled: #{color.mix(#fff, #780000, $weight: 38%, $method: rgb)};
 
     --color__global__shadow: #{color.change(#000, $alpha: 38%)};
     --color__global__fade: #000;
@@ -129,14 +129,14 @@
     --color__global__text--primary--active: #{color.scale(#4a148c, $lightness: -32%)};
     --color__global__text--primary--disabled: #{color.change(#4a148c, $alpha: 38%)};
 
-    --color__global__text--error--solid: #b00020;
-    --color__global__text--error: #{color.change(#b00020, $alpha: 87%)};
-    --color__global__text--error--hint: #{color.change(#b00020, $alpha: 60%)};
+    --color__global__text--error--solid: #780000;
+    --color__global__text--error: #{color.change(#780000, $alpha: 87%)};
+    --color__global__text--error--hint: #{color.change(#780000, $alpha: 60%)};
 
     // --color__global__text--error--focus: #{color.change(#d50020, $alpha: 100%)};
-    --color__global__text--error--hover: #{color.scale(#b00020, $lightness: -16%)};
-    --color__global__text--error--active: #{color.scale(#b00020, $lightness: -32%)};
-    --color__global__text--error--disabled: #{color.change(#b00020, $alpha: 38%)};
+    --color__global__text--error--hover: #{color.scale(#780000, $lightness: -16%)};
+    --color__global__text--error--active: #{color.scale(#780000, $lightness: -32%)};
+    --color__global__text--error--disabled: #{color.change(#780000, $alpha: 38%)};
 
     // * --- PAGE DEFAULT COLORS (MAIN COLORS)
     // * -------------------------------------
@@ -150,15 +150,15 @@
     // * --- HEADER SECTION
     // * ------------------
     --color__header__navigation-bar-background: #fff;
-    --color__header__navigation-menu-background: #{color.change(#fff, $alpha: 0.777)};
+    --color__header__navigation-menu-background: #{color.change(#fff, $alpha: 0.7)};
 
     // * --- HERO SECTION
     // * ----------------
-    --color__hero__background-image-overlay: #{color.change(#fff, $alpha: 0.16)};
+    --color__hero__background-image-overlay: #{color.change(#000, $alpha: 0.223)};
 
-    --color__hero__slogan-text--gradient-step-1: #d50000;
-    --color__hero__slogan-text--gradient-step-2: #ffd600;
-    --color__hero__slogan-text--gradient-step-3: #00c853;
+    --color__hero__slogan-text--gradient-step-1: #e30000;
+    --color__hero__slogan-text--gradient-step-2: #e3e300;
+    --color__hero__slogan-text--gradient-step-3: #00e300;
 
     // * --- USAGE SECTION
     // * -----------------
@@ -178,20 +178,20 @@
 
     // * --- FOOTER SECTION
     // * ------------------
-    --color__footer__background--gradient-step-1: #{color.change(#ffd180, $alpha: 100%)};
-    --color__footer__background--gradient-step-2: #{color.change(#ea80fc, $alpha: 100%)};
+    --color__footer__background--gradient-step-1: #{color.change(#ea80fc, $alpha: 100%)};
+    --color__footer__background--gradient-step-2: #{color.change(#ffd180, $alpha: 100%)};
 
     --color__decorative-element__background: #{color.change(#fff, $alpha: 16%)};
 
     // * --- COOKIE CONSENT BANNER
     // * -------------------------
-    --color__cookie-consent-banner__background: #{color.change(#fff, $alpha: 0.777)};
+    --color__cookie-consent-banner__background: #{color.change(#fff, $alpha: 0.7)};
 
     // * --- CARD IMG
     // * ------------
-    --color__card-img__background--gradient-step-1: #00c853;
-    --color__card-img__background--gradient-step-2: #ffd600;
-    --color__card-img__background--gradient-step-3: #d50000;
+    --color__card-img__background--gradient-step-1: #00e300;
+    --color__card-img__background--gradient-step-2: #e3e300;
+    --color__card-img__background--gradient-step-3: #e30000;
 
     // * --- BALLS GROUP
     // * ---------------
@@ -203,13 +203,6 @@
 
     --color__decorative-element__background--gradient-step-1: #{color.change(#ea80fc, $alpha: 87%)};
     --color__decorative-element__background--gradient-step-2: #{color.change(#ffd180, $alpha: 87%)};
-
-    // @include bs.media-breakpoint-down(md) {
-    //     // * --- FOOTER SECTION
-    //     // * ------------------
-    //     --color__footer__background--gradient-step-1: #{color.change(#ffd180, $alpha: 100%)};
-    //     --color__footer__background--gradient-step-2: #{color.change(#ea80fc, $alpha: 100%)};
-    // }
 }
 
 @mixin dark-theme-colors {
@@ -226,12 +219,12 @@
             $method: rgb
         )};
 
-    --color__global__error: #cf6679;
-    // --color__global__error--focus: #{color.mix(#000, #cf6679, $weight: 3.5%, $method: rgb)};
-    --color__global__error--hover: #{color.scale(#cf6679, $lightness: 8%)};
-    --color__global__error--active: #{color.scale(#cf6679, $lightness: 16%)};
+    --color__global__error: #ffa1a1;
+    --color__global__error--focus: #b39ddb;
+    --color__global__error--hover: #{color.scale(#ffa1a1, $lightness: 16%)};
+    --color__global__error--active: #{color.scale(#ffa1a1, $lightness: 32%)};
     --color__global__error--disabled: #{color.mix(
-            #cf6679,
+            #ffa1a1,
             color.mix(#bf360c, #121212, $weight: 8%, $method: rgb),
             $weight: 38%,
             $method: rgb
@@ -269,14 +262,14 @@
     --color__global__text--primary--active: #{color.scale(#ffab91, $lightness: 32%)};
     --color__global__text--primary--disabled: #{color.change(#ffab91, $alpha: 38%)};
 
-    --color__global__text--error--solid: #cf6679;
-    --color__global__text--error: #{color.change(#cf6679, $alpha: 87%)};
-    --color__global__text--error--hint: #{color.change(#cf6679, $alpha: 60%)};
+    --color__global__text--error--solid: #ffa1a1;
+    --color__global__text--error: #{color.change(#ffa1a1, $alpha: 87%)};
+    --color__global__text--error--hint: #{color.change(#ffa1a1, $alpha: 60%)};
 
     // --color__global__text--error--focus: #{color.change(#cf6679, $alpha: 100%)};
-    --color__global__text--error--hover: #{color.scale(#cf6679, $lightness: 16%)};
-    --color__global__text--error--active: #{color.scale(#cf6679, $lightness: 32%)};
-    --color__global__text--error--disabled: #{color.change(#cf6679, $alpha: 38%)};
+    --color__global__text--error--hover: #{color.scale(#ffa1a1, $lightness: 16%)};
+    --color__global__text--error--active: #{color.scale(#ffa1a1, $lightness: 32%)};
+    --color__global__text--error--disabled: #{color.change(#ffa1a1, $alpha: 38%)};
 
     // * --- PAGE DEFAULT COLORS (MAIN COLORS)
     // * -------------------------------------
@@ -296,7 +289,7 @@
         )};
     --color__header__navigation-menu-background: #{color.change(
             color.mix(#bf360c, #121212, $weight: 8%, $method: rgb),
-            $alpha: 0.777
+            $alpha: 0.7
         )};
 
     // * --- HERO SECTION
@@ -306,9 +299,9 @@
             $alpha: 0.777
         )};
 
-    --color__hero__slogan-text--gradient-step-1: #69f0ae;
-    --color__hero__slogan-text--gradient-step-2: #ffff00;
-    --color__hero__slogan-text--gradient-step-3: #ff5252;
+    --color__hero__slogan-text--gradient-step-1: #ff5151;
+    --color__hero__slogan-text--gradient-step-2: #ffff51;
+    --color__hero__slogan-text--gradient-step-3: #51ff51;
 
     // * --- USAGE SECTION
     // * -----------------
@@ -341,8 +334,8 @@
 
     // * --- FOOTER SECTION
     // * ------------------
-    --color__footer__background--gradient-step-2: #{color.change(#dd2c00, $alpha: 87%)};
     --color__footer__background--gradient-step-1: #{color.change(#6200ea, $alpha: 87%)};
+    --color__footer__background--gradient-step-2: #{color.change(#dd2c00, $alpha: 87%)};
 
     --color__decorative-element__background: #{color.change(#000, $alpha: 8%)};
 
@@ -350,14 +343,14 @@
     // * -------------------------
     --color__cookie-consent-banner__background: #{color.change(
             color.mix(#bf360c, #121212, $weight: 8%, $method: rgb),
-            $alpha: 0.777
+            $alpha: 0.7
         )};
 
     // * --- CARD IMG
     // * ------------
-    --color__card-img__background--gradient-step-1: #69f0ae;
-    --color__card-img__background--gradient-step-2: #ffff00;
-    --color__card-img__background--gradient-step-3: #ff5252;
+    --color__card-img__background--gradient-step-1: #51ff51;
+    --color__card-img__background--gradient-step-2: #ffff51;
+    --color__card-img__background--gradient-step-3: #ff5151;
 
     // * --- BALLS GROUP
     // * ---------------
@@ -377,13 +370,6 @@
 
     --color__decorative-element__background--gradient-step-2: #{color.change(#dd2c00, $alpha: 60%)};
     // --color__decorative-element__background--gradient-step-2: transparent;
-
-    // @include bs.media-breakpoint-down(md) {
-    //     // * --- FOOTER SECTION
-    //     // * ------------------
-    //     --color__footer__background--gradient-step-1: #{color.change(#dd2c00, $alpha: 100%)};
-    //     --color__footer__background--gradient-step-2: #{color.change(#6200ea, $alpha: 100%)};
-    // }
 }
 
 // * --- ROOT COMPONENT

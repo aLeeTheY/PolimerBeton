@@ -199,8 +199,8 @@
             }
 
             @include bs.media-breakpoint-down(lg) {
-                --animation__translate-y__start: -50%;
-                --animation__translate-y__end: -47.5%;
+                --animation__translate-y__start: -47.5%;
+                --animation__translate-y__end: -50%;
             }
 
             @include bs.media-breakpoint-down(md) {
