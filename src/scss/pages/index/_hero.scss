@@ -107,7 +107,7 @@
         object-position: 50% 50%;
 
         @include bs.media-breakpoint-down(xxl) {
-            object-position: 55% 50%;
+            object-position: 47.5% 50%;
         }
 
         @include bs.media-breakpoint-down(xl) {
@@ -119,11 +119,15 @@
         }
 
         @include bs.media-breakpoint-down(md) {
-            object-position: 18% 50%;
+            object-position: 20% 50%;
         }
 
         @include bs.media-breakpoint-down(sm) {
-            object-position: 20% 50%;
+            object-position: 22.5% 50%;
+        }
+
+        @include bs.media-breakpoint-down(xs) {
+            object-position: 25% 50%;
         }
     }
 
