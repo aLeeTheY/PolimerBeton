@@ -238,7 +238,9 @@
     }
 
     &__checkbox-field {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto min-content;
+        place-items: center center;
 
         align-items: center;
         justify-content: center;
@@ -313,51 +315,37 @@
     &__checkbox-label {
         @extend %text__form__checkbox-label;
 
-        flex: 0 1 0;
-        min-width: 36.4em;
+        // margin-left: var(--typography__global__small__margin-bottom);
+        margin-left: calc(0.5 * var(--layout__global__spacing));
 
         cursor: pointer;
+
+        & > small {
+            text-wrap-mode: nowrap;
+
+            @include bs.media-breakpoint-down(xxl) {
+                text-wrap-mode: wrap;
+            }
+
+            @include bs.media-breakpoint-down(md) {
+                text-wrap-mode: nowrap;
+            }
+
+            @include bs.media-breakpoint-down(sm) {
+                text-wrap-mode: wrap;
+            }
+        }
 
         .my-custom-feedback-form__checkbox-field:has(:disabled) &,
         .my-custom-feedback-form__checkbox-field:has([disabled]) & {
             color: var(--color__global__text--disabled);
             cursor: not-allowed;
         }
-
-        @include bs.media-breakpoint-down(xxl) {
-            min-width: 20em;
-        }
-
-        @include bs.media-breakpoint-down(md) {
-            min-width: 36.4em;
-        }
-
-        @include bs.media-breakpoint-down(sm) {
-            min-width: 20em;
-        }
-
-        @include bs.media-breakpoint-down(xs) {
-            flex: 1 1 0;
-
-            max-width: 20em;
-            min-width: 0;
-        }
     }
 
     &__checkbox-link {
         @extend %text__form__checkbox-label__link;
-
-        // color: var(--color__global__text--primary);
-        // text-decoration: none;
-
-        // &:focus {
-        //     color: var(--color__global__text--primary--focus);
-        //     // text-decoration: none;
-        // }
-
-        // @include mixin.focus {
-        //     // empty
-        // }
+        text-wrap-mode: nowrap;
 
         @include mixin.hover {
             color: var(--color__global__text--primary--hover);
