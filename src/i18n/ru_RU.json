@@ -1,5 +1,6 @@
 {
     "common": {
+        "website_domain": "polimerbeton-vrn.ru",
         "href": {
             "phone": "tel:+79202261666",
             "email": "mailto:Polimerbeton-vrn@yandex.ru",
@@ -64,7 +65,6 @@
     "footer": {
         "legal": {
             "a11y__aria_label": "Правовая информация и настройки приватности",
-            "domain": "polimerbeton-vrn.ru",
             "cookie_settings": "Настройки файлов Cookie",
             "privacy_policy": "Политика конфиденциальности"
         },
