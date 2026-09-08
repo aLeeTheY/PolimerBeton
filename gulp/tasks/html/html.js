@@ -134,7 +134,7 @@ function createHtmlStream({
             )
 
             // * заменяем пути на корректные для каждого ресурса
-            .pipe(gulpReplace(/@meta\//g, pathPrefix))
+            .pipe(gulpReplace(/\/?@meta\/(?:[^\\/\s"']+\/)*([^\\/\s"']+)/g, `${pathPrefix}$1`))
             .pipe(gulpReplace(/@(scss|css)\//g, `${pathPrefix}css/`))
             .pipe(gulpReplace(/@(ts|js)\//g, `${pathPrefix}js/`))
             .pipe(gulpReplace(/@audio\//g, `${pathPrefix}assets/audio/`))

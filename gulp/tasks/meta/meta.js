@@ -13,15 +13,20 @@ import {
 // * --- PROCESSING WEBMANIFEST
 // * --------------------------
 function metaWebManifest() {
-    return gulp
-        .src(path.src.meta.favicon.webManifest)
-        .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.META.FAVICON.WEB_MANIFEST))
-        .pipe(gulpReplace(/\/?@meta\//g, env.assetPrefix))
-        .pipe(gulp.dest(path.build.meta))
-        .on('end', () => {
-            // * update dev server
-            browserSync.reload()
-        })
+    return (
+        gulp
+            .src(path.src.meta.favicon.webManifest)
+            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.META.FAVICON.WEB_MANIFEST))
+
+            // .pipe(gulpReplace(/\/?@meta\//g, env.assetPrefix))
+            .pipe(gulpReplace(/\/?@meta\/(?:[^\\/\s"']+\/)*([^\\/\s"']+)/g, `${env.assetPrefix}$1`))
+
+            .pipe(gulp.dest(path.build.meta))
+            .on('end', () => {
+                // * update dev server
+                browserSync.reload()
+            })
+    )
 }
 
 // * --- FAVICON COPY
