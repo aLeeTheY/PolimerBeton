@@ -25,7 +25,9 @@
         padding: 0.666em 1.333em;
 
         border: 0;
-        border-radius: 1.2em;
+
+        // border-radius: 1.2em;
+        border-radius: var(--layout__global__border-radius__value);
 
         &::before {
             @extend %text__paragraph--usage__before;

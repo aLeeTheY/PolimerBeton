@@ -37,7 +37,7 @@
         inset: 0;
 
         background: transparent;
-        border-radius: 37%;
+        border-radius: calc(var(--layout__global__border-radius__value) / 1.333);
 
         @include mixin.focus-styles;
 
@@ -56,7 +56,7 @@
         inset: 0;
 
         background-color: var(--color__global__primary);
-        border-radius: 37%;
+        border-radius: calc(var(--layout__global__border-radius__value) / 1.333);
 
         z-index: -2;
 
@@ -79,8 +79,8 @@
         &::after {
             border-radius: 0;
 
-            --squircle-smooth: 1;
-            --squircle-radius: 37%;
+            --squircle-smooth: var(--layout__global__squircle-smooth__value);
+            --squircle-radius: var(--layout__global__border-radius__value);
 
             mask-image: paint(squircle);
         }

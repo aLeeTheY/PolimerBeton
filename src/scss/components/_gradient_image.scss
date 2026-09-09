@@ -83,7 +83,9 @@
         object-fit: cover;
 
         border: 0.2em solid transparent;
-        border-radius: 1.2em;
+
+        // border-radius: 1.2em;
+        border-radius: var(--layout__global__border-radius__value);
 
         box-shadow: 5px 5px 10px 0 var(--color__global__shadow);
 

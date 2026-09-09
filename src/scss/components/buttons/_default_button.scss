@@ -39,7 +39,7 @@
         inset: 0;
 
         background: transparent;
-        border-radius: var(--layout__button__radius-value);
+        border-radius: var(--layout__global__border-radius__value);
 
         @include mixin.focus-styles;
 
@@ -58,7 +58,7 @@
         inset: 0;
 
         background-color: var(--color__global__primary);
-        border-radius: var(--layout__button__radius-value);
+        border-radius: var(--layout__global__border-radius__value);
 
         z-index: -2;
 
@@ -81,8 +81,8 @@
         &::after {
             border-radius: 0;
 
-            --squircle-smooth: var(--layout__button__squircle-smooth);
-            --squircle-radius: var(--layout__button__radius-value);
+            --squircle-smooth: var(--layout__global__squircle-smooth__value);
+            --squircle-radius: var(--layout__global__border-radius__value);
 
             mask-image: paint(squircle);
         }
@@ -136,7 +136,7 @@
 
     // &--cookie-consent-banner {
     //     .houdini-squircle-ready & {
-    //         border-radius: calc(0.5 * var(--layout__button__radius-value));
+    //         border-radius: calc(0.5 * var(--layout__global__border-radius__value));
     //         mask-image: none;
     //     }
     // }

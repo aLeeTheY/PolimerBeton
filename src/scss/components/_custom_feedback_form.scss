@@ -7,8 +7,8 @@
 
 .my-custom-feedback-form {
     --my-feedback-form__field__outer-padding: 3px;
-    --my-feedback-form__field__squircle-smooth: var(--layout__button__squircle-smooth);
-    --my-feedback-form__field__radius-value: var(--layout__button__radius-value);
+    --my-feedback-form__field__squircle-smooth: var(--layout__global__squircle-smooth__value);
+    --my-feedback-form__field__radius-value: var(--layout__global__border-radius__value);
 
     --my-feedback-form__field__outer-element__radius: var(--my-feedback-form__field__radius-value);
     --my-feedback-form__field__outer-element__radius--squircle: var(
