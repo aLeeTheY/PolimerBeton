@@ -16,7 +16,10 @@ export const NOTIFICATION_HANDLER_TITLES = {
         },
         TEXT: 'META -> TEXT',
     },
-    STYLES: 'STYLES',
+    STYLES: {
+        DEFAULT: 'STYLES',
+        OPTIMIZE: 'OPTIMIZE_STYLES',
+    },
     SCRIPTS: 'SCRIPTS',
     AUDIO: 'AUDIO',
     ICONS: 'ICONS',

@@ -1,8 +1,8 @@
 import gulp from 'gulp'
-import through2 from 'through2'
+// import through2 from 'through2'
 // import gulpIf from 'gulp-if'
 // import gulpRev from 'gulp-rev'
-import gulpRename from 'gulp-rename'
+// import gulpRename from 'gulp-rename'
 import browserSync from 'browser-sync'
 
 import { env } from '../../config/env.js'
@@ -35,6 +35,9 @@ export function scripts() {
                     bundle: true,
                     format: 'esm',
                     platform: 'browser',
+                    splitting: true,
+                    chunkNames: 'chunks/[name]-[hash]',
+                    outExtension: { '.js': '.min.js' },
                     entryPoints: path.src.getScripts(env.jsMode),
                     // ! файл не один
                     // outfile: 'main.min.js',
@@ -54,8 +57,8 @@ export function scripts() {
             )
             // // * добавляем к файлу ревизию для инвалидации кэша
             // .pipe(gulpIf(env.buildMode.isStaging || env.buildMode.isProd, gulpRev()))
-            // * добавляем к имени суффикс .min
-            .pipe(gulpRename({ suffix: '.min' }))
+            // // * добавляем к имени суффикс .min
+            // .pipe(gulpRename({ suffix: '.min' }))
             // * кладем результат в папку сборки
             // ! .pipe(
             // !     gulp.dest(path.build.scripts, {

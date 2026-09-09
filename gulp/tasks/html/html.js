@@ -130,6 +130,15 @@ function createHtmlStream({
                     setLazyLoading: false,
                     // ? добавлять decoding="async"
                     setAsyncDecoding: true,
+
+                    breakpoints: [
+                        {
+                            media: 768,
+                            suffix: '-mobile',
+                            baseWidth: 375,
+                            densities: [1, 2],
+                        },
+                    ],
                 }),
             )
 

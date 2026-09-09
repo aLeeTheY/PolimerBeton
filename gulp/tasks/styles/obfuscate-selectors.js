@@ -3,7 +3,7 @@
 // ! ---------------------------------------------------------------------------------
 
 import gulp from 'gulp'
-import through2 from 'through2'
+// import through2 from 'through2'
 import nodePath from 'node:path'
 import postcss from 'gulp-postcss'
 import obfuscator from 'postcss-obfuscator'

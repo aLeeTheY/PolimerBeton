@@ -8,7 +8,7 @@ import { clean } from './clean.js'
 import { html } from '../html/html.js'
 import { meta } from '../meta/meta.js'
 
-import { styles } from '../styles/styles.js'
+import { styles, optimizeStyles } from '../styles/styles.js'
 import { criticalCss } from '../styles/critical-css.js'
 import { obfuscateSelectors } from '../styles/obfuscate-selectors.js'
 
@@ -30,7 +30,10 @@ import { env } from '../../config/env.js'
 // * ---------------
 const assets = gulp.parallel(audio, fonts, icons, images, videos)
 // const assets = gulp.parallel(audio, fonts, videos)
+
 const mainTasks = gulp.series(gulp.parallel(meta, styles, scripts, assets, libs, misc), html)
+// const mainTasks = gulp.series(gulp.parallel(meta, libs, scripts, assets, misc), styles, html)
+
 const devTools = gulp.parallel(watch, server)
 
 // * --- EXPORT GULP MAIN TASKS PIPELINES
@@ -39,6 +42,11 @@ export const dev = gulp.series(clean, mainTasks, devTools)
 export const prod = gulp.series(
     clean,
     mainTasks,
+
+    // ! --- между mainTasks и criticalCss !!!
+    optimizeStyles,
+    // ! -------------------------------------
+
     criticalCss,
     revise,
     // * obfuscation

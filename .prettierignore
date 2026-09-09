@@ -72,7 +72,7 @@
 # **/vendors/
 
 **/out/
-**/dist/
+# **/dist/
 **/build/
 
 **/archive/

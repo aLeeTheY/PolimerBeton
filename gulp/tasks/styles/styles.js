@@ -39,7 +39,7 @@ export function styles() {
                 sourcemaps: env.buildMode.isDev || env.buildMode.isStaging,
             })
             // * подключаем plumber, чтобы gulp не падал при ошибке
-            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.STYLES))
+            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.STYLES.DEFAULT))
             // * делаем sourcemaps в режимах dev и staging
             // .pipe(gulpIf(isDev || isStaging, sourcemaps.init()))
             // .pipe(
@@ -101,8 +101,8 @@ export function styles() {
                     mode: 'all',
                 }),
             )
-            // * далее обрабатываем полученный css с помощью postcss (dev mode by default)
-            .pipe(postcss(null, { config: { ctx: { isMobileFirst: env.isMobileFirst } } }))
+            // // * далее обрабатываем полученный css с помощью postcss (dev mode by default)
+            // .pipe(postcss(null, { config: { ctx: { isMobileFirst: env.isMobileFirst } } }))
             // * добавляем webp вариант к картинкам jpg,jpeg,png в css файле
             // ? на замену используется postcss/webp-in-css
             // .pipe(
@@ -145,6 +145,20 @@ export function styles() {
                 // * update dev server
                 browserSync.reload()
             })
+    )
+}
+
+export function optimizeStyles() {
+    return (
+        gulp
+            .src(`${path.build.styles}**/*.min.css`)
+            // * подключаем plumber, чтобы gulp не падал при ошибке
+            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.STYLES.OPTIMIZE))
+            // * обрабатываем полученный css с помощью postcss (dev mode by default)
+            .pipe(postcss(null, { config: { ctx: { isMobileFirst: env.isMobileFirst } } }))
+            // * перезаписываем существующий *.min.css файл
+            .pipe(gulp.dest(path.build.styles))
+            .on('end', () => browserSync.reload())
     )
 }
 

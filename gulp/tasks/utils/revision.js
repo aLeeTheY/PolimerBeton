@@ -28,7 +28,13 @@ function revision() {
             // * берем готовые собранные ассеты
             // ! НЕ БЕРЕМ favicon.ico, robots.txt и sitemap.xml
             .src(
-                `${path.build.base}/**/*.{css,js,woff,woff2,ttf,svg,avif,webp,png,jpeg,jpg,webm,mp4,mp3,webmanifest}`,
+                [
+                    `${path.build.base}/**/*.{css,js,woff,woff2,ttf,svg,avif,webp,png,jpeg,jpg,webm,mp4,mp3,webmanifest}`,
+
+                    // ! не создавать ревизии для JS библиотек и JS-чанков !!!
+                    `!${path.build.libs}**/*`,
+                    `!${path.build.scripts}chunks/**/*`,
+                ],
                 {
                     base: path.build.base,
                     encoding: false,

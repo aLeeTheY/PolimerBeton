@@ -22,15 +22,16 @@ import { assetFamilyExists } from '../../../helpers/asset-exists.js'
 import sharp from 'sharp'
 // import sharpOptimizeImages from 'gulp-sharp-optimize-images'
 
-// * --- GOOGLE RESPONSIVE BREAKPOINTS (WIDTHS)
-// * -----------------------------------------
-const BREAKPOINTS = {
-    original: null, // Флаг для обработки оригинального размера
-    // desktop: 1440,
-    // laptop: 1024,
-    // tablet: 768,
-    // mobile: 320,
-}
+// ! --- CONFIGURATION (MUST MATCH WITH HTML TRANSFORMER!)
+// ! -----------------------------------------------------
+const IMAGE_CONFIG = [
+    {
+        suffix: '-mobile',
+        baseWidth: 375,
+        densities: [1, 2], // Сгенерирует: 768w, 1536w
+    },
+    // Десктоп / Натив (без суффикса) сгенерируется автоматически ниже
+]
 
 // * --- PROCESS AND OPTIMIZE WITH SHARP DIRECTLY
 // * --------------------------------------------
@@ -69,6 +70,7 @@ function processAndOptimizeImages() {
             }
 
             try {
+                // Если исходник уже обрабатывался — пропускаем
                 if (assetFamilyExists(outSubDir, rawBaseName)) {
                     skipped++
                     if (env.isVerbose) {
@@ -85,28 +87,64 @@ function processAndOptimizeImages() {
                 const metadata = await sharp(file.contents).metadata()
                 const originalWidth = metadata.width
 
-                for (const [sizeName, width] of Object.entries(BREAKPOINTS)) {
-                    if (width && originalWidth && originalWidth <= width) {
-                        continue
+                // * 1. СОБИРАЕМ СПИСОК ЗАДАЧ (КАКИЕ РАЗМЕРЫ РЕЗАТЬ)
+                const renderTasks = []
+
+                // * Задача А: Оригинальная (нативная) картинка без суффикса
+                renderTasks.push({ suffix: '', targetWidth: null })
+
+                // * Задача Б: Адаптивные версии и их Retina-копии
+                for (const bp of IMAGE_CONFIG) {
+                    for (const density of bp.densities) {
+                        const targetWidth = bp.baseWidth * density
+
+                        // ! ВАЖНО: Если оригинал меньше, чем нужен для @2x/@3x — пропускаем!
+                        // ! Но 1x генерируем всегда (sharp просто не будет её увеличивать благодаря withoutEnlargement)
+                        if (density > 1 && originalWidth < targetWidth) {
+                            continue
+                        }
+
+                        const densitySuffix = density === 1 ? '' : `@${density}x`
+                        renderTasks.push({
+                            suffix: `${bp.suffix}${densitySuffix}`,
+                            targetWidth: targetWidth,
+                        })
+                    }
+                }
+
+                // * 2. ГЕНЕРИРУЕМ ФАЙЛЫ ДЛЯ КАЖДОЙ ЗАДАЧИ | МНОГОПОТОК
+
+                // ? Читаем исходник в Sharp ровно один раз
+                const baseSharpInstance = sharp(file.contents)
+                const renderPromises = []
+
+                for (const task of renderTasks) {
+                    let pipeline = baseSharpInstance.clone()
+
+                    if (task.targetWidth) {
+                        // ? withoutEnlargement не даст "растянуть" картинку,
+                        // ? если она меньше targetWidth (например, для 1x)
+                        pipeline = pipeline.resize({
+                            width: task.targetWidth,
+                            withoutEnlargement: true,
+                        })
                     }
 
-                    const suffix = sizeName === 'original' ? '' : `-${sizeName}`
-                    const baseName = file.stem + suffix
+                    // ? Базовый (нативный) формат
+                    const formatsToGenerate = [{ ext: ext, type: ext.replace('.', '') }]
 
-                    let pipeline = sharp(file.contents)
-                    if (width) {
-                        pipeline = pipeline.resize({ width, withoutEnlargement: true })
+                    // ? Добавляем современные форматы, только если исходник ими не является
+                    if (ext !== '.webp') {
+                        formatsToGenerate.push({ ext: '.webp', type: 'webp' })
                     }
-
-                    const formatsToGenerate = [
-                        { ext: ext, type: ext.replace('.', '') },
-                        { ext: '.webp', type: 'webp' },
-                        { ext: '.avif', type: 'avif' },
-                    ]
+                    if (ext !== '.avif') {
+                        formatsToGenerate.push({ ext: '.avif', type: 'avif' })
+                    }
 
                     for (const format of formatsToGenerate) {
                         let formatPipeline = pipeline.clone()
 
+                        // * Настройки компрессии
                         if (format.type === 'jpg' || format.type === 'jpeg') {
                             formatPipeline = formatPipeline.jpeg({
                                 quality: env.buildMode.isDev ? 100 : 80,
@@ -133,15 +171,25 @@ function processAndOptimizeImages() {
                             })
                         }
 
-                        const outputBuffer = await formatPipeline.toBuffer()
-                        const newFile = file.clone({ contents: false })
-                        newFile.stem = baseName
-                        newFile.extname = format.ext
-                        newFile.contents = outputBuffer
-                        this.push(newFile)
-                        generatedCount++
+                        // ? Асинхронно запускаем рендер и кладем промис в массив
+                        const processTask = async () => {
+                            const outputBuffer = await formatPipeline.toBuffer()
+                            const newFile = file.clone({ contents: false })
+
+                            // * Добавляем суффикс (например: -mobile@2x)
+                            newFile.stem = rawBaseName + task.suffix
+
+                            newFile.extname = format.ext
+                            newFile.contents = outputBuffer
+                            this.push(newFile)
+                        }
+
+                        renderPromises.push(processTask())
                     }
                 }
+
+                await Promise.all(renderPromises)
+                generatedCount += renderPromises.length
             } catch (err) {
                 this.emit('error', err)
                 throw err

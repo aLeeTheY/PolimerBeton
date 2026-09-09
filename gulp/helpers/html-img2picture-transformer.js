@@ -13,27 +13,29 @@ import { Parser } from 'htmlparser2'
 import * as DomUtils from 'domutils'
 import sharp from 'sharp'
 
-const IMAGE_GENERATION_SIZES = {
-    // desktop: 1440,
-    // laptop: 1024,
-    // tablet: 768,
-    // mobile: 320,
-}
-
 const FORMATS = ['image/avif', 'image/webp', 'image/jpeg', 'image/png']
+const metadataCache = new Map()
 
 export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
     const config = {
         desktopFirst: true,
-        setDimensions: false, // Проставлять width и height
-        setLazyLoading: false, // Автоматически добавлять loading="lazy"
-        setAsyncDecoding: false, // Добавлять decoding="async"
+        setDimensions: true,
+        setLazyLoading: true,
+        setAsyncDecoding: true,
+
+        // PRODUCTION-READY CONFIG
+        breakpoints: [
+            {
+                media: 768, // Для экранов до 768px
+                suffix: '-mobile',
+                baseWidth: 400, // Ширина версии 1x будет ~400px
+                densities: [1, 2], // Сгенерирует: 1x (400px), 2x (800px)
+            },
+            // Десктоп (натив) оставляем без медиа-запроса,
+            // он пойдет в основной srcset без суффикса
+        ],
         ...options,
     }
-
-    const MEDIA_BREAKPOINTS = config.desktopFirst
-        ? { mobile: 479, tablet: 767, laptop: 1023, desktop: 1439 }
-        : { mobile: 320, tablet: 768, laptop: 1024, desktop: 1440 }
 
     return through2.obj(function (file, enc, callback) {
         if (file.isNull()) {
@@ -79,17 +81,26 @@ export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
                 const relativeImgPath = src.replace(/.*@images\//, '')
                 const absoluteImgPath = path.join(assetsSrcDir, relativeImgPath)
 
-                let originalWidth = null
-                let metadata = null
+                let originalWidth
+                let metadata
 
                 try {
-                    await fs.access(absoluteImgPath)
-                    metadata = await sharp(absoluteImgPath).metadata()
+                    if (metadataCache.has(absoluteImgPath)) {
+                        // ? Берем из памяти (мгновенно)
+                        metadata = metadataCache.get(absoluteImgPath)
+                    } else {
+                        // ? Читаем с диска один раз и сохраняем
+                        await fs.access(absoluteImgPath)
+                        metadata = await sharp(absoluteImgPath).metadata()
+                        metadataCache.set(absoluteImgPath, metadata)
+                    }
+
                     originalWidth = metadata.width
                 } catch (err) {
                     console.warn(
-                        `[html-transformer] File not found: ${absoluteImgPath}\tError message: ${err}`,
+                        `[html-transformer] Ошибка чтения: ${absoluteImgPath}\t${err.message}`,
                     )
+                    continue
                 }
 
                 const allowedMimeTypes = FORMATS.filter((mime) => {
@@ -103,201 +114,94 @@ export function htmlImg2PictureTransformer(assetsSrcDir, options = {}) {
                 })
 
                 const picture = new Element('picture', {})
-
                 if (img.attribs['data-my-picture-class']) {
                     picture.attribs.class = img.attribs['data-my-picture-class']
                 }
 
-                const setupFallbackImg = (baseImg) => {
-                    const clone = baseImg.cloneNode(true)
-
-                    // Всегда подчищаем служебный атрибут обертки
-                    if (clone.attribs['data-my-picture-class']) {
-                        delete clone.attribs['data-my-picture-class']
-                    }
-
-                    clone.attribs.src = config.desktopFirst
-                        ? src
-                        : `${basePath}-mobile.${originalExt}`
-
-                    // 1. Установка loading="lazy" по флагу
-                    if (config.setLazyLoading) {
-                        if (clone.attribs.fetchpriority === 'high') {
-                            delete clone.attribs.loading
-                        } else if (!clone.attribs.loading) {
-                            clone.attribs.loading = 'lazy'
+                // ГЕНЕРИРУЕМ <source> ТЕГИ
+                allowedMimeTypes.forEach((mimeType) => {
+                    const getExtension = (mime, origExt) => {
+                        if (mime === 'image/jpeg') {
+                            return origExt.toLowerCase() === 'jpeg' ? 'jpeg' : 'jpg'
                         }
+                        return mime.split('/')[1] // для webp, avif, png работает корректно
                     }
+                    const ext = getExtension(mimeType, originalExt)
 
-                    // 2. Установка decoding="async" по флагу
-                    if (config.setAsyncDecoding && !clone.attribs.decoding) {
-                        clone.attribs.decoding = 'async'
-                    }
+                    // 1. Адаптивные брейкпоинты (Mobile, Tablet и т.д.)
+                    config.breakpoints.forEach((bp) => {
+                        // Рассчитываем, какие плотности (1x, 2x) мы реально можем создать
+                        // исходя из размера оригинальной картинки
+                        const validDensities = bp.densities.filter(
+                            (d) => originalWidth >= bp.baseWidth * d || d === 1,
+                        )
 
-                    // 3. Простановка размеров по флагу
-                    if (config.setDimensions && originalWidth && metadata?.height) {
-                        clone.attribs.width = String(originalWidth)
-                        clone.attribs.height = String(metadata.height)
-                    }
-
-                    return clone
-                }
-
-                // --- СЦЕНАРИЙ 1: Картинка меньше минимального лимита ---
-                if (originalWidth && originalWidth <= IMAGE_GENERATION_SIZES.mobile) {
-                    allowedMimeTypes.forEach((mimeType) => {
-                        const ext = mimeType.split('/')[1]
-                        if (ext === originalExt.toLowerCase()) {
+                        if (validDensities.length === 0) {
                             return
-                        }
+                        } // Картинка слишком мала даже для 1x
+
+                        // Собираем строку srcset: "file-mobile.jpg 1x, file-mobile@2x.jpg 2x"
+                        const srcsetString = validDensities
+                            .map((d) => {
+                                const densitySuffix = d === 1 ? '' : `@${d}x`
+                                return `${basePath}${bp.suffix}${densitySuffix}.${ext} ${d}x`
+                            })
+                            .join(', ')
+
+                        const mediaCondition = config.desktopFirst
+                            ? `(max-width: ${bp.media}px)`
+                            : `(min-width: ${bp.media}px)`
 
                         const source = new Element('source', {
+                            type: mimeType,
+                            media: mediaCondition,
+                            srcset: srcsetString,
+                        })
+                        DomUtils.appendChild(picture, source)
+                    })
+
+                    // 2. Десктоп / Натив (без media-запроса)
+                    // Мы не генерируем .jpg внутри webp, поэтому фильтруем
+                    if (ext !== originalExt.toLowerCase()) {
+                        const nativeSource = new Element('source', {
                             type: mimeType,
                             srcset: `${basePath}.${ext}`,
                         })
-                        DomUtils.appendChild(picture, source)
-                    })
-
-                    const imgClone = setupFallbackImg(img)
-                    DomUtils.appendChild(picture, imgClone)
-                    DomUtils.replaceElement(img, picture)
-                    continue
-                }
-
-                // --- СЦЕНАРИЙ 2: Адаптивное изображение ---
-                const activeBreakpoints = []
-
-                if (config.desktopFirst) {
-                    if (!originalWidth || originalWidth > IMAGE_GENERATION_SIZES.mobile) {
-                        activeBreakpoints.push({
-                            suffix: '-mobile',
-                            queryVal: MEDIA_BREAKPOINTS.mobile,
-                        })
+                        DomUtils.appendChild(picture, nativeSource)
                     }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.tablet) {
-                        activeBreakpoints.push({
-                            suffix: '-tablet',
-                            queryVal: MEDIA_BREAKPOINTS.tablet,
-                        })
-                    }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.laptop) {
-                        activeBreakpoints.push({
-                            suffix: '-laptop',
-                            queryVal: MEDIA_BREAKPOINTS.laptop,
-                        })
-                    }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.desktop) {
-                        activeBreakpoints.push({
-                            suffix: '-desktop',
-                            queryVal: MEDIA_BREAKPOINTS.desktop,
-                        })
-                    }
-                    activeBreakpoints.sort((a, b) => a.queryVal - b.queryVal)
-                } else {
-                    if (!originalWidth || originalWidth > IMAGE_GENERATION_SIZES.mobile) {
-                        activeBreakpoints.push({
-                            suffix: '-mobile',
-                            queryVal: MEDIA_BREAKPOINTS.mobile,
-                        })
-                    }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.tablet) {
-                        activeBreakpoints.push({
-                            suffix: '-tablet',
-                            queryVal: MEDIA_BREAKPOINTS.tablet,
-                        })
-                    }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.laptop) {
-                        activeBreakpoints.push({
-                            suffix: '-laptop',
-                            queryVal: MEDIA_BREAKPOINTS.laptop,
-                        })
-                    }
-                    if (originalWidth && originalWidth > IMAGE_GENERATION_SIZES.desktop) {
-                        activeBreakpoints.push({
-                            suffix: '-desktop',
-                            queryVal: MEDIA_BREAKPOINTS.desktop,
-                        })
-                    }
-
-                    let closestBreakpoint = MEDIA_BREAKPOINTS.mobile
-                    if (originalWidth) {
-                        const smallerSizes = Object.values(IMAGE_GENERATION_SIZES).filter(
-                            (w) => w < originalWidth,
-                        )
-                        if (smallerSizes.length > 0) {
-                            const maxGeneratedSize = Math.max(...smallerSizes)
-                            const bpKey = Object.keys(IMAGE_GENERATION_SIZES).find(
-                                (key) => IMAGE_GENERATION_SIZES[key] === maxGeneratedSize,
-                            )
-                            if (bpKey && MEDIA_BREAKPOINTS[bpKey]) {
-                                closestBreakpoint = MEDIA_BREAKPOINTS[bpKey]
-                            }
-                        }
-                    }
-                    activeBreakpoints.push({ suffix: '', queryVal: closestBreakpoint })
-                    activeBreakpoints.sort((a, b) => b.queryVal - a.queryVal)
-                }
-
-                const mediaQueryType = config.desktopFirst ? 'max-width' : 'min-width'
-
-                allowedMimeTypes.forEach((mimeType) => {
-                    const ext = mimeType.split('/')[1]
-
-                    activeBreakpoints.forEach((bp) => {
-                        if (!config.desktopFirst && bp.suffix === '') {
-                            return
-                        }
-
-                        const source = new Element('source', {
-                            type: mimeType,
-                            media: `(${mediaQueryType}: ${bp.queryVal}px)`,
-                            srcset: `${basePath}${bp.suffix}.${ext}`,
-                        })
-                        DomUtils.appendChild(picture, source)
-                    })
                 })
 
-                if (config.desktopFirst) {
-                    allowedMimeTypes.forEach((mimeType) => {
-                        const ext = mimeType.split('/')[1]
-                        if (ext === originalExt.toLowerCase()) {
-                            return
-                        }
+                // НАСТРАЙВАЕМ FALLBACK <img>
+                const imgClone = img.cloneNode(true)
+                if (imgClone.attribs['data-my-picture-class']) {
+                    delete imgClone.attribs['data-my-picture-class']
+                }
 
-                        const source = new Element('source', {
-                            type: mimeType,
-                            srcset: `${basePath}.${ext}`,
-                        })
-                        DomUtils.appendChild(picture, source)
-                    })
-                } else {
-                    const origBp = activeBreakpoints.find((bp) => bp.suffix === '')
-                    if (origBp) {
-                        allowedMimeTypes.forEach((mimeType) => {
-                            const ext = mimeType.split('/')[1]
-                            if (ext === originalExt.toLowerCase()) {
-                                return
-                            }
+                // Для десктоп-first фоллбэком всегда является оригинальная картинка
+                imgClone.attribs.src = src
 
-                            const source = new Element('source', {
-                                type: mimeType,
-                                media: `(${mediaQueryType}: ${origBp.queryVal}px)`,
-                                srcset: `${basePath}.${ext}`,
-                            })
-                            DomUtils.appendChild(picture, source)
-                        })
-
-                        const originalMime = `image/${originalExt.toLowerCase()}`
-                        const origSource = new Element('source', {
-                            type: originalMime,
-                            media: `(${mediaQueryType}: ${origBp.queryVal}px)`,
-                            srcset: `${basePath}.${originalExt}`,
-                        })
-                        DomUtils.appendChild(picture, origSource)
+                if (config.setLazyLoading) {
+                    if (imgClone.attribs.fetchpriority === 'high') {
+                        delete imgClone.attribs.loading
+                    } else if (!imgClone.attribs.loading) {
+                        imgClone.attribs.loading = 'lazy'
                     }
                 }
 
-                const imgClone = setupFallbackImg(img)
+                if (config.setAsyncDecoding && !imgClone.attribs.decoding) {
+                    if (!imgClone.attribs.decoding) {
+                        imgClone.attribs.decoding = 'async'
+                    }
+                }
+
+                if (config.setDimensions && originalWidth && metadata?.height) {
+                    if (!imgClone.attribs.width) {
+                        imgClone.attribs.width = String(originalWidth)
+                    }
+                    if (!imgClone.attribs.height) {
+                        imgClone.attribs.height = String(metadata.height)
+                    }
+                }
 
                 DomUtils.appendChild(picture, imgClone)
                 DomUtils.replaceElement(img, picture)

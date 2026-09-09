@@ -29,15 +29,36 @@ export async function criticalCss() {
     }
 
     const dir = nodePath.resolve(path.build.html)
-    const cssFilePath = nodePath.resolve(path.build.styles, 'main.min.css')
-
-    // const files = fs.readdirSync(dir)
-    // const htmlFiles = files.filter((f) => f.endsWith('.html'))
 
     const htmlFiles = fastGlob.sync('**/*.html', {
         cwd: dir,
         absolute: true,
     })
+
+    if (!htmlFiles.length) {
+        notify.warn(
+            NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
+            'No HTML files found in build directory!',
+        )
+        return
+    }
+
+    // const cssFilePath = nodePath.resolve(path.build.styles, 'main.min.css')
+    const cssFiles = fastGlob.sync('**/*.css', {
+        cwd: path.build.styles,
+        absolute: true,
+    })
+
+    if (!cssFiles.length) {
+        notify.warn(
+            NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
+            'No CSS files found in build directory!',
+        )
+        return
+    }
+
+    // ! Если css файлов несколько, читаем их и объедияем в одну строку для Penthouse
+    const combinedCss = cssFiles.map((file) => fs.readFileSync(file, 'utf-8')).join('\n')
 
     // ! не нужно, penthouse захватывает media queries при генерации благодаря postcss-sort-media-queries
     // const viewports = [
@@ -54,7 +75,7 @@ export async function criticalCss() {
         let html = fs.readFileSync(filePath, 'utf-8')
 
         if (
-            !html.includes('<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER --->')
+            !html.includes('<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->')
         ) {
             continue
         }
@@ -63,7 +84,7 @@ export async function criticalCss() {
             const fileUrl = pathToFileURL(filePath).href
             const criticalCss = await penthouse({
                 url: fileUrl,
-                css: cssFilePath,
+                cssString: combinedCss,
                 width: viewport.width,
                 height: viewport.height,
 
@@ -79,7 +100,7 @@ export async function criticalCss() {
             })
 
             html = html.replace(
-                '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER --->',
+                '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
                 `<style type="text/css" id="critical-css">${criticalCss}</style>`,
             )
 
@@ -90,10 +111,10 @@ export async function criticalCss() {
                 `${nodePath.basename(filePath)}: ${err.message}`,
             )
         }
-
-        // * update dev server
-        browserSync.reload()
     }
+
+    // * update dev server
+    browserSync.reload()
 }
 
 // * --- REGISTER GULP TASK

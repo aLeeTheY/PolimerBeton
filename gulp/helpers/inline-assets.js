@@ -28,7 +28,7 @@ export function inlineAssetsInHtml(html, options = {}) {
     // --- CSS блок ---
     if (inlineCss && cssContent) {
         const cssRegex =
-            /<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE CSS START \| DISABLED BY DEFAULT --->[\s\S]*?<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE CSS END --->/g
+            /<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE CSS START \| DISABLED BY DEFAULT -->[\s\S]*?<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE CSS END -->/g
         html = html.replace(
             cssRegex,
             `<style type="text/css" id="inline-css">${cssContent}</style>`,
@@ -38,7 +38,7 @@ export function inlineAssetsInHtml(html, options = {}) {
     // --- JS блок ---
     if (inlineJs && jsContent) {
         const jsRegex =
-            /<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE JS START \| DISABLED BY DEFAULT --->[\s\S]*?<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE JS END --->/g
+            /<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE JS START \| DISABLED BY DEFAULT -->[\s\S]*?<!-- ! DO NOT REMOVE THIS COMMENT !!! \| INLINE JS END -->/g
         html = html.replace(
             jsRegex,
             `<script type="text/javascript" id="inline-js">${jsContent}</script>`,

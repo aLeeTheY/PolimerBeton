@@ -82,7 +82,12 @@ export default (ctx) => {
                     strategy: 'minimal',
                     by: 'whole',
                     ids: false,
-                    except: ['--dont-touch-me'],
+                    except: [
+                        'dont-touch-me',
+                        'squircle-smooth',
+                        'squircle-radius',
+                        'footer__fade__opacity',
+                    ],
                     outputMapCallback: false,
                 },
                 // ! disabled
@@ -126,7 +131,7 @@ export default (ctx) => {
             // * удаление неиспользуемых CSS (только в staging/prod)
             ...(isProd && {
                 '@fullhuman/postcss-purgecss': {
-                    content: ['src/html/**/*.njk', 'src/html/**/*.html'],
+                    content: ['dist/**/*.html', 'dist/libs/**/*.js', 'dist/js/**/*.js'],
 
                     // ! Защитит .page--ru, .page--en, .page--fr и т.д.
                     // ! safelist: [/--[a-z]{2}$/],
