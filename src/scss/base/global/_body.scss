@@ -1,9 +1,0 @@
-@use '../../abstracts/mixins' as mixin;
-@use '../../abstracts/typography' as *;
-
-body {
-    @extend %text__body;
-    @include mixin.transition-for(background-color);
-
-    background-color: var(--color__page__background);
-}
