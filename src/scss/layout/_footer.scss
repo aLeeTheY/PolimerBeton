@@ -86,7 +86,7 @@
         inset: 0;
 
         background-color: var(--color__global__fade);
-        opacity: var(--footer__fade__opacity, 1);
+        opacity: var(--footer__fade__opacity, 0.87);
 
         pointer-events: none;
         user-select: none;

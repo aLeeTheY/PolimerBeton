@@ -45,7 +45,7 @@ export async function initFooterPositionStateManager() {
             const progress = Math.min(Math.max(rawProgress, 0), 1)
 
             // ? вычисляем текущее значение opacity (для footer::after) до 2 знаков после запятой
-            afterOpacity = (1 - progress).toFixed(3)
+            afterOpacity = Math.max(0.87 - progress, 0).toFixed(3)
         }
 
         requestAnimationFrame(() => {
