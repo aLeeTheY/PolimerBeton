@@ -2,10 +2,8 @@ import fs from 'fs'
 
 import gulp from 'gulp'
 import gulpZip from 'gulp-zip'
-import through2 from 'through2'
 import { deleteAsync } from 'del'
 
-import { env } from '../../config/env.js'
 import { path } from '../../config/path.js'
 import {
     plumberWithErrorHandler,

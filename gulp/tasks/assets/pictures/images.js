@@ -82,7 +82,7 @@ function processAndOptimizeImages() {
 
             try {
                 // Если исходник уже обрабатывался — пропускаем
-                if (assetFamilyExists(outSubDir, rawBaseName)) {
+                if (assetFamilyExists(outSubDir, rawBaseName, file.stat)) {
                     skipped++
                     if (env.isVerbose) {
                         console.log(`[images] skipping (up-to-date): ${file.relative}`)

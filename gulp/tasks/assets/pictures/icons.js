@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import gulp from 'gulp'
-import through2 from 'through2'
 import browserSync from 'browser-sync'
 
 import { env } from '../../../config/env.js'
@@ -24,7 +23,10 @@ export async function icons() {
         console.log(`[icons] checking sprite in ${outDir}`)
     }
 
-    const spriteExists = await assetExists(outDir, 'sprite', '.svg') // ищет sprite.svg или sprite-<hash>.svg
+    // const spriteExists = await assetExists(outDir, 'sprite', '.svg') // ищет sprite.svg или sprite-<hash>.svg
+
+    const iconsSrcPath = path.src.icons
+    const spriteExists = assetExists(outDir, 'sprite', '.svg', iconsSrcPath)
 
     if (spriteExists) {
         if (env.isVerbose) {

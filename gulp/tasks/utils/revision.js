@@ -1,13 +1,11 @@
 import gulp from 'gulp'
 import through2 from 'through2'
-// import { deleteAsync } from 'del'
 import { readFileSync } from 'node:fs'
 
 import rev from 'gulp-rev'
 import revRewrite from 'gulp-rev-rewrite'
 import revDel from 'gulp-rev-delete-original'
 
-import { env } from '../../config/env.js'
 import { path } from '../../config/path.js'
 import {
     plumberWithErrorHandler,

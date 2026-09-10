@@ -64,8 +64,8 @@ async function processFile(filePath) {
     const outDir = path.join(OUT_DIR, parsed.dir)
     const baseName = parsed.name
 
-    const needWebm = !(await assetExists(outDir, baseName, '.webm'))
-    const needMp3 = !(await assetExists(outDir, baseName, '.mp3'))
+    const needWebm = !(await assetExists(outDir, baseName, '.webm', filePath))
+    const needMp3 = !(await assetExists(outDir, baseName, '.mp3', filePath))
 
     const webmOut = path.join(outDir, `${baseName}.webm`)
     const mp3Out = path.join(outDir, `${baseName}.mp3`)

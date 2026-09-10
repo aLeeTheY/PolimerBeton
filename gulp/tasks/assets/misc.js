@@ -1,8 +1,7 @@
 import gulp from 'gulp'
-import through2 from 'through2'
 import browserSync from 'browser-sync'
 
-import { env } from '../../config/env.js'
+// import { env } from '../../config/env.js'
 import { path } from '../../config/path.js'
 import {
     plumberWithErrorHandler,

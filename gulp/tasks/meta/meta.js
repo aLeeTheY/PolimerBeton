@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-import through2 from 'through2'
+// import through2 from 'through2'
 import gulpReplace from 'gulp-replace'
 import browserSync from 'browser-sync'
 

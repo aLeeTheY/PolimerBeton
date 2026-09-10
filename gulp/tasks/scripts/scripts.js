@@ -1,8 +1,4 @@
 import gulp from 'gulp'
-// import through2 from 'through2'
-// import gulpIf from 'gulp-if'
-// import gulpRev from 'gulp-rev'
-// import gulpRename from 'gulp-rename'
 import browserSync from 'browser-sync'
 
 import { env } from '../../config/env.js'
