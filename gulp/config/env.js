@@ -112,6 +112,13 @@ const argv = yargs(hideBin(process.argv))
         description:
             'Toggles the build layout pipeline. Sets PostCSS media query sorting to `mobile-first` and configures the HTML picture transformer to generate `min-width` source tags instead of `max-width`',
     })
+    // * Флаг django-build
+    .option('django-build', {
+        alias: ['django', 'dj', 'D'],
+        type: 'boolean',
+        default: false,
+        description: 'Activates template compilation rules for Django integration',
+    })
     // * Флаг obfuscation
     .option('obfuscation', {
         alias: ['obf', 'o'],
@@ -337,8 +344,8 @@ export const env = {
     isProdServer: argv.prodServer,
     isHttps: argv.secure,
 
-    // TODO: доделать режим сборки под Django
-    // isDjangoBuild: argv.djangoBuild,
+    // ! сборка под django | нужно учитывать в nunjucks-темплейтах
+    isDjangoBuild: argv.djangoBuild,
 
     // placeholders: {
     //     webpInCssPolyfillScript: fs.readFileSync('node_modules/webp-in-css/polyfill.js', 'utf-8'),
