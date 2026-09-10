@@ -12,7 +12,9 @@ export async function initHoudiniSquircle() {
         }
 
         if ('paintWorklet' in CSS) {
-            await (CSS as any).paintWorklet.addModule('/libs/squircle.min.js')
+            const workletUrl = new URL('../libs/squircle.min.js', import.meta.url).href
+
+            await (CSS as any).paintWorklet.addModule(workletUrl)
             document.documentElement.classList.add('houdini-squircle-ready')
         }
     } catch (error) {

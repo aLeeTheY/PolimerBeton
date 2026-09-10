@@ -1,4 +1,5 @@
 import gulp from 'gulp'
+import gulpReplace from 'gulp-replace'
 import browserSync from 'browser-sync'
 
 import { env } from '../../config/env.js'
@@ -18,6 +19,9 @@ import { gulpEsbuild } from 'gulp-esbuild'
 // * --- EXPORT GULP TASK FOR JS/TS FILES
 // * ------------------------------------
 export function scripts() {
+    // // ! для файлов JS из libs/, если они подключены внутри другого JS
+    // const libsPrefix = env.isLocal ? '../libs/' : `${env.assetPrefix}libs/`
+
     return (
         gulp
             // * берем исходники
@@ -41,7 +45,7 @@ export function scripts() {
                     outdir: '.',
                     sourcemap: env.buildMode.isDev || env.buildMode.isStaging ? 'linked' : false,
                     minify: env.buildMode.isStaging || env.buildMode.isProd,
-                    target: ['es2018'],
+                    target: ['es2020'],
                     drop: env.buildMode.isProd ? ['console', 'debugger'] : [],
                     treeShaking: true,
                     define: {
@@ -51,28 +55,12 @@ export function scripts() {
                     },
                 }),
             )
-            // // * добавляем к файлу ревизию для инвалидации кэша
-            // .pipe(gulpIf(env.buildMode.isStaging || env.buildMode.isProd, gulpRev()))
-            // // * добавляем к имени суффикс .min
-            // .pipe(gulpRename({ suffix: '.min' }))
+
+            // // ! для файлов JS из libs/, если они подключены внутри другого JS
+            // .pipe(gulpReplace(/@libs\//g, libsPrefix))
+
             // * кладем результат в папку сборки
-            // ! .pipe(
-            // !     gulp.dest(path.build.scripts, {
-            // !         sourcemaps: env.buildMode.isDev || env.buildMode.isStaging ? '.' : false,
-            // !     }),
-            // ! )
             .pipe(gulp.dest(path.build.scripts))
-            // // * делаем запись в rev-manifest.json
-            // .pipe(
-            //     gulpIf(
-            //         env.buildMode.isStaging || env.buildMode.isProd,
-            //         gulpRev.manifest('rev-manifest.json', { base: 'out/', merge: true }),
-            //     ),
-            // )
-            // // * созраняем rev-manifest.json
-            // .pipe(
-            //     gulpIf(env.buildMode.isStaging || env.buildMode.isProd, gulp.dest(path.build.base)),
-            // )
             // * обновляем сервер разработки
             .on('end', () => {
                 // * update dev server
