@@ -33,6 +33,9 @@ const IMAGE_CONFIG = [
     // Десктоп / Натив (без суффикса) сгенерируется автоматически ниже
 ]
 
+// ! Список папок (или частей пути), для которых не нужно генерировать адаптивные версии
+const IGNORE_RESPONSIVE_FOLDERS = ['open_graph']
+
 // * --- PROCESS AND OPTIMIZE WITH SHARP DIRECTLY
 // * --------------------------------------------
 function processAndOptimizeImages() {
@@ -65,6 +68,14 @@ function processAndOptimizeImages() {
             )
             const rawBaseName = file.stem
 
+            // Получаем относительный путь папки (например, 'assets/icons')
+            const relativeDir = nodePath.dirname(file.relative)
+
+            // Проверяем, совпадает ли путь с какой-либо из папок в игнор-листе
+            const shouldIgnoreResponsive = IGNORE_RESPONSIVE_FOLDERS.some((folder) =>
+                relativeDir.split(nodePath.sep).includes(folder),
+            )
+
             if (env.isVerbose) {
                 console.log(`[images] checking ${file.relative}`)
             }
@@ -94,21 +105,23 @@ function processAndOptimizeImages() {
                 renderTasks.push({ suffix: '', targetWidth: null })
 
                 // * Задача Б: Адаптивные версии и их Retina-копии
-                for (const bp of IMAGE_CONFIG) {
-                    for (const density of bp.densities) {
-                        const targetWidth = bp.baseWidth * density
+                if (!shouldIgnoreResponsive) {
+                    for (const bp of IMAGE_CONFIG) {
+                        for (const density of bp.densities) {
+                            const targetWidth = bp.baseWidth * density
 
-                        // ! ВАЖНО: Если оригинал меньше, чем нужен для @2x/@3x — пропускаем!
-                        // ! Но 1x генерируем всегда (sharp просто не будет её увеличивать благодаря withoutEnlargement)
-                        if (density > 1 && originalWidth < targetWidth) {
-                            continue
+                            // ! ВАЖНО: Если оригинал меньше, чем нужен для @2x/@3x — пропускаем!
+                            // ! Но 1x генерируем всегда (sharp просто не будет её увеличивать благодаря withoutEnlargement)
+                            if (density > 1 && originalWidth < targetWidth) {
+                                continue
+                            }
+
+                            const densitySuffix = density === 1 ? '' : `@${density}x`
+                            renderTasks.push({
+                                suffix: `${bp.suffix}${densitySuffix}`,
+                                targetWidth: targetWidth,
+                            })
                         }
-
-                        const densitySuffix = density === 1 ? '' : `@${density}x`
-                        renderTasks.push({
-                            suffix: `${bp.suffix}${densitySuffix}`,
-                            targetWidth: targetWidth,
-                        })
                     }
                 }
 
