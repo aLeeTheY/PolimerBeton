@@ -87,6 +87,7 @@ export default (ctx) => {
                         'squircle-smooth',
                         'squircle-radius',
                         'footer__fade__opacity',
+                        'footer__current-height',
                     ],
                     outputMapCallback: false,
                 },

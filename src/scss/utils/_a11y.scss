@@ -23,6 +23,14 @@
         transition-delay: 0s !important;
         transition-duration: 0s !important;
     }
+
+    .my-footer {
+        position: relative !important;
+
+        &::after {
+            display: none !important;
+        }
+    }
 }
 
 // * --- A11Y HELPERS

@@ -12,15 +12,15 @@
     initial-value: -17deg;
 }
 
-// @keyframes footer__fade-in-out-effect {
-//     from {
-//         opacity: 0.8;
-//     }
+@keyframes footer__fade-in-out-effect {
+    from {
+        opacity: 0.87;
+    }
 
-//     to {
-//         opacity: 0;
-//     }
-// }
+    to {
+        opacity: 0;
+    }
+}
 
 @keyframes footer__background__linear-gradient__wobble-effect {
     from {
@@ -90,6 +90,15 @@
 
         pointer-events: none;
         user-select: none;
+
+        @supports (animation-timeline: scroll()) {
+            animation: footer__fade-in-out-effect linear both;
+            animation-timeline: scroll(root);
+
+            // ? --footer__current-height: default = 642px | Desktop First
+            // ? управляется через JS
+            animation-range: calc(100% - var(--footer__current-height, 642px)) 100%;
+        }
     }
 
     &__decorative-square {

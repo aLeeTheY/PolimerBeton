@@ -27,6 +27,10 @@
         min-height: 100dvh;
     }
 
+    @supports (animation-timeline: view()) {
+        view-timeline-name: --hero-section;
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
@@ -46,6 +50,11 @@
 
         pointer-events: none;
         user-select: none;
+
+        @supports (animation-timeline: view()) {
+            animation: hero__background-image__parallax-move-effect linear both;
+            animation-timeline: --hero-section;
+        }
 
         &::after {
             @include mixin.transition-for(opacity, background-color, box-shadow);
@@ -81,14 +90,6 @@
 
         .nojs & {
             will-change: auto;
-
-            @supports (animation-timeline: view()) {
-                will-change: transform;
-                inset: -40% 0;
-
-                animation: hero__background-image__parallax-move-effect linear both;
-                animation-timeline: --hero-section;
-            }
         }
     }
 
@@ -128,12 +129,6 @@
 
         @include bs.media-breakpoint-down(xs) {
             object-position: 25% 50%;
-        }
-    }
-
-    .nojs & {
-        @supports (animation-timeline: view()) {
-            view-timeline-name: --hero-section;
         }
     }
 }
