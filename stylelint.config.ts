@@ -14,7 +14,53 @@ export default {
             {
                 // * plugin reads 'production' section by default from .browserslistrc
                 // browsers: ['last 4 versions', '> 0.2%', 'not dead'],
-                ignore: ['css-nesting', 'multicolumn'],
+                ignore: [
+                    'css-nesting',
+                    'multicolumn',
+
+                    // * не критично
+                    'css-text-indent',
+
+                    // * есть fallback, не критично
+                    'css-text-box-trim',
+                    'css-text-box-edge',
+
+                    // * не критично
+                    'css-scrollbar',
+
+                    // * не поддерживает UC Browser
+                    'css-focus-visible',
+
+                    // * не поддерживает старый Safari
+                    'css3-cursors',
+                    'css3-cursors-grab',
+
+                    // todo: можно поднять версии браузеров в .browserslistrc
+                    'css-has',
+
+                    // * houdini squircle, отсутствие поддержки не страшно, есть fallback
+                    'css-masks',
+                    'css-paint-api',
+
+                    // * поддержка размеров от размера контейнера
+                    // todo: можно сделать fallback через JS
+                    'css-container-query-units',
+
+                    // * feature "css-overflow" is only partially supported by Safari 15.6, Safari on iOS 15.6-15.8, UC Browser for Android 15.5
+                    // ? в дефолтном исполнении поддерживается без проблем
+                    'css-overflow',
+
+                    // * в Safari лишь частичная поддержка
+                    'css-marker-pseudo',
+
+                    // * поддежка dvh ед. измерения
+                    // * не критично, обернуты в @supports
+                    'viewport-unit-variants',
+
+                    // ? частичная поддержка во многих браузерах
+                    // ? не критично, относится к хелперу .my-visually-hidden
+                    'css-clip-path',
+                ],
                 severity: 'warning',
                 // * disabled by default
                 // ignorePartialSupport: true,

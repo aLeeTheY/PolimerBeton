@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+
 const isProd = process.env.NODE_ENV === 'production'
 
 export default (ctx) => {

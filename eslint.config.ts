@@ -24,6 +24,7 @@ export default defineConfig([
         '**/old/',
         '**/original/',
         '**/node_modules/',
+        '**/libs/',
     ]),
     js.configs.recommended,
     tseslint.configs.recommended,
