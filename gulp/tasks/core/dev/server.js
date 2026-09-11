@@ -4,7 +4,26 @@ import browserSync from 'browser-sync'
 import { env } from '../../../config/env.js'
 import { path } from '../../../config/path.js'
 
-// TODO: починить watchers
+// Создаем изолированный инстанс специально для Critical CSS
+const criticalBsInstance = browserSync.create('critical-css-server')
+
+// Общий middleware для убирания .html из URL
+function cleanUrlMiddleware(req, res, next) {
+    const [urlPath, queryString] = req.url.split('?')
+
+    if (urlPath !== '/' && !urlPath.includes('.')) {
+        let cleanPath = urlPath
+
+        if (cleanPath.endsWith('/')) {
+            cleanPath = cleanPath.slice(0, -1)
+        }
+
+        req.url = cleanPath + '.html' + (queryString ? '?' + queryString : '')
+    }
+
+    next()
+}
+
 // * --- EXPORT GULP TASK FOR START DEV SERVER
 // * -----------------------------------------
 export function server(cb) {
@@ -35,29 +54,36 @@ export function server(cb) {
         // * задержка при вызове reload в 500 мс
         reloadDelay: 500,
         // * красивые пути в строке браузера
-        middleware: [
-            function (req, res, next) {
-                // Честно разделяем URL на чистый путь и строку параметров (query string)
-                const [urlPath, queryString] = req.url.split('?')
-
-                // Если запрос не к корню и в самом ПУТИ нет точки (значит это не картинка, не стили и не скрипт)
-                if (urlPath !== '/' && !urlPath.includes('.')) {
-                    let cleanPath = urlPath
-
-                    // Если путь заканчивается на слэш (например, /privacy/), отрезаем его
-                    if (cleanPath.endsWith('/')) {
-                        cleanPath = cleanPath.slice(0, -1)
-                    }
-
-                    // Собираем URL обратно: чистый путь + .html + возвращаем параметры на место (если они были)
-                    req.url = cleanPath + '.html' + (queryString ? '?' + queryString : '')
-                }
-
-                next()
-            },
-        ],
+        middleware: [cleanUrlMiddleware],
     })
     cb()
+}
+
+// * --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ДЛЯ ВРЕМЕННОГО СЕРВЕРА CRITICAL CSS
+// * ----------------------------------------------------------------
+export function startCriticalServer(port = 8080) {
+    return new Promise((resolve) => {
+        criticalBsInstance.init(
+            {
+                server: {
+                    baseDir: path.build.html,
+                },
+                port,
+                open: false,
+                notify: false,
+                ui: false,
+                ghostMode: false,
+                logLevel: 'silent',
+                https: env.isHttps,
+                middleware: [cleanUrlMiddleware],
+            },
+            resolve,
+        )
+    })
+}
+
+export function stopCriticalServer() {
+    criticalBsInstance.exit()
 }
 
 // * --- REGISTER GULP TASK

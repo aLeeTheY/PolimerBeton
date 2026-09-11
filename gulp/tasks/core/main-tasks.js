@@ -43,14 +43,17 @@ export const prod = gulp.series(
     clean,
     mainTasks,
 
-    // ! --- между mainTasks и criticalCss !!!
+    // ! --- между mainTasks и revise !!!
     optimizeStyles,
-    // ! -------------------------------------
+    // ! --------------------------------
 
-    criticalCss,
     revise,
     // * obfuscation
     env.isObfuscation ? obfuscateSelectors : (cb) => cb(),
+
+    // ! запускается всегда предпоследним | перед запуском самого сервера !!!
+    criticalCss,
+
     // * run server in staging mode or in full production mode
     env.buildMode.isStaging || env.isProdServer ? server : (cb) => cb(),
 )

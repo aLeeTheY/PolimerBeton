@@ -12,9 +12,9 @@
     font-style: normal;
     font-display: swap;
     src:
-        url('../assets/fonts/Montserrat/Montserrat-VariableFont_wght.woff2') format('woff2'),
-        url('../assets/fonts/Montserrat/Montserrat-VariableFont_wght.woff') format('woff'),
-        url('../assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+        url('@fonts/Montserrat/Montserrat-VariableFont_wght.woff2') format('woff2'),
+        url('@fonts/Montserrat/Montserrat-VariableFont_wght.woff') format('woff'),
+        url('@fonts/Montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
@@ -23,7 +23,7 @@
     font-style: normal;
     font-display: swap;
     src:
-        url('../assets/fonts/Pattaya/Pattaya-Regular.woff2') format('woff2'),
-        url('../assets/fonts/Pattaya/Pattaya-Regular.woff') format('woff'),
-        url('../assets/fonts/Pattaya/Pattaya-Regular.ttf') format('truetype');
+        url('@fonts/Pattaya/Pattaya-Regular.woff2') format('woff2'),
+        url('@fonts/Pattaya/Pattaya-Regular.woff') format('woff'),
+        url('@fonts/Pattaya/Pattaya-Regular.ttf') format('truetype');
 }

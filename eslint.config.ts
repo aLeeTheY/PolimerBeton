@@ -23,6 +23,7 @@ export default defineConfig([
         '**/out/',
         '**/old/',
         '**/original/',
+        '**/debug__critical_css__screenshots/',
         '**/node_modules/',
         '**/libs/',
     ]),

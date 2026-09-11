@@ -23,11 +23,22 @@ import {
     NOTIFICATION_HANDLER_TITLES,
 } from '../../helpers/error-handler.js'
 
-// TODO: избавится от пакета gulp-sourcemaps (не принёс разницы со встроенным функционалом gulp 5)
 // * --- EXPORT GULP TASK FOR SCSS/CSS FILES
 // * ---------------------------------------
 export function styles() {
-    const cssToAssets = env.isInlineCSS ? './assets/' : '../assets/'
+    // const cssToAssets = env.isInlineCSS ? './assets/' : '../assets/'
+
+    // * Формируем путь в зависимости от флагов окружения
+    let cssToAssets = '../assets/'
+
+    if (env.isInlineCSS) {
+        cssToAssets = './assets/'
+    } else if (env.isLocal) {
+        cssToAssets = '../assets/'
+    } else {
+        // * Для Production используем путь от корня сайта, чтобы пути к шрифтам и картинам не ломались
+        cssToAssets = '/assets/'
+    }
 
     return (
         gulp

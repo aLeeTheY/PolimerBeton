@@ -394,18 +394,18 @@
     // ! --- LIGHT THEME (DEFAULT)
     // ! -------------------------
     @include light-theme-colors;
+}
 
-    &[data-theme='dark'] {
+[data-theme='dark'] {
+    // ! --- DARK THEME
+    // ! --------------
+    @include dark-theme-colors;
+}
+
+.nojs {
+    @media (prefers-color-scheme: dark) {
         // ! --- DARK THEME
         // ! --------------
         @include dark-theme-colors;
-    }
-
-    &.nojs {
-        @media (prefers-color-scheme: dark) {
-            // ! --- DARK THEME
-            // ! --------------
-            @include dark-theme-colors;
-        }
     }
 }

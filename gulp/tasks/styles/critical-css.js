@@ -2,12 +2,12 @@ import fs from 'fs'
 import gulp from 'gulp'
 import nodePath from 'path'
 import fastGlob from 'fast-glob'
-import { pathToFileURL } from 'url'
 import browserSync from 'browser-sync'
 
 import { env } from '../../config/env.js'
 import { path } from '../../config/path.js'
 import { notify, NOTIFICATION_HANDLER_TITLES } from '../../helpers/error-handler.js'
+import { startCriticalServer, stopCriticalServer } from '../core/dev/server.js'
 
 import penthouse from 'penthouse'
 // import puppeteer from 'puppeteer'
@@ -15,11 +15,7 @@ import penthouse from 'penthouse'
 // * --- EXPORT GULP TASK FOR INLINE CRITICAL CSS TO HTML FILES
 // * ----------------------------------------------------------
 export async function criticalCss() {
-    // ! use system Google Chrome browser
-    process.env.PUPPETEER_EXECUTABLE_PATH =
-        process.env.PUPPETEER_EXECUTABLE_PATH ||
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-
+    // * Пропускаем таску при локальной сборке или если включен полный инлайн CSS
     if (env.isInlineCSS) {
         notify.info(
             NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
@@ -27,14 +23,24 @@ export async function criticalCss() {
         )
         return
     }
+    if (env.isLocal) {
+        notify.info(NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS, 'Skipped – local (file:///) build.')
+        return
+    }
 
+    // ! ОБЯЗАТЕЛЬНО: задаем путь к Chrome в process.env ДО вызова penthouse
+    // ! use system Google Chrome browser
+    process.env.PUPPETEER_EXECUTABLE_PATH =
+        process.env.PUPPETEER_EXECUTABLE_PATH ||
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+
+    // ! поиск html и css файлов
     const dir = nodePath.resolve(path.build.html)
 
     const htmlFiles = fastGlob.sync('**/*.html', {
         cwd: dir,
         absolute: true,
     })
-
     if (!htmlFiles.length) {
         notify.warn(
             NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
@@ -43,12 +49,10 @@ export async function criticalCss() {
         return
     }
 
-    // const cssFilePath = nodePath.resolve(path.build.styles, 'main.min.css')
     const cssFiles = fastGlob.sync('**/*.css', {
         cwd: path.build.styles,
         absolute: true,
     })
-
     if (!cssFiles.length) {
         notify.warn(
             NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
@@ -71,46 +75,109 @@ export async function criticalCss() {
         height: 1080,
     }
 
-    for (const filePath of htmlFiles) {
-        let html = fs.readFileSync(filePath, 'utf-8')
+    // Очищаем и пересоздаем директорию для скриншотов отладки
+    const debugDir = nodePath.resolve('./debug__critical_css__screenshots')
+    if (fs.existsSync(debugDir)) {
+        fs.rmSync(debugDir, { recursive: true, force: true })
+    }
+    fs.mkdirSync(debugDir, { recursive: true })
 
-        if (
-            !html.includes('<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->')
-        ) {
-            continue
+    const TEMP_PORT = 7777
+    const protocol = env.isHttps ? 'https' : 'http'
+
+    // * Запускаем временный сервер перед генерацией
+    await startCriticalServer(TEMP_PORT)
+
+    try {
+        for (const filePath of htmlFiles) {
+            let html = fs.readFileSync(filePath, 'utf-8')
+
+            if (
+                !html.includes(
+                    '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
+                )
+            ) {
+                continue
+            }
+
+            // Формируем относительный путь от path.build.html к файлу
+            const relativePath = nodePath.relative(dir, filePath).replace(/\\/g, '/')
+            const httpUrl = `${protocol}://localhost:${TEMP_PORT}/${relativePath}`
+
+            // Формирование имени скриншота
+            const pageSlug = relativePath.replace(/\.html$/, '').replace(/[\\/]/g, '_')
+            const screenshotBasePath = `${debugDir.replace(/\\/g, '/')}/${pageSlug}`
+
+            try {
+                const criticalCss = await penthouse({
+                    // * html файл открытый но отдельном dev-сервере для Critical CSS
+                    url: httpUrl,
+
+                    // * css строка, из которой вырезаем critical-css
+                    cssString: combinedCss,
+
+                    // * размеры viewport
+                    width: viewport.width,
+                    height: viewport.height,
+
+                    // ! принудительно оставляем все медиа-запросы, даже если они не подходят
+                    keepLargerMediaQueries: true,
+
+                    // * после загрузки страницы ждём 300ms пока всё прогрузится
+                    // * и только после этого извлекаем Critical CSS
+                    renderWaitTime: 300,
+
+                    // ! INCLUDE SOME CSS CLASSES TO PENTHOUSE MANUALLY !!!
+                    forceInclude: [
+                        /@font-face/,
+                        /data-theme/,
+                        /^\.js/,
+                        /^\.nojs/,
+                        /^\.page-/,
+                        /^\.avif/,
+                        /^\.webp/,
+                    ],
+
+                    // * сохраняем скриншоты того, что увидел puppeteer
+                    screenshots: {
+                        basePath: screenshotBasePath,
+                        type: 'jpeg',
+                        quality: 80,
+                    },
+
+                    // * запрещаем исполнять JS
+                    blockJSRequests: true,
+
+                    // * puppeteer settings
+                    puppeteer: {
+                        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+                        headless: true,
+                        args: [
+                            '--no-sandbox',
+                            '--disable-setuid-sandbox',
+                            '--allow-file-access-from-files',
+                            '--disable-web-security',
+                            '--ignore-certificate-errors',
+                        ],
+                    },
+                })
+
+                html = html.replace(
+                    '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
+                    `<style type="text/css" id="critical-css">${criticalCss}</style>`,
+                )
+
+                fs.writeFileSync(filePath, html)
+            } catch (err) {
+                notify.warn(
+                    NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
+                    `${nodePath.basename(filePath)}: ${err.message}`,
+                )
+            }
         }
-
-        try {
-            const fileUrl = pathToFileURL(filePath).href
-            const criticalCss = await penthouse({
-                url: fileUrl,
-                cssString: combinedCss,
-                width: viewport.width,
-                height: viewport.height,
-
-                // ! INCLUDE SOME CSS CLASSES TO PENTHOUSE MANUALLY !!!
-                forceInclude: [/^\.avif #reeding-house/, /^\.webp #reeding-house/],
-
-                // * puppeteer settings
-                // puppeteer: {
-                //     executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-                //     headless: 'new', // актуально для свежих версий Chrome
-                //     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-                // },
-            })
-
-            html = html.replace(
-                '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
-                `<style type="text/css" id="critical-css">${criticalCss}</style>`,
-            )
-
-            fs.writeFileSync(filePath, html)
-        } catch (err) {
-            notify.warn(
-                NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
-                `${nodePath.basename(filePath)}: ${err.message}`,
-            )
-        }
+    } finally {
+        // Гасим временный сервер в любом случае (даже при ошибке)
+        stopCriticalServer()
     }
 
     // * update dev server

@@ -149,7 +149,7 @@ function createHtmlStream({
             .pipe(gulpReplace(/@(scss|css)\//g, `${pathPrefix}css/`))
             .pipe(gulpReplace(/@(ts|js)\//g, `${pathPrefix}js/`))
             .pipe(gulpReplace(/@audio\//g, `${pathPrefix}assets/audio/`))
-            // .pipe(gulpReplace(/@fonts\//g, `${pathPrefix}assets/fonts/`))
+            .pipe(gulpReplace(/@fonts\//g, `${pathPrefix}assets/fonts/`))
             .pipe(
                 gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
                     const id = p1.replace(/\//g, '--')

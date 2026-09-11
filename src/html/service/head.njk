@@ -9,6 +9,72 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+    <!-- ! 1. CRITICAL JS <head> SCRIPTS | START --->
+    <!-- ! ------------------------------------- --->
+
+    <!-- * 1. If JS supports -> enable JS classes - -->
+    <script>
+        document.documentElement.classList.remove('nojs')
+        document.documentElement.classList.add('js')
+    </script>
+
+    <!-- * 2. Set current page name to <body> -->
+    <script>
+        const pageName =
+            window.location.pathname
+                .split('/')
+                .pop()
+                .replace(/\.[^/.]+$/, '') || 'home'
+        document.documentElement.classList.add(`page-${pageName}`)
+    </script>
+
+    <!-- * 3. Choose saved color-scheme before render page -->
+    <script>
+        const stored = localStorage.getItem('theme')
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        document.documentElement.setAttribute('data-theme', stored || system)
+    </script>
+
+    <!-- * 4. Inject inline avif/webp script polyfill | PLACE IT BEFORE ANY CSS FILES --->
+    {{ inline_script('node_modules/gulp-web-images-css/plugin.js') }}
+
+    <!-- ! 1. CRITICAL JS <head> SCRIPTS | END --->
+    <!-- ! ----------------------------------- --->
+
+    <!-- ! 2. PRELOAD CRITICAL ASSETS | START --->
+    <!-- ! ---------------------------------- --->
+
+    <link rel="preload" href="@fonts/Montserrat/Montserrat-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="@fonts/Pattaya/Pattaya-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- ! 2. PRELOAD CRITICAL ASSETS | END --->
+    <!-- ! -------------------------------- --->
+
+    <!--! 3. CSS BLOCK | START --->
+    <!--! -------------------- --->
+
+    <!-- * 1. Inject inline critical-css --->
+    <!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER --->
+
+    <!-- * 2. Import vendors CSS --->
+    <!-- empty --->
+
+    <!-- ! DO NOT REMOVE THIS COMMENT !!! | INLINE CSS START | DISABLED BY DEFAULT --->
+    <!-- * 3. Import my CSS --->
+    <link rel="preload" href="@scss/main.scss" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+
+    <!-- * 3.1. Fallback (if JS disable) --->
+    <noscript>
+        <link rel="stylesheet" href="@scss/main.scss" />
+    </noscript>
+    <!-- ! DO NOT REMOVE THIS COMMENT !!! | INLINE CSS END --->
+
+    <!--! 3. CSS BLOCK | END --->
+    <!--! ------------------ --->
+
+    <!--! 4. META TAGS | START --->
+    <!--! -------------------- --->
+
     <!-- * BLOCK PHONE NUMBER, DATE, ADDRESS & EMAIL AS LINK DETECTION --->
     <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
 
@@ -57,24 +123,13 @@
     <!-- * Canonical tag | Improving search engine rankings --->
     <link rel="canonical" href="{{ current_page__full_url }}" />
 
-    <!-- ! CRITICAL JS <head> SCRIPTS | INLINE SCRIPTS --->
-    <!-- * If JS supports -> enable JS classes - -->
-    <script>
-        document.documentElement.classList.remove('nojs')
-        document.documentElement.classList.add('js')
-    </script>
+    <!--! 4. META TAGS | END --->
+    <!--! ------------------ --->
 
-    <!-- * Set current page name to body -->
-    <script>
-        const pageName =
-            window.location.pathname
-                .split('/')
-                .pop()
-                .replace(/\.[^/.]+$/, '') || 'home'
-        document.documentElement.classList.add(`page-${pageName}`)
-    </script>
+    <!-- ! 5. NON-CRITICAL (BASE) JS <head> SCRIPTS | START --->
+    <!-- ! ------------------------------------------------ --->
 
-    <!-- * Add tabbing class to body if user move in page with tab button -->
+    <!-- * 1. Add tabbing class to body if user move in page with tab button -->
     <script>
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Tab') {
@@ -85,28 +140,10 @@
             document.documentElement.classList.remove('user-is-tabbing')
         })
     </script>
-    <!-- ! ------------------------------------------- --->
 
-    <!-- * 0. Inject inline avif/webp script polyfill --->
-    <!-- ! STRONGLY RECOMMENDED PLACE IT BEFORE ANY CSS FILES --->
-    {{ inline_script('node_modules/gulp-web-images-css/plugin.js') }}
-
-    <!-- * 1. Inject inline critical-css --->
-    <!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER --->
-
-    <!-- * 2. Import vendors CSS --->
-    <!-- empty --->
-
-    <!-- ! DO NOT REMOVE THIS COMMENT !!! | INLINE CSS START | DISABLED BY DEFAULT --->
-    <!-- * 3. Import my CSS --->
-    <link rel="preload" href="@scss/main.scss" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <!-- * 3.1. Fallback (if JS disable) --->
-    <noscript>
-        <link rel="stylesheet" href="@scss/main.scss" />
-    </noscript>
-    <!-- ! DO NOT REMOVE THIS COMMENT !!! | INLINE CSS END --->
-
-    <!-- ! BASE JS <head> SCRIPTS | PRELOAD SCRIPTS --->
+    <!-- * 2. Other base non-inline JS scripts for <head> section -->
     {% include "service/scripts__preload.njk" %}
-    <!-- ! ---------------------------------------- --->
+
+    <!-- ! 5. NON-CRITICAL (BASE) JS <head> SCRIPTS | END --->
+    <!-- ! ---------------------------------------------- --->
 </head>

@@ -26,16 +26,11 @@ export async function initColorSchemeManager() {
     const getSystemTheme = (): string =>
         window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
-    // ! --- ЧАСТЬ 1: МГНОВЕННАЯ (Синхронно красим страницу до рендеринга DOM) ---
-    const storedTheme = localStorage.getItem('theme')
-    const activeTheme = storedTheme || getSystemTheme()
+    // ! --- ЧАСТЬ 1: ЧТЕНИЕ ТЕМЫ ИЗ DOM (уже выставлена в <head>) ---
+    const activeTheme = document.documentElement.getAttribute('data-theme') || getSystemTheme()
 
-    // Устанавливаем тему на html немедленно. Никакого FOUC и белых вспышек!
-    document.documentElement.setAttribute('data-theme', activeTheme)
-    document.documentElement.setAttribute('data-bs-theme', activeTheme)
-
-    // !--- ЧАСТЬ 2: ОТЛОЖЕННАЯ (Безопасно ждем DOM для настройки кнопок и иконок) ---
-    const setupUIListeners = async () => {
+    // ! --- ЧАСТЬ 2: НАСТРОЙКА UI И СЛУШАТЕЛЕЙ ---
+    const setupUIListeners = () => {
         const toggleTheme = document.getElementById('My-Toggle-Color-Scheme-Button')
         const toggleThemeMobile = document.getElementById('My-Toggle-Color-Scheme-Button--Mobile')
         const resetTheme = document.getElementById('My-Reset-Color-Scheme-Button')
@@ -49,7 +44,6 @@ export async function initColorSchemeManager() {
 
         const handleThemeChange = (targetTheme: string) => {
             document.documentElement.setAttribute('data-theme', targetTheme)
-            document.documentElement.setAttribute('data-bs-theme', targetTheme)
             updateVisuals(targetTheme)
             localStorage.setItem('theme', targetTheme)
         }
@@ -76,12 +70,11 @@ export async function initColorSchemeManager() {
         setupUIListeners()
     }
 
-    // ! --- ЧАСТЬ 3: ГЛОБАЛЬНАЯ (Отслеживание системных изменений темы) ---
+    // ! --- ЧАСТЬ 3: ГЛОБАЛЬНЫЙ СЛУШАТЕЛЬ ОС ---
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
         if (!localStorage.getItem('theme')) {
             const systemTheme = getSystemTheme()
             document.documentElement.setAttribute('data-theme', systemTheme)
-            document.documentElement.setAttribute('data-bs-theme', systemTheme)
             updateVisuals(systemTheme)
         }
     })

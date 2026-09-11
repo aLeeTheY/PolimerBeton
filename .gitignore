@@ -111,6 +111,8 @@
 **/backup/
 **/old/
 
+**/debug__critical_css__screenshots/
+
 # ! --- 5. Файлы под запретом
 # ! -------------------------
 out.txt
