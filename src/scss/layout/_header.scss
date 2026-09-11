@@ -1,3 +1,4 @@
+/* stylelint-disable length-zero-no-unit */
 @use '../abstracts/variables' as var;
 @use '../abstracts/mixins' as mixin;
 @use '../abstracts/z_index' as *;
@@ -8,9 +9,9 @@
     z-index: z('header');
     position: fixed;
 
-    top: 0;
-    left: 0;
-    right: 0;
+    top: env(safe-area-inset-top, 0px);
+    left: env(safe-area-inset-left, 0px);
+    right: env(safe-area-inset-right, 0px);
 
     width: 100%;
     height: auto;
@@ -29,11 +30,11 @@
         align-items: center;
         justify-content: stretch;
 
-        top: 0;
+        top: env(safe-area-inset-top, 0px);
+        left: calc(-25px + env(safe-area-inset-left, 0px));
+        right: calc(-25px + env(safe-area-inset-right, 0px));
 
-        left: -25px;
-        right: -25px;
-        padding: 0 25px;
+        padding: 0 calc(25px + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
 
         width: auto;
         height: var(--layout__header__navigation-bar-height);
@@ -59,12 +60,14 @@
         position: fixed;
         z-index: z('lower');
 
-        top: 0;
+        top: env(safe-area-inset-top, 0px);
+        left: calc(-25px + env(safe-area-inset-left, 0px));
+        right: calc(-25px + env(safe-area-inset-right, 0px));
 
-        left: -25px;
-        right: -25px;
-        padding: 0 25px;
-        padding-top: var(--layout__header__navigation-bar-height);
+        padding: 0 calc(25px + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+        padding-top: calc(
+            var(--layout__header__navigation-bar-height) + env(safe-area-inset-top, 0px)
+        );
 
         background-color: var(--color__header__navigation-menu-background);
         box-shadow: 0 2px 16px var(--color__global__shadow);

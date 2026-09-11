@@ -44,7 +44,6 @@ export function initHeroBackgroundImageParallaxManager() {
         const progress = (scrollY + windowHeight - heroTop) / (windowHeight + heroHeight)
         const clampedProgress = Math.min(Math.max(progress, 0), 1)
 
-        // Жесткий рилтайм как ты и просил
         const currentPercent = (-35 + clampedProgress * 70).toString()
 
         heroBgWrapper.style.transform = `translate3d(0, ${currentPercent}%, 0)`
