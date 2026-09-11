@@ -31,13 +31,22 @@ export function styles() {
     // * Формируем путь в зависимости от флагов окружения
     let cssToAssets = '../assets/'
 
-    if (env.isInlineCSS) {
-        cssToAssets = './assets/'
-    } else if (env.isLocal) {
-        cssToAssets = '../assets/'
+    if (env.isLocal) {
+        // В локальном режиме (file:///) используем строго относительные пути
+        if (env.isInlineCSS) {
+            // Если CSS встраивается в HTML: для языковых подпапок нужно подняться на уровень выше
+            cssToAssets = env.isI18N ? '../assets/' : './assets/'
+        } else {
+            // Внешний CSS лежит в dist/css/, до dist/assets/ всегда ровно один шаг назад
+            cssToAssets = '../assets/'
+        }
+    } else if (env.isInlineCSS && !env.assetPrefix) {
+        // Если инлайн-CSS используется без домена и без префикса
+        cssToAssets = env.isI18N ? '../assets/' : './assets/'
     } else {
-        // * Для Production используем путь от корня сайта, чтобы пути к шрифтам и картинам не ломались
-        cssToAssets = '/assets/'
+        // В остальных режимах (dev, prod, gh-pages) берем абсолютный путь из env.js
+        // env.assetPrefix всегда '/' или '/site-folder/' -> получается '/assets/' или '/site-folder/assets/'
+        cssToAssets = `${env.assetPrefix}assets/`
     }
 
     return (
