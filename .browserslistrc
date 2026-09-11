@@ -9,7 +9,7 @@
 # ? 1. cross-env NODE_ENV=*mode* npx browserslist
 # ? 2. cross-env NODE_ENV=*mode* npx browserslist --coverage
 
-# * ≈ 90.23% global coverage | last checked: 06/20/2026
+# * These browsers account for 93.81% of all users globally | last checked: 09/11/2026
 [production]
 # ! взяли большой список нужных браузеров
 > 0.05% and last 5 years
@@ -24,7 +24,7 @@ not op_mini all
 # not safari < 15.6
 # not ios_saf < 13.4
 
-# * ≈ 1.05% global coverage | last checked: 06/20/2026
+# * These browsers account for 0.14% of all users globally | last checked: 09/11/2026
 [development]
 last 1 chrome version
 last 1 firefox version
