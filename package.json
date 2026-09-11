@@ -140,8 +140,8 @@
         "test:pw:webkit": "tsx ./tests/playwright/start_manual_website_test_in_playwright_browsers.ts webkit",
         "test:pw:all": "npm run test:chromium & npm run test:firefox & npm run test:webkit",
         "__MARKDOWN__": "",
-        "md:encode": "npx prettier --write \"**/*.md\" && npx tsx cli/transform-md.ts encode README.md README.EN.md",
-        "md:decode": "npx tsx cli/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\"",
+        "md:encode": "npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern && npx tsx cli/transform-md.ts encode README.md README.EN.md",
+        "md:decode": "npx tsx cli/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern",
         "__POST_INSTALL__": "",
         "prepare": "husky",
         "postinstall": "npm run md:decode"

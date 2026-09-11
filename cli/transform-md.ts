@@ -56,8 +56,8 @@ yargs(hideBin(process.argv))
 // --- Handler ---
 function processFiles(files: string[], command: 'encode' | 'decode', verbose: boolean): void {
     if (files.length === 0) {
-        console.error('Please specify at least one .md file')
-        process.exit(1)
+        if (verbose) console.warn('No files specified to process.')
+        return
     }
 
     for (const file of files) {
@@ -67,7 +67,7 @@ function processFiles(files: string[], command: 'encode' | 'decode', verbose: bo
         }
 
         if (!fs.existsSync(file)) {
-            console.error(`Error: File not found: ${file}`)
+            if (verbose) console.warn(`Skipped non-existent file: ${file}`)
             continue
         }
 
