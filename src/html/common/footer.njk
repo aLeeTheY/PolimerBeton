@@ -58,7 +58,7 @@
                 <span>&copy;</span>
                 <span class="d-none d-sm-inline">{{ footer.copyright.title }}</span>
 
-                {% if IS_DJANGO_BUILD %}
+                {% if is_django_build %}
                     2024-{% raw %}{% now "Y" %}{% endraw %}
                 {% else %}
                     <span>

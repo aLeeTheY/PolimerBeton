@@ -455,13 +455,23 @@
                                 </div>
                             </div>
 
-                            <button
-                                id="my-custom-feedback-form-submit-button"
-                                class="my-custom-feedback-form__submit-button my-default-button"
-                                type="submit"
-                                name="my-custom-feedback-form-submit-button">
-                                {{ index.feedback_form.submit_button }}
-                            </button>
+                            {% if is_github_pages_build %}
+                                <!--* Демо кнопка для Github Pages --->
+                                <div
+                                    id="my-custom-feedback-form-submit-button"
+                                    class="my-custom-feedback-form__submit-button my-default-button">
+                                    <a class="my-default-button__link" href="@page/success.njk">{{ index.feedback_form.submit_button }}</a>
+                                </div>
+                            {% else %}
+                                <!--* Обычное поведение --->
+                                <button
+                                    id="my-custom-feedback-form-submit-button"
+                                    class="my-custom-feedback-form__submit-button my-default-button"
+                                    type="submit"
+                                    name="my-custom-feedback-form-submit-button">
+                                    {{ index.feedback_form.submit_button }}
+                                </button>
+                            {% endif %}
                         </fieldset>
                     </form>
                 </div>

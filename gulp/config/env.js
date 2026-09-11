@@ -344,6 +344,9 @@ export const env = {
     isProdServer: argv.prodServer,
     isHttps: argv.secure,
 
+    // ! прокидываем состояние, если текущая сборка - сборка для Github Pages
+    isGithubPagesBuild: isGitHubPages,
+
     // ! сборка под django | нужно учитывать в nunjucks-темплейтах
     isDjangoBuild: argv.djangoBuild,
 

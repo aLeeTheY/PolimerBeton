@@ -113,6 +113,7 @@ function createHtmlStream({
                         // lstripBlocks: true,
                     },
                     data: {
+                        is_github_pages_build: env.isGithubPagesBuild,
                         is_django_build: env.isDjangoBuild,
                         base_website_url: baseWebsiteUrl,
                         i18n,
