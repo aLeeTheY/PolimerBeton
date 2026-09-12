@@ -7,18 +7,23 @@ export function initHeroBackgroundImageParallaxManager() {
 
     // ! ПРОВЕРКА ПОДДЕРЖКИ CSS SCROLL-DRIVEN ANIMATIONS
     // Если браузер поддерживает нативный скролл (Chrome 115+),
-    // вырубаем JS логику, всё сделает CSS (см. изменения в SCSS ниже)
+    // вырубаем JS логику, всё сделает CSS
     const supportsScrollDrivenAnimations = CSS.supports('animation-timeline', 'view()')
     if (supportsScrollDrivenAnimations) {
         return
     }
 
-    // --- Дальше идет твой оригинальный рилтайм код как фоллбэк для Safari/старых браузеров ---
+    // --- JS-фоллбэк для Safari / старых браузеров ---
     const hero = document.querySelector('.my-hero') as HTMLElement | null
     const heroBgWrapper = document.querySelector('.my-hero__bg-wrapper') as HTMLElement | null
     if (!hero || !heroBgWrapper) {
         return
     }
+
+    // ? диапазон движения в процентах от высоты wrapper-а
+    // ? (должен совпадать с keyframes в SCSS)
+    const PARALLAX_FROM_PERCENT = -35
+    const PARALLAX_TO_PERCENT = 35
 
     let ticking = false
     let isInView = false
@@ -26,12 +31,15 @@ export function initHeroBackgroundImageParallaxManager() {
     let heroTop = 0
     let heroHeight = 0
     let windowHeight = 0
+    let wrapperHeightPx = 0
 
     const updateMetrics = () => {
         const rect = hero.getBoundingClientRect()
         windowHeight = window.innerHeight
         heroHeight = rect.height
         heroTop = rect.top + window.scrollY
+        // ? высота в px — чтобы transform считался без % и слой кэшировался GPU
+        wrapperHeightPx = heroBgWrapper.offsetHeight
     }
 
     const updateParallax = () => {
@@ -44,18 +52,24 @@ export function initHeroBackgroundImageParallaxManager() {
         const progress = (scrollY + windowHeight - heroTop) / (windowHeight + heroHeight)
         const clampedProgress = Math.min(Math.max(progress, 0), 1)
 
-        const currentPercent = (-35 + clampedProgress * 70).toString()
+        const percent =
+            PARALLAX_FROM_PERCENT + clampedProgress * (PARALLAX_TO_PERCENT - PARALLAX_FROM_PERCENT)
+        const offsetPx = (percent / 100) * wrapperHeightPx
 
-        heroBgWrapper.style.transform = `translate3d(0, ${currentPercent}%, 0)`
+        heroBgWrapper.style.transform = `translate3d(0, ${offsetPx}px, 0)`
         ticking = false
     }
 
     const observer = new IntersectionObserver(([entry]) => {
         isInView = entry.isIntersecting
 
+        // ? композитный слой включаем только пока hero в вьюпорте
+        heroBgWrapper.style.willChange = isInView ? 'transform' : 'auto'
+
         if (isInView) {
             updateMetrics()
-            updateParallax()
+            // ? откладываем в rAF, чтобы не мешать observer callback-у
+            window.requestAnimationFrame(updateParallax)
         }
     })
     observer.observe(hero)
@@ -97,5 +111,7 @@ export function initHeroBackgroundImageParallaxManager() {
         window.removeEventListener('orientationchange', handleOrientationChange)
         window.removeEventListener('resize', handleResize)
         window.clearTimeout(resizeTimer)
+
+        heroBgWrapper.style.willChange = 'auto'
     }
 }

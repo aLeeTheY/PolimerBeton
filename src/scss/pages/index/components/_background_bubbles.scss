@@ -8,8 +8,8 @@
     position: absolute;
 
     inset: 100vh 0 0;
-    @supports (inset: 100dvh 0 0) {
-        inset: 100dvh 0 0;
+    @supports (inset: 100svh 0 0) {
+        inset: 100svh 0 0;
     }
 
     pointer-events: none;

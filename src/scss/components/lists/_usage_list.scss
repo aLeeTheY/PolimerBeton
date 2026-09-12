@@ -12,7 +12,11 @@
     &__item {
         @extend %text__paragraph--usage;
         @include mixin.transition-for(color, transform, background-color, backdrop-filter);
-        will-change: transform, backdrop-filter;
+
+        // ? наверное должно помочь, чтобы не лагал
+        // ? --------------------------------------
+        backface-visibility: hidden;
+        // ? --------------------------------------
 
         counter-increment: usage-list-counter;
 
@@ -55,6 +59,8 @@
         }
 
         @include mixin.hover {
+            will-change: transform;
+
             transform: scale(var.$abstract__global__scale--hover);
             backdrop-filter: blur(var.$abstract__global__card-blur--hover);
 
@@ -64,6 +70,8 @@
         }
 
         @include mixin.active {
+            will-change: transform;
+
             transform: scale(var.$abstract__global__scale--active);
             backdrop-filter: blur(var.$abstract__global__card-blur--active);
 

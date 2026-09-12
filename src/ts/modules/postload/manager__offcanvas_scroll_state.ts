@@ -6,18 +6,14 @@ export function initOffcanvasScrollStateManager() {
 
     const header = document.querySelector('.my-header__fixed-part') as HTMLElement | null
     const offcanvas = document.getElementById('nav-offcanvas') as HTMLElement | null
-    const navMenu = offcanvas?.querySelector('.my-nav-menu') as HTMLElement | null
 
-    if (!header || !offcanvas || !navMenu) {
+    if (!header || !offcanvas) {
         return
     }
 
     let lastScrollTop = window.scrollY
     let offcanvasIsShown = false
     let ticking = false
-
-    // ? ширина главного скроллбара страницы
-    // const getScrollbarWidth = () => window.innerWidth - document.documentElement.clientWidth
 
     const lockScroll = () => {
         document.documentElement.classList.add('my-noscroll-y')
@@ -30,6 +26,8 @@ export function initOffcanvasScrollStateManager() {
     const updateScrollState = () => {
         if (window.innerWidth >= NO_SCROLL_BREAKPOINT_VW_WIDTH) {
             unlockScroll()
+            // ? на десктопе шапка не должна оставаться спрятанной
+            header.classList.remove(HIDDEN_CLASS)
             return
         }
 
@@ -48,6 +46,8 @@ export function initOffcanvasScrollStateManager() {
 
     const handleHide = () => {
         offcanvasIsShown = false
+        // ? синхронизируем позицию, чтобы первый скролл не дёргал шапку
+        lastScrollTop = window.scrollY
         updateScrollState()
     }
 
@@ -76,14 +76,12 @@ export function initOffcanvasScrollStateManager() {
         }
     }
 
-    // ? вешаем листенеры
     offcanvas.addEventListener('show.bs.offcanvas', handleShow)
     offcanvas.addEventListener('hidden.bs.offcanvas', handleHide)
 
-    window.addEventListener('resize', updateScrollState)
+    window.addEventListener('resize', updateScrollState, { passive: true })
     window.addEventListener('scroll', handleScroll, { passive: true })
 
-    // ? функция очистки
     return () => {
         offcanvas.removeEventListener('show.bs.offcanvas', handleShow)
         offcanvas.removeEventListener('hidden.bs.offcanvas', handleHide)

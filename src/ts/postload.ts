@@ -9,7 +9,7 @@ import 'bootstrap/js/dist/offcanvas'
 import { initCookieConsentBannerManager } from 'modules/postload/manager__cookies_consent_banner'
 import { initHeroBackgroundImageParallaxManager } from 'modules/postload/manager__hero__background_image_parallax'
 
-import { initDecorativeBubblesAnimationStateManager } from 'modules/postload/manager__decorative_bubbles__animation_state'
+// import { initDecorativeBubblesAnimationStateManager } from 'modules/postload/manager__decorative_bubbles__animation_state'
 import { initBallsGroupsAnimationStateManager } from 'modules/postload/manager__balls_group__animation_state'
 import { initGradientImageAnimationStateManager } from 'modules/postload/manager__gradient_image__animation_state'
 import { initPriceBadgeAnimationStateManager } from 'modules/postload/manager__price_badge__animation_state'
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeroBackgroundImageParallaxManager()
     // ! --------------------------
 
-    initDecorativeBubblesAnimationStateManager()
+    // initDecorativeBubblesAnimationStateManager()
     initBallsGroupsAnimationStateManager()
     initGradientImageAnimationStateManager()
     initPriceBadgeAnimationStateManager()

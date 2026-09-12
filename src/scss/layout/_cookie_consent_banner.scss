@@ -9,7 +9,12 @@
     --my-cookie-consent-banner__page-offset: 32px;
 
     @include mixin.transition-for(transform, background-color, box-shadow);
-    will-change: transform;
+
+    // ? наверное должно помочь, чтобы не лагал
+    // ? --------------------------------------
+    backface-visibility: hidden;
+    // transform-style: preserve-3d;
+    // ? --------------------------------------
 
     z-index: z('cookie_consent');
     position: fixed;
@@ -117,6 +122,7 @@
     }
 
     &.show {
+        will-change: transform;
         transform: translateX(0);
 
         @include bs.media-breakpoint-down(lg) {
