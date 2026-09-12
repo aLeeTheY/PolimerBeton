@@ -163,24 +163,29 @@ function processAndOptimizeImages() {
                                 quality: env.buildMode.isDev ? 100 : 80,
                                 mozjpeg: env.buildMode.isStaging || env.buildMode.isProd,
                                 progressive: true,
+                                chromaSubsampling: '4:4:4',
                             })
                         } else if (format.type === 'png') {
                             formatPipeline = formatPipeline.png({
                                 effort: env.buildMode.isDev ? 1 : 10,
                                 quality: env.buildMode.isDev ? 100 : 80,
                                 compressionLevel: env.buildMode.isDev ? 0 : 9,
-                                palette: true,
+                                palette: true, // ? можно отключить, по ситуации
+                                adaptiveFiltering: true,
                             })
                         } else if (format.type === 'webp') {
                             formatPipeline = formatPipeline.webp({
                                 effort: env.buildMode.isDev ? 0 : 6,
-                                quality: env.buildMode.isDev ? 100 : 60,
+                                quality: env.buildMode.isDev ? 100 : 70,
+                                smartSubsample: true,
+                                smartDeblock: true,
                             })
                         } else if (format.type === 'avif') {
                             formatPipeline = formatPipeline.avif({
                                 effort: env.buildMode.isDev ? 0 : 9,
-                                quality: env.buildMode.isDev ? 100 : 50,
+                                quality: env.buildMode.isDev ? 100 : 55,
                                 bitdepth: 8,
+                                chromaSubsampling: '4:4:4',
                             })
                         }
 

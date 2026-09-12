@@ -129,7 +129,8 @@ function createHtmlStream({
                     // ? cчитать и проставлять width/height
                     setDimensions: true,
                     // ? добавлять loading="lazy"
-                    setLazyLoading: true,
+                    // ! ухудшает Lighthouse Mobile Score, но от него больше проблем, чем пользы
+                    setLazyLoading: false,
                     // ? добавлять decoding="async"
                     setAsyncDecoding: true,
 

@@ -30,25 +30,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ! --- ТЯЖЕЛЫЙ UI СТРАНИЦЫ | КАЧАЮТСЯ И ВЫПОЛНЯЮТСЯ В САМОМ КОНЦЕ
 // ! --------------------------------------------------------------
+const runWhenIdle = (task: () => void, fallbackDelay = 1500) => {
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(task, { timeout: 3000 })
+    } else {
+        setTimeout(task, fallbackDelay)
+    }
+}
+
 window.addEventListener('load', () => {
     const isMobile = window.matchMedia('(max-width: 767.98px)').matches
-    // const isDesktop = !isMobile
-    const isSlowDevice = (navigator.hardwareConcurrency ?? 4) < 4
+    const heavyDelay = isMobile ? 2500 : 1000 // * на мобилке/слабом девайсе ждём дольше, чтобы LCP успел
 
-    // * на мобилке/слабом девайсе ждём дольше, чтобы LCP успел
-    const smallDelay = 1000
-    const heavyDelay = isMobile || isSlowDevice ? 2500 : smallDelay
-
-    // * inputmask — грузим быстро, чтобы UX формы не страдал
-    setTimeout(async () => {
+    // * inputmask — грузим быстро, когда браузер свободен, чтобы UX формы не страдал
+    runWhenIdle(async () => {
         if (document.querySelector('my-custom-feedback-form')) {
             const { initFeedbackFormInputMask } =
                 await import('modules/postload/init__feedback_form__inputmask')
             initFeedbackFormInputMask()
         }
-    }, smallDelay)
+    })
 
-    // * 3D и tilt — можно и подождать
+    // * 3D и tilt — с фиксированной задержкой, чтобы дать LCP фору
     setTimeout(async () => {
         // * только на устройствах с мышкой
         if (window.matchMedia('(pointer: fine)').matches) {
@@ -56,13 +59,7 @@ window.addEventListener('load', () => {
             initVanillaTilt()
         }
 
-        // * только если это ПК и девайс НЕ ГАВНО
-        // const canRun3D = isDesktop && (navigator.hardwareConcurrency ?? 4) >= 4
-        const canRun3D = (navigator.hardwareConcurrency ?? 4) >= 4
-
-        if (canRun3D) {
-            const { init3DBalls } = await import('modules/ball-viewer')
-            init3DBalls()
-        }
+        const { init3DBalls } = await import('modules/ball-viewer')
+        init3DBalls()
     }, heavyDelay)
 })
