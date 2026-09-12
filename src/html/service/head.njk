@@ -9,7 +9,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- ! 1. CRITICAL JS <head> SCRIPTS | START --->
+    <!-- ! 1. PRELOAD CRITICAL ASSETS | START --->
+    <!-- ! ---------------------------------- --->
+
+    {% if current_page__page_name in ['index', 'home'] %}
+        <!-- * Preload hero background img | Mobile version -->
+        <link
+            rel="preload"
+            as="image"
+            type="image/avif"
+            fetchpriority="high"
+            href="@images/hero/background-mobile.avif"
+            imagesrcset="@images/hero/background-mobile.avif 1x, @images/hero/background-mobile@2x.avif 2x, @images/hero/background-mobile@3x.avif 3x"
+            media="(max-width: 768px)" />
+
+        <!-- * Preload hero background img | Desktop version -->
+        <link
+            rel="preload"
+            as="image"
+            type="image/avif"
+            fetchpriority="high"
+            href="@images/hero/background.avif"
+            media="(min-width: 769px)" />
+    {% endif %}
+
+    <!--* Preload fonts --->
+    <link rel="preload" href="@fonts/Montserrat/Montserrat-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="@fonts/Pattaya/Pattaya-Regular.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- ! 1. PRELOAD CRITICAL ASSETS | END --->
+    <!-- ! -------------------------------- --->
+
+    <!-- ! 2. CRITICAL JS <head> SCRIPTS | START --->
     <!-- ! ------------------------------------- --->
 
     <!-- * 1. If JS supports -> enable JS classes - -->
@@ -38,17 +69,8 @@
     <!-- * 4. Inject inline avif/webp script polyfill | PLACE IT BEFORE ANY CSS FILES --->
     {{ inline_script('node_modules/gulp-web-images-css/plugin.js') }}
 
-    <!-- ! 1. CRITICAL JS <head> SCRIPTS | END --->
+    <!-- ! 2. CRITICAL JS <head> SCRIPTS | END --->
     <!-- ! ----------------------------------- --->
-
-    <!-- ! 2. PRELOAD CRITICAL ASSETS | START --->
-    <!-- ! ---------------------------------- --->
-
-    <link rel="preload" href="@fonts/Montserrat/Montserrat-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="@fonts/Pattaya/Pattaya-Regular.woff2" as="font" type="font/woff2" crossorigin />
-
-    <!-- ! 2. PRELOAD CRITICAL ASSETS | END --->
-    <!-- ! -------------------------------- --->
 
     <!--! 3. CSS BLOCK | START --->
     <!--! -------------------- --->

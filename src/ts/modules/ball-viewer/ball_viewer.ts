@@ -4,8 +4,26 @@
 // ! Logic verified by output results. Maintained by aLeeTheY.
 // ! ------------------------------------------------------------
 
-import * as THREE from 'three'
-import { GLTF, GLTFLoader } from 'three/examples/jsm/Addons.js'
+import {
+    Scene,
+    PerspectiveCamera,
+    WebGLRenderer,
+    Group,
+    Mesh,
+    Object3D,
+    Material,
+    MeshPhysicalMaterial,
+    DirectionalLight,
+    Box3,
+    Vector3,
+    Timer,
+    MathUtils,
+    SRGBColorSpace,
+    AgXToneMapping,
+    RepeatWrapping,
+    LinearMipMapLinearFilter,
+} from 'three'
+import { GLTF, GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 
 import { getVariantFromElement } from './types'
@@ -29,13 +47,13 @@ class BallViewer {
     private modelUrl: string
 
     // --- Основные компоненты Three.js ---
-    private scene!: THREE.Scene
-    private camera!: THREE.PerspectiveCamera
-    private renderer!: THREE.WebGLRenderer
-    private ballGroup!: THREE.Group
+    private scene!: Scene
+    private camera!: PerspectiveCamera
+    private renderer!: WebGLRenderer
+    private ballGroup!: Group
 
     // --- Состояние времени и анимации ---
-    private clock = new THREE.Timer()
+    private clock = new Timer()
     private elapsedTimeAfterLoad = 0
     private needsDeltaReset = false // Флаг для сброса скачков времени при возврате на вкладку/появлении в зоне видимости
 
@@ -57,7 +75,7 @@ class BallViewer {
 
     // Массив для гарантированного удаления клонированных материалов,
     // чтобы избежать утечек памяти (memory leaks) в WebGL.
-    private instancedMaterials: THREE.Material[] = []
+    private instancedMaterials: Material[] = []
 
     constructor(container: HTMLElement) {
         this.container = container
@@ -67,10 +85,10 @@ class BallViewer {
     }
 
     private init() {
-        this.scene = new THREE.Scene()
+        this.scene = new Scene()
 
         // Инициализация рендерера с упором на качество и производительность
-        this.renderer = new THREE.WebGLRenderer({
+        this.renderer = new WebGLRenderer({
             antialias: true,
             alpha: true, // Прозрачный фон
             powerPreference: 'high-performance', // Запрос дискретной видеокарты, если доступна
@@ -80,8 +98,8 @@ class BallViewer {
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
         // Современный воркфлоу работы с цветом и светом
-        this.renderer.outputColorSpace = THREE.SRGBColorSpace
-        this.renderer.toneMapping = THREE.AgXToneMapping // AgX дает более реалистичные засветы, чем ACESFilmic
+        this.renderer.outputColorSpace = SRGBColorSpace
+        this.renderer.toneMapping = AgXToneMapping // AgX дает более реалистичные засветы, чем ACESFilmic
         this.renderer.toneMappingExposure = 1.0
 
         this.loadModel()
@@ -137,13 +155,13 @@ class BallViewer {
         }
 
         const loadedScene = gltf.scene
-        this.ballGroup = new THREE.Group()
+        this.ballGroup = new Group()
 
         // Безопасный перенос мешей: сначала собираем в массив, потом attach.
         // Если делать это прямо в traverse, нарушится итерация по дереву сцены.
-        const meshesToMove: THREE.Mesh[] = []
+        const meshesToMove: Mesh[] = []
         loadedScene.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
+            if (child instanceof Mesh) {
                 meshesToMove.push(child)
             }
         })
@@ -159,17 +177,17 @@ class BallViewer {
         // --- Настройка камеры ---
         // Ищем камеру в модели, если её нет — создаем дефолтную
         if (gltf.cameras && gltf.cameras.length > 0) {
-            this.camera = gltf.cameras[0] as THREE.PerspectiveCamera
+            this.camera = gltf.cameras[0] as PerspectiveCamera
         } else {
             loadedScene.traverse((child) => {
-                if (child instanceof THREE.PerspectiveCamera) {
+                if (child instanceof PerspectiveCamera) {
                     this.camera = child
                 }
             })
         }
 
         if (!this.camera) {
-            this.camera = new THREE.PerspectiveCamera(
+            this.camera = new PerspectiveCamera(
                 39.6,
                 this.container.clientWidth / this.container.clientHeight,
                 0.1,
@@ -185,7 +203,7 @@ class BallViewer {
 
         // --- Настройка освещения ---
         loadedScene.traverse((child) => {
-            if (child instanceof THREE.DirectionalLight) {
+            if (child instanceof DirectionalLight) {
                 const KEY_LIGHT_INTENSITY = 5
                 // Настраиваем интенсивность по именам источников света из блендера/GLTF
                 if (child.name.toLowerCase().includes('key')) {
@@ -198,15 +216,15 @@ class BallViewer {
 
         // --- Применение вариантов материалов (кастомизация мяча) ---
         this.ballGroup.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
+            if (child instanceof Mesh) {
                 child.castShadow = false
                 child.receiveShadow = false
 
                 const isArray = Array.isArray(child.material)
-                const materials = (isArray ? child.material : [child.material]) as THREE.Material[]
+                const materials = (isArray ? child.material : [child.material]) as Material[]
 
-                const newMaterials = materials.map((material: THREE.Material) => {
-                    if (material instanceof THREE.MeshPhysicalMaterial) {
+                const newMaterials = materials.map((material: Material) => {
+                    if (material instanceof MeshPhysicalMaterial) {
                         // Клонируем материал, чтобы изменение цвета не затронуло другие мячи на странице
                         const clonedMat = material.clone()
                         clonedMat.color.set(variant.color)
@@ -217,15 +235,15 @@ class BallViewer {
                         if (clonedMat.normalMap) {
                             clonedMat.normalMap = clonedMat.normalMap.clone()
 
-                            clonedMat.normalMap.wrapS = THREE.RepeatWrapping
-                            clonedMat.normalMap.wrapT = THREE.RepeatWrapping
+                            clonedMat.normalMap.wrapS = RepeatWrapping
+                            clonedMat.normalMap.wrapT = RepeatWrapping
 
                             clonedMat.normalMap.repeat.set(1.618, 1.618)
                             clonedMat.normalMap.offset.set(variant.offset[0], variant.offset[1])
                             clonedMat.normalScale.set(2, -2) // Инверсия/усиление нормалей
 
                             // Улучшение качества текстур под углом
-                            clonedMat.normalMap.minFilter = THREE.LinearMipMapLinearFilter
+                            clonedMat.normalMap.minFilter = LinearMipMapLinearFilter
                             clonedMat.normalMap.generateMipmaps = true
                             clonedMat.normalMap.anisotropy = maxAnisotropy
 
@@ -286,8 +304,8 @@ class BallViewer {
             return
         }
 
-        const box = new THREE.Box3().setFromObject(this.ballGroup)
-        const size = new THREE.Vector3()
+        const box = new Box3().setFromObject(this.ballGroup)
+        const size = new Vector3()
         box.getSize(size)
 
         const radius = Math.max(size.x, size.y, size.z) / 2
@@ -295,11 +313,11 @@ class BallViewer {
             return
         }
 
-        const center = new THREE.Vector3()
+        const center = new Vector3()
         box.getCenter(center)
         this.ballGroup.position.sub(center)
 
-        const vFovRad = THREE.MathUtils.degToRad(this.camera.fov) / 2
+        const vFovRad = MathUtils.degToRad(this.camera.fov) / 2
         const aspect = this.camera.aspect
         const hFovRad = Math.atan(Math.tan(vFovRad) * aspect)
 
@@ -391,8 +409,8 @@ class BallViewer {
         this.pitch += deltaY * this.SENSITIVITY
 
         // Ограничиваем вращение по вертикали (чтобы мяч не переворачивался наизнанку)
-        const maxPitch = THREE.MathUtils.degToRad(85)
-        this.pitch = THREE.MathUtils.clamp(this.pitch, -maxPitch, maxPitch)
+        const maxPitch = MathUtils.degToRad(85)
+        this.pitch = MathUtils.clamp(this.pitch, -maxPitch, maxPitch)
 
         this.previousPointerPosition = { x: e.clientX, y: e.clientY }
     }
@@ -466,22 +484,22 @@ class BallViewer {
                 let speedFactor = 0
                 // Логика плавного разгона авто-вращения
                 if (this.elapsedTimeAfterLoad > this.START_DELAY) {
-                    const rampProgress = THREE.MathUtils.clamp(
+                    const rampProgress = MathUtils.clamp(
                         (this.elapsedTimeAfterLoad - this.START_DELAY) / this.RAMP_UP_DURATION,
                         0,
                         1,
                     )
                     // smoothstep делает разгон нелинейным (мягкое начало и конец)
-                    speedFactor = THREE.MathUtils.smoothstep(rampProgress, 0, 1)
+                    speedFactor = MathUtils.smoothstep(rampProgress, 0, 1)
                 }
                 const currentDegPerSec = this.AUTO_ROTATE_DEG_PER_SEC * speedFactor
-                this.yaw += THREE.MathUtils.degToRad(currentDegPerSec) * delta
+                this.yaw += MathUtils.degToRad(currentDegPerSec) * delta
             }
 
             // Плавное возвращение к исходному наклону (pitch), если пользователь отпустил мяч
             if (this.shouldResetAxis && !this.isDragging) {
                 // lerp с учетом delta time делает анимацию независимой от FPS
-                this.pitch = THREE.MathUtils.lerp(
+                this.pitch = MathUtils.lerp(
                     this.pitch,
                     this.initialPitch,
                     1 - Math.pow(0.001, delta),
@@ -507,7 +525,7 @@ class BallViewer {
         this.instancedMaterials.forEach((mat) => {
             mat.dispose()
             // Важно чистить текстуры внутри материалов, WebGL сам их не выкинет
-            if (mat instanceof THREE.MeshPhysicalMaterial && mat.normalMap) {
+            if (mat instanceof MeshPhysicalMaterial && mat.normalMap) {
                 mat.normalMap.dispose()
             }
         })
@@ -515,8 +533,8 @@ class BallViewer {
     }
 
     /** Рекурсивно удаляет все геометрии и материалы в узле (для полной очистки видеопамяти) */
-    private disposeHierarchy(node: THREE.Object3D) {
-        if (node instanceof THREE.Mesh) {
+    private disposeHierarchy(node: Object3D) {
+        if (node instanceof Mesh) {
             node.geometry?.dispose()
             const materials = Array.isArray(node.material) ? node.material : [node.material]
             materials.forEach((mat) => mat.dispose())

@@ -129,7 +129,7 @@ function createHtmlStream({
                     // ? cчитать и проставлять width/height
                     setDimensions: true,
                     // ? добавлять loading="lazy"
-                    setLazyLoading: false,
+                    setLazyLoading: true,
                     // ? добавлять decoding="async"
                     setAsyncDecoding: true,
 
@@ -138,7 +138,7 @@ function createHtmlStream({
                             media: 768,
                             suffix: '-mobile',
                             baseWidth: 375,
-                            densities: [1, 2],
+                            densities: [1, 2, 3],
                         },
                     ],
                 }),
