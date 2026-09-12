@@ -273,6 +273,22 @@
         // }
     }
 
+    // ! --- STATE MODIFIER | ACHTUNG !!! | START
+    // ! ----------------------------------------
+    &--is-paused {
+        .my-price-badge__price-svg-wrapper,
+        .my-price-badge__price-svg,
+        .my-price-badge__price-text,
+        .my-price-badge__ball-rotate-wrapper,
+        .my-price-badge__ball-translate-wrapper,
+        .my-price-badge__ball-picture {
+            will-change: auto !important;
+            animation-play-state: paused !important;
+        }
+    }
+    // ! --- STATE MODIFIER | ACHTUNG !!! | END
+    // ! --------------------------------------
+
     @include bs.media-breakpoint-down(xs) {
         --ball__size: 22.5vw;
     }

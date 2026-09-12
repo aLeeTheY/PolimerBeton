@@ -371,7 +371,9 @@ class BallViewer {
                     }
                 }
             },
-            { threshold: 0.01 }, // Срабатывает, как только хотя бы 1% появляется/исчезает
+
+            // * запуск анимации только если до компонента в пределах +/- 500px от границ viewport'а | работает в обе стороны
+            { rootMargin: '500px 0px' },
         )
         this.intersectionObserver.observe(this.container)
     }

@@ -331,6 +331,19 @@
         }
     }
 
+    // ! --- STATE MODIFIER | ACHTUNG !!! | START
+    // ! ----------------------------------------
+    &--is-paused {
+        animation-play-state: paused !important;
+
+        .my-footer__decorative-square {
+            will-change: auto !important;
+            animation-play-state: paused !important;
+        }
+    }
+    // ! --- STATE MODIFIER | ACHTUNG !!! | END
+    // ! --------------------------------------
+
     @include bs.media-breakpoint-down(md) {
         --footer__background__linear-gradient__angle__start: -23deg;
         --footer__background__linear-gradient__angle__end: 23deg;

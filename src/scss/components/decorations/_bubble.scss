@@ -366,4 +366,18 @@
     //         display: block;
     //     }
     // }
+
+    // ! --- STATE MODIFIER | ACHTUNG !!! | START
+    // ! ----------------------------------------
+    &--is-paused {
+        will-change: auto !important;
+        animation-play-state: paused !important;
+
+        &::before {
+            will-change: auto !important;
+            animation-play-state: paused !important;
+        }
+    }
+    // ! --- STATE MODIFIER | ACHTUNG !!! | END
+    // ! --------------------------------------
 }

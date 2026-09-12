@@ -61,6 +61,7 @@
 
         &::before {
             @extend %text__title--server-response__before;
+            will-change: background-image;
 
             content: 'DEBUG';
             // content: attr(data-variant);
@@ -138,4 +139,15 @@
             }
         }
     }
+
+    // ! --- STATE MODIFIER | ACHTUNG | START !!!
+    // ! ----------------------------------------
+    &--is-paused {
+        &::before {
+            will-change: auto !important;
+            animation-play-state: paused !important;
+        }
+    }
+    // ! --- STATE MODIFIER | ACHTUNG | END !!!
+    // ! --------------------------------------
 }

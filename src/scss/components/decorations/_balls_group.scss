@@ -539,6 +539,22 @@
         }
     }
 
+    // ! --- STATE MODIFIER | ACHTUNG !!! | START
+    // ! ----------------------------------------
+    &--is-paused {
+        .my-balls-group__ball-wrapper {
+            will-change: auto !important;
+            animation-play-state: paused !important;
+        }
+
+        .my-balls-group__img,
+        .my-balls-group__3d-model {
+            will-change: auto !important;
+        }
+    }
+    // ! --- STATE MODIFIER | ACHTUNG !!! | END
+    // ! --------------------------------------
+
     @include bs.media-breakpoint-down(md) {
         justify-content: center;
     }

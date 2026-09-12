@@ -52,6 +52,28 @@ export async function initFooterPositionStateManager() {
         footer.style.setProperty('--footer__fade__opacity', afterOpacity)
     }
 
+    // * Пауза анимаций футера, пока юзер не докрутил до низа
+    const updateAnimationPauseState = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop
+        const winHeight = window.innerHeight
+        const docHeight = document.documentElement.scrollHeight
+        const distanceToBottom = docHeight - scrollTop - winHeight
+
+        const reached = distanceToBottom < cachedFooterHeight
+        footer.classList.toggle('my-footer--is-paused', !reached)
+    }
+
+    // Первичный расчет высоты для всех режимов
+    syncFooterDimensions()
+
+    // Первичная синхронизация паузы (без скролла)
+    updateAnimationPauseState()
+
+    // Первичный opacity — только фоллбэк
+    if (!supportsScrollDrivenAnimations) {
+        updateOpacity()
+    }
+
     // 1. ResizeObserver: отслеживает изменение размеров самóго футера
     const observer = new ResizeObserver(() => {
         syncFooterDimensions()
@@ -62,7 +84,17 @@ export async function initFooterPositionStateManager() {
     })
     observer.observe(footer)
 
-    // 2. Слушатель resize окна (нужен для перерасчета isOverflowing, если меняется высота innerHeight)
+    // 2. Пауза анимаций футера, когда он вне вьюпорта
+    // const visibilityObserver = new IntersectionObserver(
+    //     ([entry]) => {
+    //         footer.classList.toggle('my-footer--is-paused', !entry.isIntersecting)
+    //     },
+    //     // превентивно: снимаем паузу за 200px до входа
+    //     { rootMargin: '200px 0px' },
+    // )
+    // visibilityObserver.observe(footer)
+
+    // 3. Слушатель resize окна (нужен для перерасчета isOverflowing, если меняется высота innerHeight)
     const handleWindowResize = () => {
         syncFooterDimensions()
         if (!supportsScrollDrivenAnimations) {
@@ -71,27 +103,23 @@ export async function initFooterPositionStateManager() {
     }
     window.addEventListener('resize', handleWindowResize, { passive: true })
 
-    // 3. Scroll Event: вешается ТОЛЬКО если нет CSS scroll-driven animations
+    // 4. Scroll Event: вешается ТОЛЬКО если нет CSS scroll-driven animations
     let ticking = false
     const handleScroll = () => {
         if (!ticking) {
             requestAnimationFrame(() => {
-                updateOpacity()
+                updateAnimationPauseState()
+                if (!supportsScrollDrivenAnimations) {
+                    updateOpacity()
+                }
                 ticking = false
             })
             ticking = true
         }
     }
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
-    if (!supportsScrollDrivenAnimations) {
-        window.addEventListener('scroll', handleScroll, { passive: true })
-        updateOpacity() // Первичный расчет для JS
-    }
-
-    // Первичный расчет высоты для всех режимов
-    syncFooterDimensions()
-
-    // 4. Accessibility Focus Event
+    // 5. Accessibility Focus Event
     const handleFocusIn = () => {
         window.scrollTo({
             top: document.documentElement.scrollHeight,
@@ -100,14 +128,14 @@ export async function initFooterPositionStateManager() {
     }
     footer.addEventListener('focusin', handleFocusIn)
 
-    // 5. Очистка ресурсов при анмаунте
+    // 6. Очистка ресурсов при анмаунте
     return () => {
         observer.disconnect()
-        window.removeEventListener('resize', handleWindowResize)
-        footer.removeEventListener('focusin', handleFocusIn)
+        // visibilityObserver.disconnect()
 
-        if (!supportsScrollDrivenAnimations) {
-            window.removeEventListener('scroll', handleScroll)
-        }
+        window.removeEventListener('resize', handleWindowResize)
+        window.removeEventListener('scroll', handleScroll)
+
+        footer.removeEventListener('focusin', handleFocusIn)
     }
 }
