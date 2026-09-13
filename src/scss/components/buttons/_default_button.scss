@@ -10,9 +10,9 @@
     @extend %text__button;
     @include mixin.transition-for(color, transform, background-color);
 
-    // will-change: transform;
-    transform-style: preserve-3d; // ! фикс бага | тайлинг на Firefox
+    will-change: transform;
     backface-visibility: hidden;
+    transform-style: preserve-3d; // ! фикс бага | тайлинг на Firefox
 
     position: relative;
     width: 100%;
@@ -80,7 +80,6 @@
         }
 
         &::after {
-            will-change: transform;
             border-radius: 0;
 
             --squircle-smooth: var(--layout__global__squircle-smooth__value);
@@ -91,8 +90,6 @@
     }
 
     @include mixin.state-with-has('hover', '.my-default-button__link') {
-        will-change: transform;
-
         color: var(--color__global__text--alt--hover);
         transform: scale(var.$abstract__global__scale--hover);
 
@@ -102,8 +99,6 @@
     }
 
     @include mixin.state-with-has('active', '.my-default-button__link') {
-        will-change: transform;
-
         color: var(--color__global__text--alt--active);
         transform: scale(var.$abstract__global__scale--active);
 

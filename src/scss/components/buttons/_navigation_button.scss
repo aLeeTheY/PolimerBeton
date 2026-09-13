@@ -77,7 +77,6 @@
         }
 
         &::after {
-            will-change: transform;
             border-radius: 0;
 
             --squircle-smooth: var(--layout__global__squircle-smooth__value);
@@ -95,7 +94,6 @@
         }
 
         .my-navigation-button__svg {
-            will-change: transform;
             transform: translate(-50%, -50%) scale(var.$abstract__global__scale--hover * 1.075);
         }
     }
@@ -108,7 +106,6 @@
         }
 
         .my-navigation-button__svg {
-            will-change: transform;
             transform: translate(-50%, -50%) scale(var.$abstract__global__scale--active / 1.075);
         }
     }
@@ -143,9 +140,9 @@
     &__svg {
         @include mixin.transition-for; // ? opacity + transform
 
-        // // ! фикс бага | тайлинг на Firefox
-        transform-style: preserve-3d;
+        will-change: transform;
         backface-visibility: hidden;
+        transform-style: preserve-3d; // ! фикс бага | тайлинг на Firefox
 
         position: absolute;
         top: 50%;
@@ -166,10 +163,8 @@
         border-radius: 0;
 
         .houdini-squircle-ready & {
-            will-change: auto;
-            mask-image: none;
-
             border-radius: 0;
+            mask-image: none;
         }
 
         border: none;
@@ -194,7 +189,6 @@
             color: var(--color__global__text--hover);
 
             .my-navigation-button__svg {
-                will-change: transform;
                 transform: translate(-50%, -50%) scale(var.$abstract__global__scale--hover * 1.125);
             }
         }
@@ -204,7 +198,6 @@
             color: var(--color__global__text--active);
 
             .my-navigation-button__svg {
-                will-change: transform;
                 transform: translate(-50%, -50%) scale(var.$abstract__global__scale--active / 1.125);
             }
         }

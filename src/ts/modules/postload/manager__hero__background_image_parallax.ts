@@ -63,9 +63,6 @@ export function initHeroBackgroundImageParallaxManager() {
     const observer = new IntersectionObserver(([entry]) => {
         isInView = entry.isIntersecting
 
-        // ? композитный слой включаем только пока hero в вьюпорте
-        heroBgWrapper.style.willChange = isInView ? 'transform' : 'auto'
-
         if (isInView) {
             updateMetrics()
             // ? откладываем в rAF, чтобы не мешать observer callback-у

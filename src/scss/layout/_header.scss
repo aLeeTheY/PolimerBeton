@@ -22,11 +22,7 @@
         // ? transform появляются всегда при прокрутке вниз,
         // ? и убираются при прокрутке вверх
         will-change: transform;
-
-        // ? наверное должно помочь, чтобы не лагал
-        // ? --------------------------------------
         backface-visibility: hidden;
-        // ? --------------------------------------
 
         z-index: z('higher');
         position: fixed;
@@ -62,11 +58,9 @@
         @include mixin.transition-for(background-color, box-shadow);
         contain: paint layout;
 
-        // ? наверное должно помочь, чтобы не лагал
-        // ? --------------------------------------
+        will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
-        // ? --------------------------------------
 
         visibility: hidden;
         transform: translateY(-100%);
@@ -92,16 +86,10 @@
         &.showing,
         &.hiding {
             visibility: visible;
-            will-change: transform;
         }
 
         &.show {
             transform: translateY(0);
-        }
-
-        &.showing,
-        &.hiding {
-            will-change: transform;
         }
 
         &.showing {
@@ -122,11 +110,6 @@
         }
 
         .nojs & {
-            will-change: transform;
-
-            visibility: hidden;
-            transform: translateY(-100%);
-
             // ? hiding animation
             transition:
                 transform 700ms cubic-bezier(0.165, 0.84, 0.44, 1),

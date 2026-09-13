@@ -39,11 +39,9 @@
     }
 
     &__bg-wrapper {
-        // ? наверное должно помочь, чтобы parallax не лагал
-        // ? -----------------------------------------------
+        will-change: transform;
         backface-visibility: hidden;
         transform-style: preserve-3d;
-        // ? -----------------------------------------------
 
         z-index: z('background');
         position: absolute;
@@ -56,8 +54,6 @@
         user-select: none;
 
         @supports (animation-timeline: view()) {
-            will-change: transform;
-
             animation: hero__background-image__parallax-move-effect linear both;
             animation-timeline: --hero-section;
         }

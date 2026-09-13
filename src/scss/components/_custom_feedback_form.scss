@@ -110,7 +110,6 @@
             }
 
             &::after {
-                will-change: transform;
                 border-radius: 0;
 
                 --squircle-smooth: var(--my-feedback-form__field__squircle-smooth);
@@ -203,8 +202,8 @@
 
         transition:
             transform 300ms cubic-bezier(0, -1.5, 0.33, 2.15),
-            // opacity 100ms linear,
-            color 300ms ease-in-out;
+            color 300ms ease-in-out,
+            opacity 50ms linear;
 
         .my-custom-feedback-form__checkbox-field:has([type='checkbox']:checked) & {
             transform: translate(-50%, -45%) scale(1) rotate(0deg);
@@ -309,7 +308,6 @@
             border-radius: var(--my-feedback-form__inner-element__radius);
 
             .houdini-squircle-ready & {
-                will-change: transform;
                 border-radius: 0;
 
                 --squircle-smooth: var(--my-feedback-form__field__squircle-smooth);
@@ -388,8 +386,8 @@
 
         // color: var(--color__global__text--error);
 
-        .my-form__field-wrapper:has(:disabled) &,
-        .my-form__field-wrapper:has([disabled]) & {
+        .my-custom-feedback-form__field-wrapper:has(:disabled) &,
+        .my-custom-feedback-form__field-wrapper:has([disabled]) & {
             color: var(--color__global__text--error--disabled);
         }
     }
