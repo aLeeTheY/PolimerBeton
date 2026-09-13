@@ -92,11 +92,18 @@ function createHtmlStream({
             .src([path.src.njk, path.src.html])
             // * подключаем plumber, чтобы gulp не падал при ошибке
             .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.HTML))
+
+            // ! Исправление неправильных окончаний комментариев плагина "Comment headers v1.12.1" | REQUIRED !!!
+            // ! ------------------------------------------------------------------------------------------------
+            .pipe(gulpReplace(/--->/g, '-->'))
+            // ! ------------------------------------------------------------------------------------------------
+
             // * собираем все partials в полноценные html
             .pipe(
                 nunjucksRender({
+                    // ! Исправление неправильных окончаний комментариев плагина "Comment headers v1.12.1" | REQUIRED !!!
+                    // ! ------------------------------------------------------------------------------------------------
                     loaders: [
-                        // ! Исправление неправильных окончаний комментариев плагина "Comment headers v1.12.1" | REQUIRED !!!
                         new CleanFileSystemNunjucksLoader([
                             './',
                             './src/html/',
@@ -107,11 +114,14 @@ function createHtmlStream({
                             './src/html/macros/',
                         ]),
                     ],
+                    // ! ------------------------------------------------------------------------------------------------
+
                     envOptions: {
                         throwOnUndefined: true,
                         // trimBlocks: true,
                         // lstripBlocks: true,
                     },
+
                     data: {
                         is_github_pages_build: env.isGithubPagesBuild,
                         is_django_build: env.isDjangoBuild,
@@ -119,6 +129,7 @@ function createHtmlStream({
                         i18n,
                         ...localeDataFromJSON,
                     },
+
                     manageEnv: nunjucksManageEnvironment,
                 }),
             )
@@ -217,12 +228,6 @@ function createHtmlStream({
                 }),
             )
 
-            // .pipe(
-            //     gulpReplace(
-            //         '<!-- ![GULP] DO NOT REMOVE --- plugin: webp-in-css --- polyfill.js placeholder --->',
-            //         `<script>${webpInCssPolyfillScript}</script>`,
-            //     ),
-            // )
             // * генерируем webp на основе png, jpg, jpeg и т.д.
             // .pipe(webphtml())
             // * генерируем avif и webp на основе png, jpg и jpeg
