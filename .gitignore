@@ -197,3 +197,6 @@ node_modules/
 #? Ignore all generated deploy folders
 certs/
 certbot/
+
+# * Ignore all debug__critical_css__screenshots
+debug__critical_css__screenshots/
