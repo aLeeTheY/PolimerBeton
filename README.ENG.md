@@ -200,6 +200,15 @@ PolimerBeton/
 │
 ├── src/
 │   ├── apps/
+│   │   ├── LiveReloadStub/                     # stub for livereload_tags when building in prod mode
+│   │   │   │
+│   │   │   ├── templatetags/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── livereload_tags.py
+│   │   │   │
+│   │   │   ├── __init__.py
+│   │   │   └── apps.py
+│   │   │
 │   │   └── MainApp/                            # core Django application
 │   │       │
 │   │       ├── migrations/                     # database migrations
@@ -223,8 +232,6 @@ PolimerBeton/
 │   │       │   │
 │   │       │   └── service/                    # files for search engines and bots
 │   │       │       └── robots.txt
-│   │       │
-│   │       ├── templatetags/                   # custom template tags
 │   │       │
 │   │       ├── __init__.py
 │   │       ├── admin.py                        # admin panel customization
@@ -295,6 +302,7 @@ PolimerBeton/
 ├── docker-compose.staging.yml                  # staging deployment
 ├── docker-compose.yml                          # development deployment
 ├── LICENSE
+├── prettier.config.mts
 ├── README.ENG.md
 └── README.md
 ```
@@ -346,11 +354,11 @@ For example, for the `.env.prod.db` file:
 
 <div align="center">
 
-| Original Value                               | Example Value                                  |  Requirement   |
-| :------------------------------------------- | :--------------------------------------------- | :------------: |
-| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **_Required_** |
-| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **_Required_** |
-| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   _Optional_   |
+| Original Value                               | Example Value                                  | Requirement  |
+| :------------------------------------------- | :--------------------------------------------- | :----------: |
+| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   Optional   |
+| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **Required** |
+| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **Required** |
 
 </div>
 
@@ -363,6 +371,9 @@ docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 #### Creating a Superuser
+
+> [!IMPORTANT]
+> **Only for `staging` and `prod` builds.** In `dev` mode, the superuser is created automatically via `entrypoint.sh` using `DJANGO_SUPERUSER_*` environment variables.
 
 After the containers have successfully started, create a **superuser** for the Django admin panel:
 
@@ -412,7 +423,7 @@ docker compose -f docker-compose.prod.yml up -d
 
 ## Usage
 
-After completing the [Getting Started](#getting-started) stage, the project will be available via your domain name (or at `localhost` if using the development configuration).
+After completing the [Getting Started](#getting-started) stage, the project will be available via your domain name (or at `localhost:8000` if using the development configuration).
 
 ### Admin Panel
 

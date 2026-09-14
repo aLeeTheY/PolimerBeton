@@ -1,6 +1,6 @@
 [project]
 name = "polimerbeton"
-requires-python = ">=3.13,<4.0"
+requires-python = ">=3.11,<4.0"
 
 [tool.poetry]
 package-mode = false

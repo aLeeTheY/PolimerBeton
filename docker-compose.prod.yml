@@ -1,10 +1,13 @@
+# docker-compose project name
+name: polimerbeton--prod
+
 services:
     web:
         build:
             context: ./src
             dockerfile: Dockerfile.prod
-        image: polimerbeton-web:latest
-        container_name: polimerbeton-web
+        image: polimerbeton-web:prod
+        container_name: polimerbeton-web--prod
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8080 --workers 3
         restart: always
         volumes:
@@ -14,22 +17,28 @@ services:
         env_file:
             - ./env/.env.prod
         depends_on:
-            - db
+            db:
+                condition: service_healthy
 
     db:
         image: postgres:17.6
-        container_name: polimerbeton-db
+        container_name: polimerbeton-db--prod
         restart: always
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
         env_file:
             - ./env/.env.prod.db
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
 
     nginx-proxy:
         build:
             context: ./web/nginx-proxy
             dockerfile: Dockerfile.prod
-        container_name: nginx-proxy
+        container_name: nginx-proxy--prod
         restart: always
         ports:
             - 443:443
@@ -46,7 +55,7 @@ services:
 
     docker-gen:
         image: nginxproxy/docker-gen:0.15
-        container_name: docker-gen
+        container_name: docker-gen--prod
         restart: always
         command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
         volumes:
@@ -59,7 +68,7 @@ services:
 
     acme-companion:
         image: nginxproxy/acme-companion:2.6
-        container_name: acme-companion
+        container_name: acme-companion--prod
         restart: always
         env_file:
             - ./env/.env.prod.proxy-companion

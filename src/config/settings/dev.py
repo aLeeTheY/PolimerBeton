@@ -71,12 +71,12 @@ DEFAULT_FROM_EMAIL = SENDER_EMAIL
 # ? ------------------------------------------
 DATABASES = {
     "default": {
-        "ENGINE": config("SQL_ENGINE", default="django.db.backends.sqlite3"),
-        "NAME": config("SQL_DATABASE", default=str(BASE_DIR / "db.sqlite3")),
-        "USER": config("SQL_USER", default="dummy_guy"),
-        "PASSWORD": config("SQL_PASSWORD", default="dummy_guy_password"),
-        "HOST": config("SQL_HOST", default="localhost"),
-        "PORT": config("SQL_PORT", default=5432, cast=int),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB", default="polimerbeton_db__dev"),
+        "USER": config("POSTGRES_USER", default="admin"),
+        "PASSWORD": config("POSTGRES_PASSWORD", default="qwerty123456"),
+        "HOST": config("POSTGRES_HOST", default="localhost"),
+        "PORT": config("POSTGRES_PORT", default=5432, cast=int),
     }
 }
 

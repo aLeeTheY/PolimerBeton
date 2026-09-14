@@ -1,27 +1,36 @@
+# docker-compose project name
+name: polimerbeton--dev
+
 services:
     web:
         build: ./src
-        image: polimerbeton-web:latest
-        container_name: polimerbeton-web
+        image: polimerbeton-web:dev
+        container_name: polimerbeton-web--dev
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
-            - ./src/:/www/polimerbeton/src/
+            - ./src/:/root/www/polimerbeton
+            - /root/www/polimerbeton/node_modules
         ports:
             - 8000:8000
         env_file:
             - ./env/.env.dev
         depends_on:
-            - db
+            db:
+                condition: service_healthy
 
     db:
         image: postgres:17.6
-        container_name: polimerbeton-db
+        container_name: polimerbeton-db--dev
+        restart: always
+        env_file:
+            - ./env/.env.dev
         volumes:
             - postgres_data:/var/lib/postgresql/data/
-        environment:
-            - POSTGRES_USER=dummy_guy
-            - POSTGRES_PASSWORD=dummy_guy_password
-            - POSTGRES_DB=polimerbeton_db
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
 
 networks:
     default:

@@ -8,6 +8,11 @@ SECRET_KEY = config("DJANGO_SECRET_KEY")
 # ? --- Debug settings
 # ? ------------------
 DEBUG = config("DJANGO_DEBUG", cast=bool)
+INSTALLED_APPS += [
+    # ? --- LIVE RELOAD STUB (заглушка)
+    # ? -------------------------------
+    "apps.LiveReloadStub",
+]
 
 # ? --- Allowed hosts
 # ? -----------------
@@ -51,12 +56,12 @@ DEFAULT_FROM_EMAIL = SENDER_EMAIL
 # ? -----------------------------------------
 DATABASES = {
     "default": {
-        "ENGINE": config("SQL_ENGINE"),
-        "NAME": config("SQL_DATABASE"),
-        "USER": config("SQL_USER"),
-        "PASSWORD": config("SQL_PASSWORD"),
-        "HOST": config("SQL_HOST"),
-        "PORT": config("SQL_PORT", cast=int),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD"),
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": config("POSTGRES_PORT", cast=int),
     }
 }
 

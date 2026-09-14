@@ -212,6 +212,15 @@ PolimerBeton/
 │
 ├── src/
 │   ├── apps/
+│   │   ├── LiveReloadStub/                     # заглушка для livereload_tags при сборке в режиме prod
+│   │   │   │
+│   │   │   ├── templatetags/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── livereload_tags.py
+│   │   │   │
+│   │   │   ├── __init__.py
+│   │   │   └── apps.py
+│   │   │
 │   │   └── MainApp/                            # основное приложение Django
 │   │       │
 │   │       ├── migrations/                     # миграции БД
@@ -235,8 +244,6 @@ PolimerBeton/
 │   │       │   │
 │   │       │   └── service/                    # файлы для поисковых систем и ботов
 │   │       │       └── robots.txt
-│   │       │
-│   │       ├── templatetags/                   # пользовательские template‑теги
 │   │       │
 │   │       ├── __init__.py
 │   │       ├── admin.py                        # кастомизация панели администратора
@@ -302,11 +309,12 @@ PolimerBeton/
 │       └── docker-gen/
 │
 ├── .gitignore
-├── docker-compose.prod.selinux.yml
+├── docker-compose.prod-selinux.yml
 ├── docker-compose.prod.yml                     # деплой в режиме продакшена
 ├── docker-compose.staging.yml                  # деплой в режиме пре-продакшена
 ├── docker-compose.yml                          # деплой в режиме разработки
 ├── LICENSE
+├── prettier.config.mts
 ├── README.ENG.md
 └── README.md
 ```
@@ -368,11 +376,11 @@ cp .env.prod.proxy-companion.template .env.prod.proxy-companion
 
 <div align="center">
 
-| Исходное значение                            | Пример заполнения                              |  Обязательность   |
-| :------------------------------------------- | :--------------------------------------------- | :---------------: |
-| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **_обязательно_** |
-| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **_обязательно_** |
-| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   _опционально_   |
+| Исходное значение                            | Пример заполнения                              | Обязательность  |
+| :------------------------------------------- | :--------------------------------------------- | :-------------: |
+| `POSTGRES_DB=polimerbeton_db_prod`           | `POSTGRES_DB=polimerbeton_db_prod`             |   опционально   |
+| `POSTGRES_USER=<YOUR_DATABASE_USER>`         | `POSTGRES_USER=db_username_for_dummy_guys`     | **обязательно** |
+| `POSTGRES_PASSWORD=<YOUR_DATABASE_PASSWORD>` | `POSTGRES_PASSWORD=db_password_for_dummy_guys` | **обязательно** |
 
 </div>
 
@@ -387,6 +395,9 @@ docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 #### Создание суперпользователя
+
+> [!IMPORTANT]
+> **Только для сборок `staging` и `prod`.** В режиме `dev` суперпользователь создаётся автоматически через `entrypoint.sh` с использованием переменных окружения `DJANGO_SUPERUSER_*`.
 
 После успешного запуска контейнеров создайте **суперпользователя** для административной панели Django:
 
@@ -436,7 +447,7 @@ docker compose -f docker-compose.prod.yml up -d
 
 ## Использование
 
-После завершения этапа [**Начало работы**](#начало-работы) проект будет доступен по вашему доменному имени (или на `localhost`, если используется конфигурация для разработки).
+После завершения этапа [**Начало работы**](#начало-работы) проект будет доступен по вашему доменному имени (или на `localhost:8000`, если используется конфигурация для разработки).
 
 ### Панель администратора
 

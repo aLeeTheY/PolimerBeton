@@ -23,7 +23,7 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-root --with dev
     
 #? --- Stage 3. Execute "development" scenario for Polimerbeton
-#? -----------------------------------------------------------
+#? ------------------------------------------------------------
 FROM python:3.13-slim AS development
 
 # create the appropriate directories
