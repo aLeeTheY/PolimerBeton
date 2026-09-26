@@ -1,0 +1,57 @@
+{
+    "name": "polimerbeton",
+    "version": "3.0.0",
+    "description": "📬 Multi-page responsive promotional website with a contact form and client database.",
+    "private": true,
+    "workspaces": [
+        "src/frontend"
+    ],
+    "homepage": "https://github.com/aLeeTheY/PolimerBeton#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aLeeTheY/PolimerBeton.git"
+    },
+    "bugs": {
+        "url": "https://github.com/aLeeTheY/PolimerBeton/issues"
+    },
+    "author": {
+        "name": "Vladimir Nikulin",
+        "email": "aleethey@gmail.com",
+        "url": "https://github.com/aLeeTheY"
+    },
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "type": "module",
+    "devDependencies": {
+        "@commitlint/cli": "^21.2.1",
+        "@commitlint/config-conventional": "^21.2.0",
+        "@commitlint/format": "^21.2.0",
+        "@commitlint/types": "^21.2.0",
+        "@prettier/plugin-xml": "^3.4.2",
+        "editorconfig-checker": "^6.1.1",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.2.0",
+        "prettier": "^3.9.6",
+        "prettier-plugin-jinja-template": "^2.2.0",
+        "prettier-plugin-sh": "^0.19.0",
+        "tsx": "^4.23.1",
+        "@types/yargs": "^17.0.35",
+        "yargs": "^18.1.0"
+    },
+    "scripts": {
+        "__LINT__": "",
+        "format": "prettier . --write",
+        "__TEST__": "",
+        "test:editorconfig": "editorconfig-checker",
+        "__MARKDOWN__": "",
+        "md:encode": "npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern && npx tsx tools/transform-md.ts encode README.md README.EN.md",
+        "md:decode": "npx tsx tools/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern",
+        "__POST_INSTALL__": "",
+        "prepare": "husky",
+        "postinstall": "npm run md:decode"
+    },
+    "allowScripts": {
+        "@parcel/watcher@2.6.0": true,
+        "esbuild@0.28.2": true,
+        "puppeteer@2.1.1": true
+    }
+}

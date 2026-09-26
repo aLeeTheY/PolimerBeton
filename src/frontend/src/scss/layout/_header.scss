@@ -1,0 +1,160 @@
+/* stylelint-disable length-zero-no-unit */
+@use '../abstracts/variables' as var;
+@use '../abstracts/mixins' as mixin;
+@use '../abstracts/z_index' as *;
+
+@use '../vendors/bootstrap' as bs;
+
+.my-header {
+    z-index: z('header');
+    position: fixed;
+
+    top: env(safe-area-inset-top, 0px);
+    left: env(safe-area-inset-left, 0px);
+    right: env(safe-area-inset-right, 0px);
+
+    width: 100%;
+    height: auto;
+
+    &__fixed-part {
+        @include mixin.transition-for(transform, background-color, box-shadow);
+
+        // ? transform появляются всегда при прокрутке вниз,
+        // ? и убираются при прокрутке вверх
+        will-change: transform;
+        backface-visibility: hidden;
+
+        z-index: z('higher');
+        position: fixed;
+
+        display: flex;
+        align-items: center;
+        justify-content: stretch;
+
+        top: env(safe-area-inset-top, 0px);
+        left: calc(-25px + env(safe-area-inset-left, 0px));
+        right: calc(-25px + env(safe-area-inset-right, 0px));
+
+        padding: 0 calc(25px + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+
+        width: auto;
+        height: var(--layout__header__navigation-bar-height);
+
+        background-color: var(--color__header__navigation-bar-background);
+        box-shadow: 0 6px 20px var(--color__global__shadow);
+
+        // transition:
+        //     transform 300ms ease-out,
+        //     box-shadow 300ms ease-out,
+        //     background-color 300ms ease-in-out;
+
+        &--hidden {
+            box-shadow: none;
+            transform: translateY(-100%);
+        }
+    }
+
+    &__hidden-part {
+        @include mixin.transition-for(background-color, box-shadow);
+        contain: paint layout;
+
+        will-change: transform;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+
+        visibility: hidden;
+        transform: translateY(-100%);
+
+        position: fixed;
+        z-index: z('lower');
+
+        top: env(safe-area-inset-top, 0px);
+        left: calc(-25px + env(safe-area-inset-left, 0px));
+        right: calc(-25px + env(safe-area-inset-right, 0px));
+
+        padding: 0 calc(25px + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px));
+        padding-top: calc(
+            var(--layout__header__navigation-bar-height) + env(safe-area-inset-top, 0px)
+        );
+
+        background-color: var(--color__header__navigation-menu-background);
+        box-shadow: 0 2px 16px var(--color__global__shadow);
+
+        backdrop-filter: blur(var.$abstract__global__panel-blur);
+
+        &.show,
+        &.showing,
+        &.hiding {
+            visibility: visible;
+        }
+
+        &.show {
+            transform: translateY(0);
+        }
+
+        &.showing {
+            transform: translateY(0);
+            transition:
+                transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                background-color 300ms ease-in-out,
+                box-shadow 300ms ease-in-out;
+        }
+
+        &.hiding,
+        &.show.hiding {
+            transform: translateY(-100%);
+            transition:
+                transform 700ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                background-color 300ms ease-in-out,
+                box-shadow 300ms ease-in-out;
+        }
+
+        .nojs & {
+            // ? hiding animation
+            transition:
+                transform 700ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                visibility 700ms ease-in-out,
+                background-color 300ms ease-in-out,
+                box-shadow 300ms ease-in-out;
+
+            &:target {
+                visibility: visible;
+                transform: translateY(0);
+
+                // ? opening animation
+                transition:
+                    transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                    background-color 300ms ease-in-out,
+                    box-shadow 300ms ease-in-out;
+            }
+        }
+
+        @include bs.media-breakpoint-down(md) {
+            min-height: 100vh;
+
+            @supports (min-height: 100dvh) {
+                min-height: 100dvh;
+            }
+        }
+
+        .my-offcanvas-body {
+            display: flex;
+            flex-direction: column;
+
+            align-items: center;
+            justify-content: flex-start;
+
+            height: 100%;
+            padding: var(--layout__global__spacing) 0;
+
+            @include bs.media-breakpoint-down(md) {
+                // prettier-ignore
+                padding: calc(2 * var(--layout__global__spacing)) 0 calc(2 * var(--layout__global__spacing) + var(--layout__header__navigation-bar__control-group__height));
+            }
+        }
+    }
+
+    &__nav-menu-toggle {
+        outline: none;
+    }
+}

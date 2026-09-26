@@ -2,12 +2,12 @@
 name: polimerbeton--prod
 
 services:
-    web:
+    app:
         build:
             context: ./src
             dockerfile: Dockerfile.prod
-        image: polimerbeton-web:prod
-        container_name: polimerbeton-web--prod
+        image: polimerbeton-app:prod
+        container_name: polimerbeton-app--prod
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8080 --workers 3
         restart: always
         volumes:
@@ -36,7 +36,7 @@ services:
 
     nginx-proxy:
         build:
-            context: ./web/nginx-proxy
+            context: ./deploy/nginx-proxy
             dockerfile: Dockerfile.prod
         container_name: nginx-proxy--prod
         restart: always
@@ -51,7 +51,7 @@ services:
             - certs:/etc/nginx/certs:ro
             - /var/run/docker.sock:/tmp/docker.sock:ro
         depends_on:
-            - web
+            - app
 
     docker-gen:
         image: nginxproxy/docker-gen:0.15
@@ -59,7 +59,7 @@ services:
         restart: always
         command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
         volumes:
-            - ./web/templates/docker-gen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+            - ./deploy/templates/docker-gen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
             - conf:/etc/nginx/conf.d
             - vhost:/etc/nginx/vhost.d
             - html:/usr/share/nginx/html

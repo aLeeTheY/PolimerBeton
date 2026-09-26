@@ -2,10 +2,10 @@
 name: polimerbeton--dev
 
 services:
-    web:
+    app:
         build: ./src
-        image: polimerbeton-web:dev
-        container_name: polimerbeton-web--dev
+        image: polimerbeton-app:dev
+        container_name: polimerbeton-app--dev
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - ./src/:/root/www/polimerbeton

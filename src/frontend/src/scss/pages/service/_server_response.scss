@@ -1,0 +1,23 @@
+@use '../../abstracts/mixins' as mixin;
+@use '../../vendors/bootstrap' as bs;
+
+.my-server-response {
+    overflow: hidden;
+    position: relative;
+
+    display: grid;
+    place-items: center;
+
+    min-height: 100vh;
+    @supports (min-height: 100svh) {
+        min-height: 100svh;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: flex-start;
+    }
+}

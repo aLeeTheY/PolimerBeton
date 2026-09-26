@@ -1,0 +1,27 @@
+import gulp from 'gulp'
+import browserSync from 'browser-sync'
+
+// import { env } from '../../config/env.js'
+import { path } from '../../config/path.js'
+import { build } from '../../config/build.js'
+import {
+    plumberWithErrorHandler,
+    NOTIFICATION_HANDLER_TITLES,
+} from '../../helpers/error-handler.js'
+
+// * --- EXPORT GULP TASK FOR MISC FILES
+// * -----------------------------------
+export function misc() {
+    return gulp
+        .src(path.src.misc, { encoding: false })
+        .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.MISC))
+        .pipe(gulp.dest(build.misc))
+        .on('end', () => {
+            // * update dev server
+            browserSync.reload()
+        })
+}
+
+// * --- REGISTER GULP TASK
+// * ----------------------
+gulp.task('misc', misc)

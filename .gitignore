@@ -1,202 +1,164 @@
-#? Django #?
-*.log
-*.pot
-*.pyc
-__pycache__
-db.sqlite3
-media
+# ! --- 1. Игнорируем абсолютно всё по умолчанию
+# ! --------------------------------------------
+*
 
-#? Backup files #? 
-*.bak 
+# ! --- 2. Разрешаем Git наблюдать за любыми папками
+# ! ------------------------------------------------
+!*/
+!**/
 
-#? If you are using PyCharm #? 
-#? User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
+# ! --- 3. Разрешаем проверять только конкретные расширения
+# ! -------------------------------------------------------
+# * GIT FILES
+!**/*.gitkeep
+!**/*.gitignore
+!**/*.gitattributes
 
-#? AWS User-specific
-.idea/**/aws.xml
+# * BASH | BAT
+!**/*.sh
+!**/*.bat
 
-#? Generated files
-.idea/**/contentModel.xml
+# * SERVICE FILES
+!**/*.browserslistrc
+!**/*.editorconfig
 
-#? Sensitive or high-churn files
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/dbnavigator.xml
+# * IGNORE FILES
+!**/*.dockerignore
+!**/*.prettierignore
+!**/*.stylelintignore
 
-#? Gradle
-.idea/**/gradle.xml
-.idea/**/libraries
+# * DOCKER FILES
+!**/Dockerfile*
 
-#? File-based project format
-*.iws
+# * PYTHON | POETRY
+!**/*.py
 
-#? IntelliJ
-out/
+!**/*.toml
+!**/*.lock
 
-#? JIRA plugin
-atlassian-ide-plugin.xml
+# * CSS | SCSS | SASS
+!**/*.css
+!**/*.scss
+!**/*.sass
 
-#? Python #? 
-*.py[cod] 
-*$py.class 
+# * JS | TS
+!**/*.js
+!**/*.cjs
+!**/*.mjs
+!**/*.ts
+!**/*.cts
+!**/*.mts
 
-#? Distribution / packaging 
-.Python build/ 
-develop-eggs/ 
-dist/ 
-downloads/ 
-eggs/ 
-.eggs/ 
-lib/ 
-lib64/ 
-parts/ 
-sdist/ 
-var/ 
-wheels/ 
-*.whl
-*.egg-info/ 
-.installed.cfg 
-*.egg 
-*.manifest 
-*.spec 
+# * GULP
+!gulpfile.js
+!**/gulp/**/*.js
 
-#? Installer logs 
-pip-log.txt 
-pip-delete-this-directory.txt 
+# * HTML | NUNJUCKS
+!**/*.html
+!**/*.nj
+!**/*.njk
+!**/*.nunjucks
 
-#? Unit test / coverage reports 
-htmlcov/ 
-.tox/ 
-.coverage 
-.coverage.* 
-.cache 
-.pytest_cache/ 
-nosetests.xml 
-coverage.xml 
-*.cover 
-.hypothesis/ 
+# * JSON | YAML
+!**/*.json
+!**/*.webmanifest
 
-#? Jupyter Notebook 
-.ipynb_checkpoints 
+!**/*.yml
+!**/*.yaml
 
-#? pyenv 
-.python-version 
+# * XML | SVG
+!**/*.xml
+!**/*.svg
 
-#? celery 
-celerybeat-schedule.* 
+# * MEDIA
+!**/*.ico
+!**/*.gif
 
-#? SageMath parsed files 
-*.sage.py 
+!**/*.png
+!**/*.jpg
+!**/*.jpeg
+!**/*.avif
+!**/*.webp
 
-#? Environments 
-ENV/
+!**/*.mp3
+!**/*.mp4
+!**/*.webm
 
-.env*
+# * 3D FILES
+!**/*.glb
 
-!env/
-env.bak/ 
-.env/
-.env.bak/ 
+# * FONTS
+!**/*.eot
+!**/*.otf
+!**/*.ttf
+!**/*.woff
+!**/*.woff2
 
-venv/ 
-venv.bak/ 
-.venv/ 
-.venv.bak/ 
+# * MARKDOWN | LICENSE
+!**/*.md
+!**/LICENSE
 
-#? mkdocs documentation 
-/site 
+# * HUSKY
+!**/.husky/*
 
-#? mypy 
-.mypy_cache/ 
+# * LOCALES
+!**/*.mo
+!**/*.po
 
-#? Sublime Text #? 
-*.tmlanguage.cache 
-*.tmPreferences.cache 
-*.stTheme.cache 
-*.sublime-workspace 
-*.sublime-project 
+# * TEMPLATES FILES
+!**/*.template
+!**/*.tmpl
 
-#? sftp configuration file 
-sftp-config.json 
+# * DEPLOY FILES | NGINX | APACHE
+!**/vhost.d/default
+!**/*.conf
 
-#? Package control specific files Package 
-Control.last-run 
-Control.ca-list 
-Control.ca-bundle 
-Control.system-ca-bundle 
-GitHub.sublime-settings 
+!**/*.htaccess
 
-#? Visual Studio Code #? 
-#? .vscode/*
-#? !.vscode/settings.json
-#? !.vscode/tasks.json
-#? !.vscode/launch.json
-#? !.vscode/extensions.json
-#? !.vscode/*.code-snippets
+# * OTHER
+!**/*.txt
 
-#? Ignore .vscode/ folder
-.vscode/
+# * MAPS
+# !**/*.map
 
-#? Local History for Visual Studio Code
-.history/
+# ! --- 4. Папки и подпапки под запретом
+# ! ------------------------------------
+**/.husky/_/
 
-#? Built Visual Studio Code Extensions
-*.vsix
+**/node_modules/
+# **/vendors/
 
-#? Ignore all other modules (repositories)
-#? node_modules/
-alpha_old/
-old/
-*.old
+**/out/
+**/dist/
+**/build/
+**/public/
 
-#? Ignore compiled static files folder
-static_files/
-static_assets/
-staticfiles/
+**/archive/
 
-#? Ignore keys and certificate files
-*.crt
-*.key
+**/backup/
+**/old/
 
-#? Ignore all CSS and JS files and folders (SCSS and TS only in repo)
-css/
-*.css
+**/debug__critical_css__screenshots/
 
-js/
-*.js
+# ! --- 5. Файлы под запретом
+# ! -------------------------
+out.txt
 
-#? Ignore node_modules folder
+# * ENV FILES
+*.dev
+
+*.staging
+*.staging.db
+*.staging.proxy-companion
+
+*.prod
+*.prod.db
+*.prod.proxy-companion
+
+# Playwright
 node_modules/
-
-#? Ignore all .dev (development) and .prod (production) files
-*.dev*
-*.prod*
-
-!*.prod.yml
-!*.prod-selinux.yml
-
-!*.dev.yml
-!*.staging.yml
-
-!Dockerfile.prod
-!entrypoint.prod.sh
-!docker-compose.prod.yml
-!docker-compose.prod-selinux.yml
-
-!*.template
-
-#? Ignore all generated deploy folders
-certs/
-certbot/
-
-# * Ignore all debug__critical_css__screenshots
-debug__critical_css__screenshots/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
