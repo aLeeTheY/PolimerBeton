@@ -21,6 +21,7 @@
 # * SERVICE FILES
 !**/*.browserslistrc
 !**/*.editorconfig
+!**/*.npmrc
 
 # * IGNORE FILES
 !**/*.dockerignore
