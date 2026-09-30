@@ -3,7 +3,10 @@ from .models import SiteConfig
 
 
 def site_config(request):
-    return {"site_config": SiteConfig.get_solo()}
+    try:
+        return {"site_config": SiteConfig.get_solo()}
+    except Exception:
+        return {"site_config": SiteConfig(domain="polimerbeton-vrn.ru", price=279)}
 
 
 def current_year(request):

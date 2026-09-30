@@ -9,10 +9,10 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", default="secret_key_for_dummy_guys")
 
 # ? --- DEBUG & LIVE RELOAD
 # ? -----------------------
-# DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
+DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
 
 # ! --- FOR MANUAL START | DEBUG
-DEBUG = False
+# DEBUG = False
 
 if DEBUG:
     MIDDLEWARE += [

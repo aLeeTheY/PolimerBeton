@@ -144,6 +144,26 @@
                 content: '500';
             }
         }
+
+        &[data-variant='updated'] {
+            & > span {
+                max-width: 16em;
+            }
+
+            &::before {
+                content: 'UPD';
+            }
+        }
+
+        &[data-variant='limit-exceeded'] {
+            & > span {
+                max-width: 20em;
+            }
+
+            &::before {
+                content: 'LIMIT';
+            }
+        }
     }
 
     // ! --- STATE MODIFIER | ACHTUNG | START !!!

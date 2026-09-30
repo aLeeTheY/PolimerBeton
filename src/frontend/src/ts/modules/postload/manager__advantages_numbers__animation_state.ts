@@ -1,5 +1,5 @@
 export function initAdvantagesNumbersAnimationStateManager() {
-    const subtitles = document.querySelectorAll('.my-subtitle--advantage')
+    const subtitles = document.querySelectorAll<HTMLElement>('.my-subtitle--advantage')
     if (!subtitles.length) {
         return
     }
@@ -9,22 +9,32 @@ export function initAdvantagesNumbersAnimationStateManager() {
         return
     }
 
-    const observers: IntersectionObserver[] = []
-
+    // Собираем уникальные родительские секции
+    const sections = new Set<HTMLElement>()
     subtitles.forEach((subtitle) => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                subtitle.classList.toggle('my-subtitle--is-paused', !entry.isIntersecting)
-            },
-
-            // * запуск анимации только если до компонента в пределах +/- 200px от границ viewport'а | работает в обе стороны
-            { rootMargin: '200px 0px' },
-        )
-        observer.observe(subtitle)
-        observers.push(observer)
+        const section = subtitle.closest<HTMLElement>('section') || subtitle.parentElement
+        if (section) {
+            sections.add(section)
+        }
     })
 
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                const section = entry.target as HTMLElement
+                const isPaused = !entry.isIntersecting
+                const items = section.querySelectorAll<HTMLElement>('.my-subtitle--advantage')
+                items.forEach((item) => {
+                    item.classList.toggle('my-subtitle--is-paused', isPaused)
+                })
+            })
+        },
+        { rootMargin: '200px 0px' },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
     return () => {
-        observers.forEach((obs) => obs.disconnect())
+        observer.disconnect()
     }
 }

@@ -11,11 +11,11 @@ import { initHeroBackgroundImageParallaxManager } from 'modules/postload/manager
 
 // import { initDecorativeBubblesAnimationStateManager } from 'modules/postload/manager__decorative_bubbles__animation_state'
 import { initBallsGroupsAnimationStateManager } from 'modules/postload/manager__balls_group__animation_state'
-// import { initGradientImageAnimationStateManager } from 'modules/postload/manager__gradient_image__animation_state'
+import { initGradientImageAnimationStateManager } from 'modules/postload/manager__gradient_image__animation_state'
 import { initPriceBadgeAnimationStateManager } from 'modules/postload/manager__price_badge__animation_state'
 import { initHeroSloganAnimationStateManager } from 'modules/postload/manager__hero_slogan__animation_state'
-// import { initAdvantagesNumbersAnimationStateManager } from 'modules/postload/manager__advantages_numbers__animation_state'
-// import { initAdvantagesPicturesAnimationStateManager } from 'modules/postload/manager__advantages_pictures__animation_state'
+import { initAdvantagesNumbersAnimationStateManager } from 'modules/postload/manager__advantages_numbers__animation_state'
+import { initAdvantagesPicturesAnimationStateManager } from 'modules/postload/manager__advantages_pictures__animation_state'
 import { initServerResponseTitleAnimationStateManager } from 'modules/postload/manager__server_response_title__animation_state'
 
 import { initMenuButtonStateManager } from 'modules/postload/manager__menu_button_state'
@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // initDecorativeBubblesAnimationStateManager()
     initBallsGroupsAnimationStateManager()
-    // initGradientImageAnimationStateManager()
+    initGradientImageAnimationStateManager()
     initPriceBadgeAnimationStateManager()
     initHeroSloganAnimationStateManager()
-    // initAdvantagesNumbersAnimationStateManager()
-    // initAdvantagesPicturesAnimationStateManager()
+    initAdvantagesNumbersAnimationStateManager()
+    initAdvantagesPicturesAnimationStateManager()
     initServerResponseTitleAnimationStateManager()
 
     initMenuButtonStateManager()

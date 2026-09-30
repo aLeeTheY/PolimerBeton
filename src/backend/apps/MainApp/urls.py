@@ -12,6 +12,8 @@ urlpatterns = [
     # ? -----------------
     path("success/", views.my_success, name="success"),
     path("fail/", views.my_fail, name="fail"),
+    path("updated/", views.my_updated, name="updated"),
+    path("limit-exceeded/", views.my_limit_exceeded, name="limit-exceeded"),
     # ? --- META FILES
     # ? --------------
     path(

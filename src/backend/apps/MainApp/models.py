@@ -11,25 +11,35 @@ from django.utils.translation import gettext_lazy as _
 from encrypted_model_fields.fields import EncryptedCharField
 
 
+def normalize_phone(phone_str: str) -> str:
+    """Приводит номер телефона к единому стандарту (7XXXXXXXXXX)."""
+    if not phone_str or phone_str == "-":
+        return ""
+    digits = re.sub(r"\D", "", phone_str)
+    if len(digits) == 11 and digits.startswith("8"):
+        digits = "7" + digits[1:]
+    return digits
+
+
 class Client(models.Model):
     client_id = models.AutoField(primary_key=True, verbose_name=_("Client ID"))
 
     # Фамилия, имя, отчество
     last_name = EncryptedCharField(
-        max_length=100, null=False, default="нет фамилии", verbose_name=_("Last name")
+        max_length=100, null=False, default="-", verbose_name=_("Last name")
     )
     first_name = EncryptedCharField(
-        max_length=100, null=False, default="нет имени", verbose_name=_("First name")
+        max_length=100, null=False, default="-", verbose_name=_("First name")
     )
     middle_name = EncryptedCharField(
-        max_length=100, null=True, verbose_name=_("Middle name")
+        max_length=100, null=True, blank=True, verbose_name=_("Middle name")
     )
 
     # Телефон
     phone_number = EncryptedCharField(
         max_length=18,
         null=False,
-        default="нет телефона",
+        default="-",
         verbose_name=_("Phone number"),
     )
 
@@ -48,13 +58,14 @@ class Client(models.Model):
         verbose_name=_("The client agrees with the privacy policy"),
     )
 
-    # система блокировки пользователя, если спамит форму
+    # * Система блокировки пользователя, если спамит форму
     available_attempts = models.PositiveIntegerField(
         default=3, verbose_name=_("Available attempts")
-    )  # Количество попыток отправки формы
+    )  # * Количество попыток отправки формы
+
     blocked_until = models.DateTimeField(
         null=True, blank=True, verbose_name=_("Blocked until")
-    )  # Время блокировки
+    )  # * Время блокировки
 
     def is_blocked(self):
         if self.blocked_until and timezone.now() < self.blocked_until:
@@ -72,7 +83,7 @@ class Client(models.Model):
 
     def block_this_client(self):
         self.available_attempts = 0
-        self.blocked_until = timezone.now() + timedelta(hours=24)
+        self.blocked_until = timezone.now() + timedelta(hours=1)
         self.save(update_fields=["blocked_until", "available_attempts"])
 
     def unblock_and_reset_available_attempts(self):
@@ -81,12 +92,20 @@ class Client(models.Model):
         self.save(update_fields=["available_attempts", "blocked_until"])
 
     def save(self, *args, **kwargs):
-        # Очистка номера телефона до цифр перед хэшированием (например: +7 (999) 111-22-33 -> 79991112233)
-        if self.phone_number and self.phone_number != "нет телефона":
-            clean_phone = re.sub(r"\D", "", self.phone_number)
-            self.phone_number_hash = hashlib.sha256(clean_phone.encode()).hexdigest()
+        # * Единая нормализация и хэширование номера телефона
+        clean_phone = normalize_phone(self.phone_number or "")
+        if clean_phone:
+            self.phone_number_hash = hashlib.sha256(
+                clean_phone.encode("utf-8")
+            ).hexdigest()
+        else:
+            self.phone_number_hash = None
 
-        # Сохраняем объект
+        # * Защита от ValueError при вызове save(update_fields=[...])
+        update_fields = kwargs.get("update_fields")
+        if update_fields is not None:
+            kwargs["update_fields"] = set(update_fields) | {"phone_number_hash"}
+
         super().save(*args, **kwargs)
 
     class Meta:

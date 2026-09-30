@@ -1,12 +1,31 @@
 from pathlib import Path
-from decouple import config
+from decouple import Config, RepositoryEnv
 
 DEFAULT_CHARSET = "utf-8"
 FILE_CHARSET = "utf-8"
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+PROJECT_ROOT = BASE_DIR.parent.parent
+ENV_DIR = PROJECT_ROOT / "env"
 
-DEFAULT_DOMAIN = "polimerbeton-vrn.ru"
+# * Порядок приоритета загрузки конфигурационных файлов
+ENV_CANDIDATES = [
+    ENV_DIR / ".env",
+    ENV_DIR / ".env.prod",
+    ENV_DIR / ".env.staging",
+    ENV_DIR / ".env.dev",
+]
+
+# * Ищем первый существующий файл | выбрасываем ошибку, если ни одного файла не найдено
+ENV_FILE = next((file for file in ENV_CANDIDATES if file.exists()), None)
+if ENV_FILE is None:
+    raise FileNotFoundError(
+        f"Ни один файл окружения не найден в папке {ENV_DIR}.\n"
+        f"Ожидался один из файлов: {[f.name for f in ENV_CANDIDATES]}"
+    )
+
+# * Подгружаем конфигурацию (.env) в проект
+config = Config(RepositoryEnv(ENV_FILE))
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -124,3 +143,5 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_HOST_USER = SENDER_EMAIL
 EMAIL_HOST_PASSWORD = SENDER_EMAIL_PASSWORD
 DEFAULT_FROM_EMAIL = SENDER_EMAIL
+
+EMAIL_TIMEOUT = 30  # даём 10 секунд на отправку

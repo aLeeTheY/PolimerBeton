@@ -1,5 +1,5 @@
 export function initAdvantagesPicturesAnimationStateManager() {
-    const advantages = document.querySelectorAll('.my-advantages__advantage')
+    const advantages = document.querySelectorAll<HTMLElement>('.my-advantages__advantage')
     if (!advantages.length) {
         return
     }
@@ -9,25 +9,31 @@ export function initAdvantagesPicturesAnimationStateManager() {
         return
     }
 
-    const observers: IntersectionObserver[] = []
-
+    const sections = new Set<HTMLElement>()
     advantages.forEach((advantage) => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                advantage.classList.toggle(
-                    'my-advantages__advantage--is-paused',
-                    !entry.isIntersecting,
-                )
-            },
-
-            // * запуск анимации только если до компонента в пределах +/- 300px от границ viewport'а | работает в обе стороны
-            { rootMargin: '300px 0px' },
-        )
-        observer.observe(advantage)
-        observers.push(observer)
+        const section = advantage.closest<HTMLElement>('section') || advantage.parentElement
+        if (section) {
+            sections.add(section)
+        }
     })
 
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                const section = entry.target as HTMLElement
+                const isPaused = !entry.isIntersecting
+                const items = section.querySelectorAll<HTMLElement>('.my-advantages__advantage')
+                items.forEach((item) => {
+                    item.classList.toggle('my-advantages__advantage--is-paused', isPaused)
+                })
+            })
+        },
+        { rootMargin: '200px 0px' },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+
     return () => {
-        observers.forEach((obs) => obs.disconnect())
+        observer.disconnect()
     }
 }
