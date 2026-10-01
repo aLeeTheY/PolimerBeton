@@ -106,8 +106,25 @@ export function replaceCssPaths(cssToAssets) {
         /@(scss|css|audio|fonts|images|videos|misc|libs)\/([^"'\s,)]+)/g,
         (match, type, filePath) => {
             if (type === 'scss' || type === 'css') {
-                return './'
+                const processed = filePath.replace(/\.(scss|sass)$/i, '.css')
+                return `./${processed}`
             }
+
+            // * Если собираем под Django, формируем абсолютный путь через /static/appName/
+            if (env.isDjangoBuild) {
+                const appName = path.djangoAppName
+                    ? path.djangoAppName.replace(/^\/+|\/+$/g, '')
+                    : ''
+                const appPrefix = appName ? `${appName}/` : ''
+                const prefix = `/static/${appPrefix}` // Получится /static/MainApp/
+
+                if (type === 'libs') {
+                    return `${prefix}libs/${filePath}`
+                }
+                return `${prefix}assets/${type}/${filePath}`
+            }
+
+            // * Обычная сборка для локального dev-сервера Gulp
             if (type === 'libs') {
                 return `${cssToAssets}../libs/${filePath}`
             }
