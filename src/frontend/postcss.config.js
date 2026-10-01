@@ -6,6 +6,10 @@ const isProd = process.env.NODE_ENV === 'production'
 export default (ctx) => {
     const isMobileFirst = ctx.options?.config?.ctx?.isMobileFirst || false
 
+    // ! пути для PurgeCSS — приходят из gulp, потому что в Django и prod
+    // ! билды они разные. Fallback — дефолт для обычной сборки.
+    const purgePaths = ctx.purgePaths || ['dist/**/*.html', 'dist/libs/**/*.js', 'dist/js/**/*.js']
+
     return {
         plugins: {
             // * замена px на rem в зависимости от условий
@@ -135,11 +139,20 @@ export default (ctx) => {
             // * удаление неиспользуемых CSS (только в staging/prod)
             ...(isProd && {
                 '@fullhuman/postcss-purgecss': {
-                    content: ['dist/**/*.html', 'dist/libs/**/*.js', 'dist/js/**/*.js'],
+                    content: purgePaths,
 
                     // ! Защитит .page--ru, .page--en, .page--fr и т.д.
                     // ! safelist: [/--[a-z]{2}$/],
-                    safelist: [/--ru$/, /--en$/],
+                    safelist: {
+                        // * начинается с my- / is- / has- или заканчивается на --ru/--en
+                        standard: [/--ru$/, /--en$/, /^is-/, /^has-/],
+
+                        // * атрибутные селекторы [type=...], [name=...]
+                        deep: [/\[type=/, /\[name=/, /\[id=/],
+
+                        // * не вырезать мои собственные классы
+                        greedy: [/my-/],
+                    },
                 },
             }),
             // * сжатие CSS (только в prod и staging modes)

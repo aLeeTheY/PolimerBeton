@@ -2,7 +2,7 @@ import gulp from 'gulp'
 import browserSync from 'browser-sync'
 
 import { env } from '../../../config/env.js'
-// import { path } from '../../../config/path.js'
+import { path } from '../../../config/path.js'
 import { build } from '../../../config/build.js'
 
 // * Создаем изолированный инстанс специально для Critical CSS
@@ -69,10 +69,29 @@ export function server(cb) {
 // * ----------------------------------------------------------------
 export function startCriticalServer(port = 8080) {
     return new Promise((resolve) => {
+        // Базовые директории для поиска файлов
+        const routes = {}
+
+        // Если это Django-сборка — прокидываем пути к папке static
+        if (env.isDjangoBuild) {
+            const djangoStaticDir = `${path.djangoBuild.base}/static/${path.djangoAppName}`
+
+            // ! BrowserSync routes: URL-префикс → физическая папка.
+            // ! Нужно, чтобы penthouse мог загрузить CSS/шрифты/картинки,
+            // ! которые физически лежат НЕ рядом с HTML-шаблонами.
+            routes['/css'] = path.djangoBuild.styles.replace(/\/$/, '')
+
+            routes['/libs'] = `${djangoStaticDir}/libs` // * js libs
+            routes['/js'] = path.djangoBuild.scripts.replace(/\/$/, '')
+
+            routes['/assets'] = `${djangoStaticDir}/assets`
+        }
+
         criticalBsInstance.init(
             {
                 server: {
                     baseDir: build.html,
+                    routes: Object.keys(routes).length ? routes : undefined,
                 },
                 port,
                 open: false,

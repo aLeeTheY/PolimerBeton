@@ -6,6 +6,8 @@ import { watch } from './dev/watch.js'
 import { clean } from './clean.js'
 
 import { html } from '../html/html.js'
+import { djangoizeHtml } from '../html/djangoize-html.js'
+
 import { meta } from '../meta/meta.js'
 
 import { styles, optimizeStyles } from '../styles/styles.js'
@@ -50,8 +52,12 @@ export const prod = gulp.series(
     !env.isDjangoBuild ? revise : (cb) => cb(), // * ревизии | только если нет билда под Django
     env.isObfuscation ? obfuscateSelectors : (cb) => cb(), // * обфускация
 
-    // ! запускается всегда предпоследним | перед запуском самого сервера !!!
+    // ! CRITICAL CSS TASK
     criticalCss,
+
+    // * ставим {% static %}, если активна сборка под django
+    // ! всегда после CRITICAL CSS !!!
+    env.isDjangoBuild ? djangoizeHtml : (cb) => cb(),
 
     // * run server in staging mode or in full production mode
     env.buildMode.isStaging || env.isProdServer ? server : (cb) => cb(),

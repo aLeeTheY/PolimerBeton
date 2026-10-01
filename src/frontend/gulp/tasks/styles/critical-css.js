@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from 'fs'
 import gulp from 'gulp'
 import nodePath from 'path'
@@ -12,6 +13,30 @@ import { startCriticalServer, stopCriticalServer } from '../core/dev/server.js'
 
 import penthouse from 'penthouse'
 // import puppeteer from 'puppeteer'
+
+// ! Превращает алиасы в рабочие URL для penthouse.
+// ! После резолва penthouse увидит /css/main.min.css и запросит
+// ! его через server.js routes → получит настоящий CSS.
+// ! НЕ трогает оригинал — оригинал сохраняется и в него инжектится <style>.
+function resolveAliasesForCritical(html) {
+    return html
+        .replace(
+            /@(scss|css)\/([^"'\s)]+)/g,
+            (m, t, p) => `/css/${p.replace(/\.scss$/, '.min.css')}`,
+        )
+        .replace(/@(ts|js)\/([^"'\s)]+)/g, (m, t, p) => `/js/${p.replace(/\.ts$/, '.min.js')}`)
+        .replace(
+            /@(fonts|images|videos|audio|misc)\/([^"'\s)]+)/g,
+            (m, t, p) => `/assets/${t}/${p}`,
+        )
+        .replace(/@libs\/([^"'\s)]+)/g, (m, p) => `/libs/${p}`)
+        .replace(
+            /@icons\/(.+?)\.svg/g,
+            (m, p) => `/assets/icons/sprite.svg#${p.replace(/\//g, '--')}`,
+        )
+        .replace(/@meta\/favicon\/([^"'\s)]+)/g, (m, p) => `/${p}`)
+        .replace(/@meta\/([^"'\s)]+)/g, (m, p) => `/${p}`)
+}
 
 // * --- EXPORT GULP TASK FOR INLINE CRITICAL CSS TO HTML FILES
 // * ----------------------------------------------------------
@@ -65,6 +90,26 @@ export async function criticalCss() {
     // ! Если css файлов несколько, читаем их и объедияем в одну строку для Penthouse
     const combinedCss = cssFiles.map((file) => fs.readFileSync(file, 'utf-8')).join('\n')
 
+    if (env.isVerbose) {
+        console.log('════════════ CRITICAL-CSS DEBUG ════════════')
+        console.log('build.html       :', build.html)
+        console.log('build.styles     :', build.styles)
+        console.log('htmlFiles length :', htmlFiles.length)
+        console.log('htmlFiles        :', htmlFiles)
+        console.log('cssFiles length  :', cssFiles.length)
+        console.log('cssFiles         :', cssFiles)
+        console.log('combinedCss.size :', combinedCss.length, 'chars')
+
+        if (combinedCss.length < 1000) {
+            console.log('combinedCss (full, because too short):')
+            console.log(combinedCss)
+        } else {
+            console.log('combinedCss (first 500 chars):')
+            console.log(combinedCss.slice(0, 500))
+        }
+        console.log('════════════════════════════════════════════')
+    }
+
     // ! не нужно, penthouse захватывает media queries при генерации благодаря postcss-sort-media-queries
     // const viewports = [
     //     { width: 375, height: 667 }, // Mobile
@@ -91,44 +136,33 @@ export async function criticalCss() {
 
     try {
         for (const filePath of htmlFiles) {
-            let html = fs.readFileSync(filePath, 'utf-8')
+            // ! ОРИГИНАЛ с алиасами (в него потом инжектим <style>)
+            const originalHtml = fs.readFileSync(filePath, 'utf-8')
 
             if (
-                !html.includes(
+                !originalHtml.includes(
                     '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
                 )
             ) {
                 continue
             }
 
-            // Формируем относительный путь от build.html к файлу
+            // ! Пишем ВРЕМЕННУЮ resolved-версию → её увидит penthouse
+            fs.writeFileSync(filePath, resolveAliasesForCritical(originalHtml))
+
             const relativePath = nodePath.relative(dir, filePath).replace(/\\/g, '/')
             const httpUrl = `${protocol}://localhost:${TEMP_PORT}/${relativePath}`
-
-            // Формирование имени скриншота
             const pageSlug = relativePath.replace(/\.html$/, '').replace(/[\\/]/g, '_')
             const screenshotBasePath = `${debugDir.replace(/\\/g, '/')}/${pageSlug}`
 
             try {
                 const criticalCss = await penthouse({
-                    // * html файл открытый но отдельном dev-сервере для Critical CSS
                     url: httpUrl,
-
-                    // * css строка, из которой вырезаем critical-css
                     cssString: combinedCss,
-
-                    // * размеры viewport
                     width: viewport.width,
                     height: viewport.height,
-
-                    // ! принудительно оставляем все медиа-запросы, даже если они не подходят
                     keepLargerMediaQueries: true,
-
-                    // * после загрузки страницы ждём 300ms пока всё прогрузится
-                    // * и только после этого извлекаем Critical CSS
                     renderWaitTime: 300,
-
-                    // ! INCLUDE SOME CSS CLASSES TO PENTHOUSE MANUALLY !!!
                     forceInclude: [
                         /@font-face/,
                         /data-theme/,
@@ -137,19 +171,15 @@ export async function criticalCss() {
                         /^\.page-/,
                         /^\.avif/,
                         /^\.webp/,
+
+                        // ! Скрытые элементы: penthouse их выкидывает (не видны в рендере),
+                        // ! но без правил они станут ВИДИМЫМИ после инжекта critical CSS
+                        /my-header__hidden-part/,
+                        /offcanvas/,
+                        /my-cookie-consent-banner/,
                     ],
-
-                    // * сохраняем скриншоты того, что увидел puppeteer
-                    screenshots: {
-                        basePath: screenshotBasePath,
-                        type: 'jpeg',
-                        quality: 80,
-                    },
-
-                    // * запрещаем исполнять JS
+                    screenshots: { basePath: screenshotBasePath, type: 'jpeg', quality: 80 },
                     blockJSRequests: true,
-
-                    // * puppeteer settings
                     puppeteer: {
                         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
                         headless: true,
@@ -163,13 +193,17 @@ export async function criticalCss() {
                     },
                 })
 
-                html = html.replace(
+                // ! Инжектим critical CSS в ОРИГИНАЛ (с алиасами).
+                // ! Так djangoizeHtml сможет потом превратить @scss → {% static %}
+                const finalHtml = originalHtml.replace(
                     '<!-- ! DO NOT REMOVE THIS COMMENT !!! | CRITICAL CSS PLACEHOLDER -->',
                     `<style type="text/css" id="critical-css">${criticalCss}</style>`,
                 )
-
-                fs.writeFileSync(filePath, html)
+                fs.writeFileSync(filePath, finalHtml)
             } catch (err) {
+                // ! Восстанавливаем оригинал, чтобы не оставить resolved-версию без CSS
+                fs.writeFileSync(filePath, originalHtml)
+
                 notify.warn(
                     NOTIFICATION_HANDLER_TITLES.CRITICAL_CSS,
                     `${nodePath.basename(filePath)}: ${err.message}`,

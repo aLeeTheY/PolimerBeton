@@ -4,7 +4,7 @@ import re
 
 from django.db import models
 from django.core.cache import cache
-from django.contrib.sites.models import Site
+from django.contrib.sites.models import Site, SITE_CACHE
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -183,10 +183,16 @@ class SiteConfig(models.Model):
                 site.name = self.domain
                 site.save()
 
+                # ! сбрасываем кэш Django для Site.objects.get_current()
+                SITE_CACHE.clear()
+
         except Site.DoesNotExist:
             Site.objects.create(
-                id=getattr(settings, "SITE_ID", 1), domain=self.domain, name=self.domain
+                id=getattr(settings, "SITE_ID", 1),
+                domain=self.domain,
+                name=self.domain,
             )
+            SITE_CACHE.clear()
 
         cache.delete("site_config")
 

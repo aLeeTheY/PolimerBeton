@@ -5,49 +5,73 @@ import { env } from '../../config/env.js'
 import { path } from '../../config/path.js'
 import { build } from '../../config/build.js'
 
+// * Вспомогательная функция для приведения Windows-путей (C:\...) к POSIX-формату (C:/...)
+const toPosix = (p) => (p ? String(p).replace(/\\/g, '/') : '')
+
 // * --- EXPORT GULP TASK CLEAN BUILD DIRECTORY (KEEPING ASSETS)
 // * -----------------------------------------------------------
 export async function clean() {
+    // ! debug-папка от criticalCss — сносим всегда
+    await deleteAsync(['./debug__critical_css__screenshots'], { force: true })
+
     // ! --- DJANGO BUILD BEHAVIOUR
     // ! --------------------------
     if (env.isDjangoBuild) {
-        await deleteAsync(path.djangoClean, { force: true })
+        const djangoStatic = toPosix(`${path.djangoBuild.base}/static/${path.djangoAppName}`)
+        const djangoTemplates = toPosix(`${path.djangoBuild.base}/templates/${path.djangoAppName}`)
+        const djangoMetaTemplates = toPosix(`${path.djangoBuild.base}/templates/meta`)
+
+        if (env.isForceClean) {
+            // ! Полный снос собранных артефактов (сохраняем только .gitkeep файлы)
+            await deleteAsync(
+                [
+                    `${djangoStatic}/**/*`,
+                    `!${djangoStatic}/**/.gitkeep`,
+
+                    `${djangoTemplates}/**/*`,
+                    `!${djangoTemplates}/**/.gitkeep`,
+
+                    `${djangoMetaTemplates}/**/*`,
+                    `!${djangoMetaTemplates}/**/.gitkeep`,
+                ],
+                { force: true, dryRun: false },
+            )
+        } else {
+            // ! Обычная очистка — удаляем по путям из конфига (с нормализацией путей)
+            const cleanPaths = Array.isArray(path.djangoClean)
+                ? path.djangoClean.map(toPosix)
+                : [toPosix(path.djangoClean)]
+
+            await deleteAsync(cleanPaths, { force: true })
+        }
         return
     }
 
     // ! --- DEFAULT BEHAVIOUR
     // ! ---------------------
+    const buildBase = toPosix(build.base)
+    const zipPath = toPosix(path.zip)
+
     if (env.isForceClean) {
-        // Полное удаление всей папки dist
-        await deleteAsync([path.zip, build.base], { force: true })
+        // * Полное удаление всей папки dist и архива
+        await deleteAsync([zipPath, buildBase].filter(Boolean), { force: true })
     } else {
         await deleteAsync(
             [
-                // * select all files in dist/ folder first
-                `${build.base}/**`,
+                // * все файлы и подпапки в dist/
+                `${buildBase}/**`,
 
-                // * select archive folder
-                path.zip,
+                // * архив
+                zipPath,
 
-                // ! keep folders dist/, assets/** и libs/**
-                // * keep dist/ folder
-                `!${build.base}`,
-
-                // * keep assets/ folder
-                `!${build.base}/assets`,
-
-                // * keep any folder inside assets/ folder
-                `!${build.base}/assets/**`,
-
-                // * keep libs/ folder
-                `!${build.base}/libs`,
-
-                // * keep any folder inside libs/ folder
-                `!${build.base}/libs/**`,
-
-                // ! keep rev-manifest.json
-                `!${build.base}/rev-manifest.json`,
-            ],
+                // ! сохраняем директории и их содержимое
+                `!${buildBase}`,
+                `!${buildBase}/assets`,
+                `!${buildBase}/assets/**`,
+                `!${buildBase}/libs`,
+                `!${buildBase}/libs/**`,
+                `!${buildBase}/rev-manifest.json`,
+            ].filter(Boolean),
             { force: true },
         )
     }

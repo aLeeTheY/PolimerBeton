@@ -1,6 +1,8 @@
 <!-- Built with love by aLeeTheY | https://github.com/aLeeTheY -->
+<!doctype html>
 
-<!--? Django load static & widget_tweaks --->
+<!-- ? Django load static & widget_tweaks --->
+<!-- ! STRONGLY AFTER <!doctype html> !!! --->
 {% if is_django_build %}
     {% raw %}
         {% load static %}
@@ -8,7 +10,6 @@
     {% endraw %}
 {% endif %}
 
-<!doctype html>
 <html class="nojs" lang="{{ i18n.current.htmlLang }}">
     {% include "service/head.njk" %}
     <body {% if current_page__page_name == 'index' %}id="back-to-top"{% endif %}>

@@ -176,7 +176,15 @@ export function optimizeStyles() {
             .pipe(
                 postcss((file) =>
                     postcssLoadConfig(
-                        { isMobileFirst: env.isMobileFirst, file },
+                        {
+                            isMobileFirst: env.isMobileFirst,
+                            file,
+                            purgePaths: [
+                                `${build.html}**/*.html`,
+                                `${build.libs}**/*.js`,
+                                `${build.scripts}**/*.js`,
+                            ],
+                        },
                         process.cwd(), // Принудительно ищем конфиг в папке src/frontend
                     ),
                 ),

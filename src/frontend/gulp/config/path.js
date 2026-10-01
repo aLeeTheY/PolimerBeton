@@ -16,6 +16,7 @@ const zipFolder = './archive'
 // * --- DJANGO BUILD TARGETS
 // * ------------------------
 const djangoApp = '../backend/apps/MainApp'
+const djangoAppName = nodePath.basename(djangoApp)
 
 const djangoStatic = `${djangoApp}/static/MainApp`
 
@@ -26,6 +27,7 @@ const djangoMetaTemplates = `${djangoApp}/templates/meta`
 // * ---------------------
 export const path = {
     projectRootFolderName: rootFolderName,
+    djangoAppName,
 
     clean: buildFolder,
     djangoClean: [

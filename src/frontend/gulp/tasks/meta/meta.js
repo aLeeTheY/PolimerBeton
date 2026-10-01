@@ -1,5 +1,5 @@
 import gulp from 'gulp'
-// import through2 from 'through2'
+import gulpIf from 'gulp-if'
 import gulpReplace from 'gulp-replace'
 import browserSync from 'browser-sync'
 
@@ -10,17 +10,37 @@ import {
     plumberWithErrorHandler,
     NOTIFICATION_HANDLER_TITLES,
 } from '../../helpers/error-handler.js'
+import { getDomainRegex, DJANGO_DOMAIN } from '../../helpers/django-domain.js'
+import { injectDjangoLoadStatic } from '../../helpers/path-resolver.js'
 
 // * --- PROCESSING WEBMANIFEST
 // * --------------------------
 function metaWebManifest() {
+    const domainRegex = getDomainRegex()
+
     return (
         gulp
             .src(path.src.meta.favicon.webManifest)
             .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.META.FAVICON.WEB_MANIFEST))
 
-            // .pipe(gulpReplace(/\/?@meta\//g, env.assetPrefix))
-            .pipe(gulpReplace(/\/?@meta\/(?:[^\\/\s"']+\/)*([^\\/\s"']+)/g, `${env.assetPrefix}$1`))
+            // ! {% load static %} в начало файла для Django-билда.
+            // ! Без него {% static %} в манифесте не распарсится.
+            // ! Для non-Django — no-op (внутри есть guard env.isDjangoBuild).
+            .pipe(injectDjangoLoadStatic())
+
+            // * @meta/favicon/... → путь к иконке (разный для двух билдов)
+            .pipe(
+                gulpReplace(/@meta\/([^"'\s)]+)/g, (match, fullPath) => {
+                    if (env.isDjangoBuild) {
+                        return `{% static '${path.djangoAppName}/meta/${fullPath}' %}`
+                    }
+                    // Non-Django: иконки в корне dist/, срезаем favicon/
+                    return `/${fullPath.replace(/^favicon\//, '')}`
+                }),
+            )
+
+            // * домен → {{ site_config.domain }} (только Django)
+            .pipe(gulpIf(Boolean(domainRegex), gulpReplace(domainRegex, DJANGO_DOMAIN)))
 
             .pipe(gulp.dest(build.meta.text))
             .on('end', () => {
@@ -46,22 +66,17 @@ function metaFavicon() {
 // * --- TEXT META FILES COPY
 // * ------------------------
 function metaText() {
-    // const formattedDate = new Intl.DateTimeFormat('en-US', {
-    //     month: '2-digit',
-    //     day: '2-digit',
-    //     year: 'numeric',
-    // })
-    //     .format(new Date())
-    //     .replace(/\//g, '-')
-
-    // ! Date like that: yyyy-mm-dd
     const formattedDate = new Date().toISOString().split('T')[0]
+    const domainRegex = getDomainRegex()
 
     return gulp
         .src(path.src.meta.text)
         .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.META.TEXT))
+
         .pipe(gulpReplace(/@meta__site-url/g, env.siteUrl))
         .pipe(gulpReplace(/@meta__date/g, formattedDate))
+        .pipe(gulpIf(Boolean(domainRegex), gulpReplace(domainRegex, DJANGO_DOMAIN)))
+
         .pipe(gulp.dest(build.meta.text))
         .on('end', () => {
             // * update dev server

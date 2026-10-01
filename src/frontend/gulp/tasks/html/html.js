@@ -36,7 +36,7 @@ import posthtml from 'gulp-posthtml'
 import gulpReplace from 'gulp-replace'
 
 import htmlmin from 'gulp-html-minifier-terser'
-import { injectDjangoLoadStatic, replaceHtmlPaths } from '../../helpers/path-resolver.js'
+import { replaceHtmlPaths } from '../../helpers/path-resolver.js'
 
 // import webphtml from 'gulp-webp-html-nosvg' // TODO: deprecated
 // import webphtml from 'gulp-webp-html-fixed' // ! no avig support
@@ -61,14 +61,6 @@ function createHtmlStream({
     jsContent = '',
     spriteContent = '',
 }) {
-    // 1. Получаем домен из переданного JSON (например, "polimerbeton-vrn.ru")
-    const domainToReplace = localeDataFromJSON?.common?.website_domain
-
-    // Экранируем точки для безопасного регулярного выражения (polimerbeton-vrn\.ru)
-    const domainRegex = domainToReplace
-        ? new RegExp(domainToReplace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')
-        : null
-
     const ignoreCustomComments = [/Built with love by aLeeTheY/]
     if (!env.isInlineCSS) {
         ignoreCustomComments.push(/CRITICAL CSS PLACEHOLDER/)
@@ -166,52 +158,39 @@ function createHtmlStream({
                 }),
             )
 
-            // * если сборка под Django -> автовставка {% load static %}
-            .pipe(injectDjangoLoadStatic())
-
-            // ! ------------------------------------------------------------------------------------------------
-            // * Автоматическая замена всех вхождений домена из JSON на тег Django {{ site_config.domain }}
-            // ! ------------------------------------------------------------------------------------------------
-            .pipe(
-                gulpIf(
-                    env.isDjangoBuild && Boolean(domainRegex),
-                    gulpReplace(domainRegex, '{{ site_config.domain }}'),
-                ),
-            )
-            // ! ------------------------------------------------------------------------------------------------
-
             // * универсальная замена алиасов | @fonts, @images ... etc
-            .pipe(replaceHtmlPaths(pathPrefix))
+            // ! пропускаем вызов, если isDjangoBuild = true
+            .pipe(gulpIf(!env.isDjangoBuild, replaceHtmlPaths(pathPrefix)))
 
             // * заменяем пути на корректные для SVG
+            // ! пропускаем вызов, если isDjangoBuild = true
             .pipe(
-                gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
-                    const id = p1.replace(/\//g, '--')
+                gulpIf(
+                    !env.isDjangoBuild,
+                    gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
+                        const id = p1.replace(/\//g, '--')
 
-                    // * 1. Если спрайт инлайнится в сам HTML-документ
-                    if (env.isInlineSprite) {
-                        return `#${id}`
-                    }
+                        // * 1. Если спрайт инлайнится в сам HTML-документ
+                        if (env.isInlineSprite) {
+                            return `#${id}`
+                        }
 
-                    // * 2. Если спрайт инлайнится в сам HTML-документ
-                    if (env.isDjangoBuild) {
-                        return `{% static 'MainApp/assets/icons/sprite.svg' %}#${id}`
-                    }
-
-                    // * 3. Если спрайт лежит внешним файлом (дев, прод, github pages)
-                    // *    assetPrefix вернет, например, '/Wishbone-plus-Partners/' или '/'
-                    return `${pathPrefix}assets/icons/sprite.svg#${id}`
-                }),
+                        // * 2. Если спрайт лежит внешним файлом (dev, prod, github pages)
+                        // *    assetPrefix вернет, например, '/Wishbone-plus-Partners/' или '/'
+                        return `${pathPrefix}assets/icons/sprite.svg#${id}`
+                    }),
+                ),
             )
 
             // * заменяем пути на корректные для META FILES
+            // ! пропускаем вызов, если isDjangoBuild = true
             .pipe(
-                gulpReplace(/\/?@meta\/(?:[^\\/\s"']+\/)*([^\\/\s"']+)/g, (match, p1) => {
-                    if (env.isDjangoBuild) {
-                        return `{% static 'MainApp/meta/favicon/${p1}' %}`
-                    }
-                    return `${pathPrefix}${p1}`
-                }),
+                gulpIf(
+                    !env.isDjangoBuild,
+                    gulpReplace(/\/?@meta\/(?:[^\\/\s"',]+\/)*([^\\/\s"',]+)/g, (match, p1) => {
+                        return `${pathPrefix}${p1}`
+                    }),
+                ),
             )
 
             // * вставка инлайн файлов, если включена
@@ -232,29 +211,33 @@ function createHtmlStream({
             )
 
             // * замена межстраничных ссылок @page/ -> '' или 'en/'
+            // ! пропускаем вызов, если isDjangoBuild = true
             .pipe(
-                gulpReplace(/@page\/([a-zA-Z0-9_/-]+)\.(njk|html)/g, (match, pageName) => {
-                    // ? 1. Если сборка под локальное открытие файлов (file://)
-                    if (env.isLocal) {
-                        const prefix = urlSegment !== '' ? '../' : './'
+                gulpIf(
+                    !env.isDjangoBuild,
+                    gulpReplace(/@page\/([a-zA-Z0-9_/-]+)\.(njk|html)/g, (match, pageName) => {
+                        // ? 1. Если сборка под локальное открытие файлов (file://)
+                        if (env.isLocal) {
+                            const prefix = urlSegment !== '' ? '../' : './'
+                            const localeSegment = urlSegment ? `${urlSegment}/` : ''
+
+                            return `${prefix}${localeSegment}${pageName}.html`
+                        }
+
+                        // ? 2. Сборка под веб-сервер (абсолютные пути от корня сайта)
+                        const basePrefix = (env.assetPrefix || '/').replace(/\/$/, '') + '/'
                         const localeSegment = urlSegment ? `${urlSegment}/` : ''
 
-                        return `${prefix}${localeSegment}${pageName}.html`
-                    }
+                        // * главная страница
+                        if (pageName === 'index' || pageName === 'home') {
+                            return `${basePrefix}${localeSegment}`
+                        }
 
-                    // ? 2. Сборка под веб-сервер (абсолютные пути от корня сайта)
-                    const basePrefix = (env.assetPrefix || '/').replace(/\/$/, '') + '/'
-                    const localeSegment = urlSegment ? `${urlSegment}/` : ''
-
-                    // * главная страница
-                    if (pageName === 'index' || pageName === 'home') {
-                        return `${basePrefix}${localeSegment}`
-                    }
-
-                    // * остальные страницы
-                    const extension = isCleanUrl ? '' : '.html'
-                    return `${basePrefix}${localeSegment}${pageName}${extension}`
-                }),
+                        // * остальные страницы
+                        const extension = isCleanUrl ? '' : '.html'
+                        return `${basePrefix}${localeSegment}${pageName}${extension}`
+                    }),
+                ),
             )
 
             // * генерируем webp на основе png, jpg, jpeg и т.д.
