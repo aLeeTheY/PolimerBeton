@@ -1,4 +1,5 @@
 from django.views.generic.base import TemplateView, RedirectView
+from django.conf import settings
 from django.urls import path
 
 from . import views
@@ -19,7 +20,7 @@ urlpatterns = [
     path(
         "favicon.ico",
         RedirectView.as_view(
-            url="/static/MainApp/meta/favicon/favicon.ico",
+            url=f"{settings.STATIC_URL}MainApp/meta/favicon/favicon.ico",
             permanent=True,
         ),
         name="favicon",

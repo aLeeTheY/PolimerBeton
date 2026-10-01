@@ -328,7 +328,7 @@
                         id="my-custom-feedback-form"
                         class="col-12 col-md-6 my-custom-feedback-form"
                         method="post"
-                        action="{% if is_django_build %}{% raw %}{% url 'index' %}{% endraw %}{% else %}@page/index.njk{% endif %}"
+                        action="{% if is_django_build %}{% raw %}{% url 'index' %}#feedback-form{% endraw %}{% else %}@page/index.njk{% endif %}"
                         onsubmit="this.querySelector('button[type=submit]').disabled = true;">
                         {% if is_django_build %}
                             {% raw %}
@@ -340,7 +340,7 @@
                         {# --- ГЛОБАЛЬНЫЕ ОШИБКИ ФОРМЫ --- #}
                         {% if is_django_build %}
                             {% raw %}
-                                {% if form.non_field_errors %}
+                                {% if form.non_field_errors or form__race_error %}
                                     <div class="my-custom-feedback-form__error-wrapper my-custom-feedback-form__error-wrapper--global">
                                         <svg class="my-custom-feedback-form__error-svg" width="16" height="16" aria-hidden="true">
                                             <use href="@icons/form/error.svg"></use>
@@ -349,6 +349,11 @@
                                             {% for error in form.non_field_errors %}
                                                 <p class="my-custom-feedback-form__error-text">{{ error }}</p>
                                             {% endfor %}
+
+                                            {% if form__race_error %}
+                                                <!-- * Поле вывода для ошибка race error | двойной клик на кнопку отправки --->
+                                                <p class="my-custom-feedback-form__error-text">{{ form__race_error }}</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endif %}

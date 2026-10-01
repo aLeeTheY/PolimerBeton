@@ -3,7 +3,7 @@ import logging
 
 from django.conf import settings
 from django.utils import timezone
-from django.db import transaction
+from django.db import transaction, IntegrityError, OperationalError
 from django.utils.html import strip_tags
 from django.shortcuts import render, redirect
 from django.utils.crypto import get_random_string
@@ -196,6 +196,19 @@ def my_index(request):
 
                     send_notification_email(subject, html_message, plain_message)
 
+            except (IntegrityError, OperationalError) as e:
+                # ! Гонка от двойного клика.
+                # ! - IntegrityError: уникальное поле (Postgres, prod).
+                # ! - OperationalError: database is locked (SQLite, dev).
+                # ! Параллельный POST уже обработал эту заявку — наш второй не нужен.
+                logger.warning(f"Race on form submit, duplicate ignored: {e}")
+                request.session["form_token"] = generate_token()
+                # ! Флаг для показа пользователю глобальной ошибки на следующем GET
+                request.session["form__race_error"] = (
+                    "Похоже, вы отправили форму дважды. Мы уже приняли её, но больше так не делайте (╬ಠ益ಠ)"
+                )
+                return redirect("index")
+
             except Exception as e:
                 logger.exception(f"Ошибка при обработке формы или отправке письма: {e}")
                 return redirect("fail")
@@ -221,9 +234,14 @@ def my_index(request):
 
         form = FeedbackForm()
 
+    # ! Читаем и сразу удаляем флаг race-ошибки.
+    # ! pop() — чтобы сообщение показалось один раз и исчезло после F5.
+    form__race_error = request.session.pop("form__race_error", None)
+
     context = {
         "form": form,
         "form_token": form_token,
+        "form__race_error": form__race_error,
     }
     return render(request, "MainApp/index.html", context)
 

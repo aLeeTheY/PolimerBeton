@@ -95,7 +95,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # ? --- i18n / l10n
 # ? ---------------
-LANGUAGE_CODE = "ru"  # Устанавливаем язык по умолчанию на русский
+LANGUAGE_CODE = "ru-ru"
+
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True

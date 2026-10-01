@@ -72,7 +72,7 @@
 # **/vendors/
 
 **/out/
-# **/dist/
+**/dist/
 **/build/
 
 **/archive/
@@ -82,6 +82,9 @@
 **/old/
 
 **/debug__critical_css__screenshots/
+
+**/static/MainApp/
+**/templates/MainApp/
 
 # ! --- 5. Файлы под запретом
 # ! -------------------------

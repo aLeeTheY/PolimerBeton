@@ -14,12 +14,12 @@ DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
 # ! --- FOR MANUAL START | DEBUG
 # DEBUG = False
 
-if DEBUG:
-    MIDDLEWARE += [
-        # ? --- LIVE RELOAD
-        # ? ---------------
-        "livereload.middleware.LiveReloadScript",
-    ]
+# if DEBUG:
+#     MIDDLEWARE += [
+#         # ? --- LIVE RELOAD
+#         # ? ---------------
+#         "livereload.middleware.LiveReloadScript",
+#     ]
 
 # ? --- ALLOWED HOSTS
 # ? -----------------

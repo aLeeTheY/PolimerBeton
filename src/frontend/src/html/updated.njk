@@ -19,7 +19,7 @@
                     {{ updated.main_content.available_attempts.label }}
                     {% if is_django_build %}
                         {% raw %}
-                            {% if available_attempts %}
+                            {% if available_attempts is not None %}
                                 {{ available_attempts }}
                             {% else %}
                                 —

@@ -5,7 +5,7 @@
 /* eslint-disable no-console */
 
 import gulp from 'gulp'
-import nodePath from 'path'
+import nodePath from 'node:path'
 import through2 from 'through2'
 import browserSync from 'browser-sync'
 
@@ -211,7 +211,6 @@ function processAndOptimizeImages() {
                 generatedCount += renderPromises.length
             } catch (err) {
                 this.emit('error', err)
-                throw err
             }
         },
         function (cb) {

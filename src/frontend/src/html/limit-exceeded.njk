@@ -19,7 +19,7 @@
                     {{ limit_exceeded.main_content.unblock_time.label }}
                     {% if is_django_build %}
                         {% raw %}
-                            {% if unblock_time %}
+                            {% if unblock_time is not None %}
                                 {{ unblock_time|date:"d E Y H:i:s" }}
                             {% else %}
                                 —
