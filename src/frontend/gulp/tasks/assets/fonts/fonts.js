@@ -5,17 +5,16 @@
 
 import fs from 'fs'
 import gulp from 'gulp'
-import nodePath from 'path'
+import nodePath from 'node:path'
 import browserSync from 'browser-sync'
 import spawn from 'cross-spawn'
 
 import { env } from '../../../config/env.js'
-import { path as appPath } from '../../../config/path.js'
+import { build } from '../../../config/build.js'
 import { assetExists } from '../../../helpers/asset-exists.js'
 import { notify, NOTIFICATION_HANDLER_TITLES } from '../../../helpers/error-handler.js'
 
 const RAW = 'src/assets/fonts'
-const OUT = appPath.build.fonts
 const REQUIRED_TOOLS = ['ftcli']
 
 // * Настройка целевых форматов
@@ -90,6 +89,9 @@ function isUpToDate(rawInput, outBase) {
 
 async function convertRawFonts() {
     await checkRequiredTools()
+
+    // * Динамически определяем папку назначения в зависимости от режима сборки
+    const OUT = nodePath.resolve(build.fonts)
 
     const rawFiles = getRawFontFiles()
     if (rawFiles.length === 0) {

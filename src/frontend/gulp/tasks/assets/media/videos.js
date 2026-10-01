@@ -5,19 +5,19 @@
 
 import fs from 'fs/promises'
 import gulp from 'gulp'
-import path from 'path'
+import nodePath from 'node:path'
 import browserSync from 'browser-sync'
 import { spawn, spawnSync } from 'child_process'
 import pLimit from 'p-limit'
 
 import { env } from '../../../config/env.js'
 import { path as configPath } from '../../../config/path.js'
+import { build } from '../../../config/build.js'
 import { assetExists } from '../../../helpers/asset-exists.js'
 import { notify, NOTIFICATION_HANDLER_TITLES } from '../../../helpers/error-handler.js'
 
 const limit = pLimit(3)
 const VIDEOS_GLOB = configPath.src.videos
-const OUT_DIR = path.resolve(configPath.build.videos)
 
 async function checkToolAvailable(tool) {
     try {
@@ -68,17 +68,20 @@ async function processFile(filePath) {
         return { success: false, path: filePath, reason: 'not video' }
     }
 
-    const RAW_DIR = path.resolve('src/assets/videos')
-    const relPath = path.relative(RAW_DIR, filePath)
-    const parsed = path.parse(relPath)
-    const outDir = path.join(OUT_DIR, parsed.dir)
+    // * Динамический выбор папки назначения
+    const OUT_DIR = nodePath.resolve(build.videos)
+
+    const RAW_DIR = nodePath.resolve('src/assets/videos')
+    const relPath = nodePath.relative(RAW_DIR, filePath)
+    const parsed = nodePath.parse(relPath)
+    const outDir = nodePath.join(OUT_DIR, parsed.dir)
     const baseName = parsed.name
 
     const needWebm = !(await assetExists(outDir, baseName, '.webm', filePath))
     const needMp4 = !(await assetExists(outDir, baseName, '.mp4', filePath))
 
-    const mp4Out = path.join(outDir, `${baseName}.mp4`)
-    const webmOut = path.join(outDir, `${baseName}.webm`)
+    const mp4Out = nodePath.join(outDir, `${baseName}.mp4`)
+    const webmOut = nodePath.join(outDir, `${baseName}.webm`)
     const mp4Tmp = mp4Out + '.tmp'
     const webmTmp = webmOut + '.tmp'
 

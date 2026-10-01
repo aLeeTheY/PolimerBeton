@@ -5,19 +5,19 @@
 
 import fs from 'fs/promises'
 import gulp from 'gulp'
-import path from 'path'
+import nodePath from 'node:path'
 import browserSync from 'browser-sync'
 import { spawn } from 'child_process'
 import pLimit from 'p-limit'
 
 import { env } from '../../../config/env.js'
 import { path as configPath } from '../../../config/path.js'
+import { build } from '../../../config/build.js'
 import { assetExists } from '../../../helpers/asset-exists.js'
 import { notify, NOTIFICATION_HANDLER_TITLES } from '../../../helpers/error-handler.js'
 
 const limit = pLimit(4)
 const AUDIO_GLOB = configPath.src.audio
-const OUT_DIR = path.resolve(configPath.build.audio)
 
 // Проверка инструментов
 async function checkToolAvailable(tool) {
@@ -58,17 +58,20 @@ async function processFile(filePath) {
         return { success: false, path: filePath, reason: 'not audio' }
     }
 
-    const RAW_DIR = path.resolve('src/assets/audio')
-    const relPath = path.relative(RAW_DIR, filePath)
-    const parsed = path.parse(relPath)
-    const outDir = path.join(OUT_DIR, parsed.dir)
+    // * Динамически определяем базовую папку вывода
+    const OUT_DIR = nodePath.resolve(build.audio)
+
+    const RAW_DIR = nodePath.resolve('src/assets/audio')
+    const relPath = nodePath.relative(RAW_DIR, filePath)
+    const parsed = nodePath.parse(relPath)
+    const outDir = nodePath.join(OUT_DIR, parsed.dir)
     const baseName = parsed.name
 
     const needWebm = !(await assetExists(outDir, baseName, '.webm', filePath))
     const needMp3 = !(await assetExists(outDir, baseName, '.mp3', filePath))
 
-    const webmOut = path.join(outDir, `${baseName}.webm`)
-    const mp3Out = path.join(outDir, `${baseName}.mp3`)
+    const webmOut = nodePath.join(outDir, `${baseName}.webm`)
+    const mp3Out = nodePath.join(outDir, `${baseName}.mp3`)
     const webmTmp = webmOut + '.tmp'
     const mp3Tmp = mp3Out + '.tmp'
 
