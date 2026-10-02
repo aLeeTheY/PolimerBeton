@@ -1,3 +1,6 @@
+# ! --- DANGER !!! | OLD CONFIGURATION !!!
+# ! --------------------------------------
+
 <VirtualHost *:80>
     ServerAdmin Polimerbeton-vrn@yandex.ru
     ServerName polimerbeton-vrn.ru
