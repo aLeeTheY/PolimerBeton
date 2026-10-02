@@ -161,10 +161,15 @@ class Request(models.Model):
 
 class SiteConfig(models.Model):
     domain = models.CharField(
-        "Site domain", max_length=255, default="polimerbeton-vrn.ru"
+        max_length=255,
+        default="polimerbeton-vrn.ru",
+        verbose_name=_("Website domain"),
     )
     price = models.DecimalField(
-        "Price (rubles)", max_digits=10, decimal_places=2, default=279.00
+        max_digits=10,
+        decimal_places=2,
+        default=279.00,
+        verbose_name=_("Current product price on the website (₽)"),
     )
 
     class Meta:
