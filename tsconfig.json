@@ -22,7 +22,7 @@
 
         "sourceMap": true, // генерировать sourcemap
         "removeComments": true, // удалять комментарии из JS
-        "incremental": true, // ускоренная компиляция
+        "incremental": true // ускоренная компиляция
 
         // "baseUrl": ".", // deprecated
     },

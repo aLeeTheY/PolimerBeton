@@ -1,6 +1,4 @@
 import base64
-from decouple import config
-
 from .base import *
 
 # ? --- SECRET KEY SETTINGS
@@ -28,20 +26,20 @@ ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="*").split(",")
 # ? --- Database settings for development mode
 # ? ------------------------------------------
 DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql",
-    #     "NAME": config("POSTGRES_DB", default="polimerbeton_db__dev"),
-    #     "USER": config("POSTGRES_USER", default="admin"),
-    #     "PASSWORD": config("POSTGRES_PASSWORD", default="qwerty123456"),
-    #     "HOST": config("POSTGRES_HOST", default="localhost"),
-    #     "PORT": config("POSTGRES_PORT", default=5432, cast=int),
-    # },
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("POSTGRES_DB", default="polimerbeton_db__dev"),
+        "USER": config("POSTGRES_USER", default="admin"),
+        "PASSWORD": config("POSTGRES_PASSWORD", default="qwerty123456"),
+        "HOST": config("POSTGRES_HOST", default="localhost"),
+        "PORT": config("POSTGRES_PORT", default=5432, cast=int),
+    },
     # ! --- DEBUG | ONLY FOR MANUAL START | SQLITE DISABLED BY DEFAULT
     # ! --------------------------------------------------------------
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # },
 }
 
 # ? --- DATABASE FIELDS ENCRYPTION --- DISABLED IN DEV MODE

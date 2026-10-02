@@ -4,11 +4,11 @@
     ServerAlias www.polimerbeton-vrn.ru
 
     DocumentRoot /www/PolimerBeton
-    
+
     # Настройка редиректа с HTTP на HTTPS
     RewriteEngine on
     RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]   
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
 
     #RewriteCond %{SERVER_NAME} =polimerbeton-vrn.ru [OR]
     #RewriteCond %{SERVER_NAME} =www.polimerbeton-vrn.ru
@@ -40,7 +40,7 @@ SSLStaplingCache shmcb:/var/run/apache2/stapling_cache(128000)
     <Directory /www/PolimerBeton/static_files>
         Require all granted
     </Directory>
-    
+
     <Directory /www/PolimerBeton/config>
         <Files wsgi.py>
             Require all granted
@@ -75,7 +75,7 @@ SSLStaplingCache shmcb:/var/run/apache2/stapling_cache(128000)
         AddOutputFilterByType DEFLATE application/x-httpd-php
         AddOutputFilterByType DEFLATE application/x-httpd-fastphp
         AddOutputFilterByType DEFLATE application/json
-            
+
         BrowserMatch ^Mozilla/4 gzip-only-text/html
         BrowserMatch ^Mozilla/4\.0[678] no-gzip
         BrowserMatch \bMSIE !no-gzip !gzip-only-text/html

@@ -1,5 +1,9 @@
 from pathlib import Path
-from decouple import Config, RepositoryEnv
+from decouple import (
+    config as default_config,
+    Config,
+    RepositoryEnv,
+)
 from django.utils.translation import gettext_lazy as _
 
 DEFAULT_CHARSET = "utf-8"
@@ -19,14 +23,12 @@ ENV_CANDIDATES = [
 
 # * Ищем первый существующий файл | выбрасываем ошибку, если ни одного файла не найдено
 ENV_FILE = next((file for file in ENV_CANDIDATES if file.exists()), None)
-if ENV_FILE is None:
-    raise FileNotFoundError(
-        f"Ни один файл окружения не найден в папке {ENV_DIR}.\n"
-        f"Ожидался один из файлов: {[f.name for f in ENV_CANDIDATES]}"
-    )
-
-# * Подгружаем конфигурацию (.env) в проект
-config = Config(RepositoryEnv(ENV_FILE))
+if ENV_FILE:
+    # ? Локалка: читаем напрямую из найденного .env
+    config = Config(RepositoryEnv(ENV_FILE))
+else:
+    # ? Docker: читаем из системного окружения os.environ
+    config = default_config
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -128,24 +130,24 @@ SITE_ID = config("SITE_ID", default=1, cast=int)
 
 # ? --- EMAIL SERVICE CONFIGURATION
 # ? -------------------------------
-SENDER_EMAIL = config("SENDER_EMAIL", default="")
-SENDER_EMAIL_PASSWORD = config("SENDER_EMAIL_PASSWORD", default="")
-RECIPIENT_EMAIL = config("RECIPIENT_EMAIL", default="")
+SENDER_EMAIL = config("SENDER_EMAIL")
+SENDER_EMAIL_PASSWORD = config("SENDER_EMAIL_PASSWORD")
+RECIPIENT_EMAIL = config("RECIPIENT_EMAIL")
 
 # * Mailjet
-USE_MAILJET_HTTP_SERVER = config("USE_MAILJET_HTTP_SERVER", default=False, cast=bool)
+USE_MAILJET_HTTP_SERVER = config("USE_MAILJET_HTTP_SERVER", cast=bool)
 
-MAILJET_APIKEY_PUBLIC = config("MAILJET_APIKEY_PUBLIC", default="")
-MAILJET_APIKEY_PRIVATE = config("MAILJET_APIKEY_PRIVATE", default="")
+MAILJET_APIKEY_PUBLIC = config("MAILJET_APIKEY_PUBLIC")
+MAILJET_APIKEY_PRIVATE = config("MAILJET_APIKEY_PRIVATE")
 
 # * Django SMTP
-USE_DJANGO_SMTP_SERVER = config("USE_DJANGO_SMTP_SERVER", default=True, cast=bool)
+USE_DJANGO_SMTP_SERVER = config("USE_DJANGO_SMTP_SERVER", cast=bool)
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
-EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
-EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 
 EMAIL_HOST_USER = SENDER_EMAIL
 EMAIL_HOST_PASSWORD = SENDER_EMAIL_PASSWORD

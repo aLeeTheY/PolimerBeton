@@ -2,13 +2,40 @@
 # ! --------------------------------------------
 *
 
-# ! --- 2. Разрешаем Prettier заходить в любые папки
-# ! ------------------------------------------------
-!/*/
+# ! --- 2. Разрешаем наблюдать за любыми папками
+# ! --------------------------------------------
+!*/
 !**/
 
-# ! --- 3. Разрешаем форматировать только конкретные расширения
-# ! -----------------------------------------------------------
+# ! --- 3. Разрешаем проверять только конкретные расширения
+# ! -------------------------------------------------------
+# * GIT FILES
+!**/*.gitkeep
+!**/*.gitignore
+!**/*.gitattributes
+
+# * BASH | BAT
+!**/*.sh
+!**/*.bat
+
+# * SERVICE FILES
+!**/*.browserslistrc
+!**/*.editorconfig
+!**/*.npmrc
+
+# * IGNORE FILES
+!**/*.dockerignore
+!**/*.prettierignore
+!**/*.stylelintignore
+
+# * DOCKER FILES
+!**/Dockerfile*
+
+# * PYTHON | POETRY
+!**/*.py
+
+!**/*.toml
+!**/*.lock
 
 # * CSS | SCSS | SASS
 !**/*.css
@@ -16,14 +43,9 @@
 !**/*.sass
 
 # * JS | TS
-# !**/*.js
-# !**/*.cjs
-# !**/*.mjs
-
-!**/*.config.js
-!**/*.config.cjs
-!**/*.config.mjs
-
+!**/*.js
+!**/*.cjs
+!**/*.mjs
 !**/*.ts
 !**/*.cts
 !**/*.mts
@@ -47,11 +69,52 @@
 
 # * XML | SVG
 !**/*.xml
-# !**/*.svg
+!**/*.svg
+
+# * MEDIA
+!**/*.ico
+!**/*.gif
+
+!**/*.png
+!**/*.jpg
+!**/*.jpeg
+!**/*.avif
+!**/*.webp
+
+!**/*.mp3
+!**/*.mp4
+!**/*.webm
+
+# * 3D FILES
+!**/*.glb
+
+# * FONTS
+!**/*.eot
+!**/*.otf
+!**/*.ttf
+!**/*.woff
+!**/*.woff2
 
 # * MARKDOWN | LICENSE
 !**/*.md
-# !**/LICENSE
+!**/LICENSE
+
+# * HUSKY
+!**/.husky/*
+
+# * LOCALES
+!**/*.mo
+!**/*.po
+
+# * ENV TEMPLATES FILES
+# !**/*.template
+# !**/*.tmpl
+
+# * DEPLOY FILES | NGINX | APACHE
+!**/vhost.d/default
+!**/*.conf
+
+!**/*.htaccess
 
 # * OTHER
 !**/*.txt
@@ -61,12 +124,30 @@
 
 # ! --- 4. Папки и подпапки под запретом
 # ! ------------------------------------
-# **/.vscode/
-# **/.husky/
+**/staticfiles/
 
-**/.git/
-**/.svn/
-**/.hg/
+# * DYNAMICALLY POPULATED BUILD FOLDERS (KEEP ONLY .gitkeep)
+src/backend/apps/MainApp/static/MainApp/**
+!src/backend/apps/MainApp/static/MainApp/.gitkeep
+
+src/backend/apps/MainApp/templates/MainApp/**
+!src/backend/apps/MainApp/templates/MainApp/.gitkeep
+
+src/backend/apps/MainApp/templates/meta/**
+!src/backend/apps/MainApp/templates/meta/.gitkeep
+
+# * PYTHON VIRTUAL ENVS & CACHE
+**/__pycache__/
+**/.venv/
+**/venv/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage/
+**/htmlcov/
+**/*.egg-info/
+
+**/.husky/_/
 
 **/node_modules/
 # **/vendors/
@@ -74,18 +155,41 @@
 **/out/
 **/dist/
 **/build/
+**/public/
 
 **/archive/
-**/public/
 
 **/backup/
 **/old/
 
 **/debug__critical_css__screenshots/
 
-**/static/MainApp/
-**/templates/MainApp/
-
 # ! --- 5. Файлы под запретом
 # ! -------------------------
 out.txt
+
+# * PYTHON / DJANGO TEMP & DB FILES
+*.sqlite3
+*.db3
+*.pyc
+*.pyo
+*.pyd
+
+# * ENV FILES
+*.env.dev
+
+*.env.staging
+*.env.staging.db
+*.env.staging.proxy-companion
+
+*.env.prod
+*.env.prod.db
+*.env.prod.proxy-companion
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

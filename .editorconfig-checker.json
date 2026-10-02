@@ -4,7 +4,7 @@
     "IgnoreDefaults": false,
     "SpacesAfterTabs": false,
     "NoColor": false,
-    "Exclude": [],
+    "Exclude": ["\\.mo$"],
     "AllowedContentTypes": [],
     "PassedFiles": [],
     "Disable": {

@@ -1,65 +1,79 @@
-#? --- Stage 1. Build the Node.js frontend
-#? ---------------------------------------
-FROM node:24.8-alpine AS frontend_builder
+#? --- Stage 1. Build frontend via Gulp
+#? ------------------------------------
+FROM node:26.10-slim AS frontend_builder
 WORKDIR /usr/src/polimerbeton
 
-# (added npm cache clean --force)
-COPY package.json package-lock.json /usr/src/polimerbeton/
-RUN npm install && npm cache clean --force
+# ! --- IMPORTANT !!! | env-переменные для Puppeteer внутри Linux-контейнера
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-#? --- Stage 2. Build the Django backend
-#? -------------------------------------
-FROM python:3.13-slim AS backend_builder
-WORKDIR /usr/src/polimerbeton
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ffmpeg \
+        python3 \
+        python3-pip \
+        chromium \
+    && pip install --no-cache-dir --break-system-packages foundrytools-cli \
+    && rm -rf /var/lib/apt/lists/*
 
-# Setup Python environment variables
+# 1. Кэширование npm-зависимостей
+COPY package.json package-lock.json .npmrc ./
+COPY src/frontend/package.json ./src/frontend/
+
+# * Флаг --ignore-scripts отключает prepare и postinstall скрипты (husky & md:decode)
+RUN npm ci --workspace=src/frontend --ignore-scripts && npm cache clean --force
+
+# 2. Копируем исходный код
+COPY src ./src
+
+# 3. Запускаем сборку Gulp
+WORKDIR /usr/src/polimerbeton/src/frontend
+RUN npm run django -- --verbose
+
+#? --- Stage 2. Install Python dependencies
+#? ----------------------------------------
+FROM python:3.14-slim AS backend_builder
+WORKDIR /usr/src/polimerbeton/src/backend
+
+# 1. Настройка переменных окружения для Python
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN pip install poetry
-COPY pyproject.toml poetry.lock /usr/src/polimerbeton/
+RUN pip install --no-cache-dir poetry
+COPY src/backend/pyproject.toml src/backend/poetry.lock ./
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-root --with dev
-    
-#? --- Stage 3. Execute "development" scenario for Polimerbeton
-#? ------------------------------------------------------------
-FROM python:3.13-slim AS development
 
-# create the appropriate directories
+#? --- Stage 3. Execute "development" scenario
+#? -------------------------------------------
+FROM python:3.14-slim AS development
+
+# 1. Создание необходимых каталогов
 ENV HOME=/root \
     APP_HOME=/root/www/polimerbeton
 
-RUN mkdir -p $APP_HOME
-RUN mkdir -p $APP_HOME/scripts
-RUN mkdir -p $APP_HOME/staticfiles
-
 WORKDIR $APP_HOME
 
-# Install system dependencies (added --no-install-recommends)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends netcat-openbsd ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+# 2. Обновление и установка системных пакетов
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends netcat-openbsd ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy Node.js runtime form frontend_builder
-COPY --from=frontend_builder /usr/local/bin/node /usr/local/bin/
-
-# Copy installed dependencies from "builders" stage (Node.js and Poetry)
-COPY --from=frontend_builder /usr/src/polimerbeton/node_modules $APP_HOME/node_modules
+# 1. Забираем скомпилированный Python и библиотеки из Stage 2
 COPY --from=backend_builder /usr/local /usr/local
 
-# Setup Python environment variables
-# and add Node.js dependencies BINs to PATH
+# 2. Забираем ИСКЛЮЧИТЕЛЬНО папку backend из Stage 1 (где уже лежит собранная статика)
+COPY --from=frontend_builder /usr/src/polimerbeton/src/backend $APP_HOME/backend
+
+# 3. Настройка переменных окружения для Python
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    PATH="$APP_HOME/node_modules/.bin:$PATH"
+    PYTHONUNBUFFERED=1
 
-# Copy project
-COPY . $APP_HOME
+WORKDIR $APP_HOME/backend
 
-# Setup entrypoint.sh
-RUN sed -i 's/\r$//g' $APP_HOME/scripts/entrypoint.sh && \
-    chmod +x $APP_HOME/scripts/entrypoint.sh
+# 4. Настройка и запуск entrypoint.sh
+RUN sed -i 's/\r$//g' $APP_HOME/backend/scripts/entrypoint.sh \
+    && chmod +x $APP_HOME/backend/scripts/entrypoint.sh
 
-# Run entrypoint.prod.sh
-ENTRYPOINT ["/root/www/polimerbeton/scripts/entrypoint.sh"]
+ENTRYPOINT ["/root/www/polimerbeton/backend/scripts/entrypoint.sh"]
