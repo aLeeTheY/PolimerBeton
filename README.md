@@ -41,9 +41,7 @@
     📬 Многостраничный адаптивный рекламный сайт с формой обратной связи и базой данных клиентов.
     <br />
     <br />
-    <!-- <a href="ZAPOLNIT">Дизайн (макет)</a>
-    &middot; -->
-    <a href="https://polimerbeton-vrn.ru/"">Демо</a>
+    <a href="https://aleethey.github.io/PolimerBeton/">Демо</a>
     &middot;
     <a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Сообщить об ошибке</a>
   </p>
@@ -108,7 +106,7 @@
 
 <div align="center">
 
-[![Предпросмотр сайта][website-preview]](https://polimerbeton-vrn.ru/)
+[![Предпросмотр сайта][website-preview]](https://aleethey.github.io/PolimerBeton/)
 
 </div>
 
