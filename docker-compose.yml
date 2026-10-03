@@ -2,14 +2,15 @@
 name: polimerbeton--dev
 
 services:
-    web:
-        build: ./src
-        image: polimerbeton-web:dev
-        container_name: polimerbeton-web--dev
+    app:
+        build:
+            context: .
+            dockerfile: src/Dockerfile
+        image: polimerbeton-app:dev
+        container_name: polimerbeton-app--dev
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - ./src/:/root/www/polimerbeton
-            - /root/www/polimerbeton/node_modules
         ports:
             - 8000:8000
         env_file:
@@ -19,15 +20,15 @@ services:
                 condition: service_healthy
 
     db:
-        image: postgres:17.6
+        image: postgres:18-alpine
         container_name: polimerbeton-db--dev
         restart: always
         env_file:
             - ./env/.env.dev
         volumes:
-            - postgres_data:/var/lib/postgresql/data/
+            - postgres_data:/var/lib/postgresql
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+            test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
             interval: 5s
             timeout: 5s
             retries: 10

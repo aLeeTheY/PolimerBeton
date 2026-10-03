@@ -1,0 +1,200 @@
+// import nodePath from 'node:path'
+
+import gulp from 'gulp'
+import gulpRename from 'gulp-rename'
+import gulpReplace from 'gulp-replace'
+import browserSync from 'browser-sync'
+
+import * as dartSass from 'sass'
+import gulpSass from 'gulp-sass'
+const sass = gulpSass(dartSass)
+
+import postcss from 'gulp-postcss'
+import postcssLoadConfig from 'postcss-load-config'
+// import sourcemaps from 'gulp-sourcemaps'
+// import purgecss from 'gulp-purgecss'
+
+// import webpcss from 'gulp-webpcss' // TODO: deprecated
+// import avifWebpCss from 'gulp-avif-css' // ! bug when render
+import webImagesCSS from 'gulp-web-images-css'
+// import * as pxToRemConverter from 'gulp-px2rem-converter' // ! using postcss-pxtorem
+
+import { env } from '../../config/env.js'
+import { path } from '../../config/path.js'
+import { build } from '../../config/build.js'
+import {
+    plumberWithErrorHandler,
+    NOTIFICATION_HANDLER_TITLES,
+} from '../../helpers/error-handler.js'
+import { replaceCssPaths } from '../../helpers/path-resolver.js'
+
+// * --- EXPORT GULP TASK FOR SCSS/CSS FILES
+// * ---------------------------------------
+export function styles() {
+    // const cssToAssets = env.isInlineCSS ? './assets/' : '../assets/'
+
+    // * Формируем путь в зависимости от флагов окружения
+    let cssToAssets = '../assets/'
+
+    if (env.isLocal) {
+        // В локальном режиме (file:///) используем строго относительные пути
+        if (env.isInlineCSS) {
+            // Если CSS встраивается в HTML: для языковых подпапок нужно подняться на уровень выше
+            cssToAssets = env.isI18N ? '../assets/' : './assets/'
+        } else {
+            // Внешний CSS лежит в dist/css/, до dist/assets/ всегда ровно один шаг назад
+            cssToAssets = '../assets/'
+        }
+    } else if (env.isInlineCSS && !env.assetPrefix) {
+        // Если инлайн-CSS используется без домена и без префикса
+        cssToAssets = env.isI18N ? '../assets/' : './assets/'
+    } else {
+        // В остальных режимах (dev, prod, gh-pages) берем абсолютный путь из env.js
+        // env.assetPrefix всегда '/' или '/site-folder/' -> получается '/assets/' или '/site-folder/assets/'
+        cssToAssets = `${env.assetPrefix}assets/`
+    }
+
+    return (
+        gulp
+            // * берем исходники
+            .src(path.src.getStyles(env.cssMode).files, {
+                sourcemaps: env.buildMode.isDev || env.buildMode.isStaging,
+            })
+            // * подключаем plumber, чтобы gulp не падал при ошибке
+            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.STYLES.DEFAULT))
+            // * делаем sourcemaps в режимах dev и staging
+            // .pipe(gulpIf(isDev || isStaging, sourcemaps.init()))
+            // .pipe(
+            //     env.buildMode.isDev || env.buildMode.isStaging ? sourcemaps.init() : through2.obj(),
+            // )
+            // // * замена всех px и % на rem | default 1 rem = 16 px
+            // .pipe(pxToRemConverter())
+            // * билдим css через sass
+            .pipe(
+                sass({
+                    // * sass options
+                    // style: isProd || isStaging ? 'expanded' : 'expanded',
+                    // * expanded always, bugs with webImagesCSS when compressed
+                    style: 'expanded',
+
+                    // 1. Отключаем варнинги для всего, что загружается через loadPaths
+                    quietDeps: true,
+
+                    // 2. Добавляем обе папки: и локальные вендоры, и npm-пакеты
+                    loadPaths: [
+                        path.src.node_modules,
+                        // `${path.src.getStyles(env.cssMode).base}/vendors`,
+                    ],
+                }),
+            )
+
+            // * универсальная замена алиасов | @fonts, @images ... etc
+            .pipe(replaceCssPaths(cssToAssets))
+
+            // ! спрайты не работают в css !!!
+            .pipe(
+                gulpReplace(/@icons\/(.+?)\.svg/g, (match, p1) => {
+                    const id = p1.replace(/\//g, '--')
+                    return `${cssToAssets}icons/sprite.svg#${id}`
+                }),
+            )
+
+            // * удаляем неиспользуемые css классы
+            // .pipe(
+            //     gulpIf(
+            //         env.buildMode.isStaging || env.buildMode.isProd,
+            //         purgecss({
+            //             content: ['src/**/*.njk'],
+            //         }),
+            //     ),
+            // )
+            // ! STRONGLY AFTER PURGE CSS
+            // * генерируем классы .avif и .webp для background-image: url() из .png, .jpg и .jpeg
+            // .pipe(avifWebpCss())
+            .pipe(
+                webImagesCSS({
+                    mode: 'all',
+                }),
+            )
+            // // * далее обрабатываем полученный css с помощью postcss (dev mode by default)
+            // .pipe(postcss(null, { config: { ctx: { isMobileFirst: env.isMobileFirst } } }))
+            // * добавляем webp вариант к картинкам jpg,jpeg,png в css файле
+            // ? на замену используется postcss/webp-in-css
+            // .pipe(
+            //     webpcss({
+            //         webpClass: '.webp',
+            //         noWebpClass: '.no-webp',
+            //     }),
+            // )
+            // // * добавляем к файлу ревизию для инвалидации кэша
+            // .pipe(gulpIf(env.buildMode.isStaging || env.buildMode.isProd, gulpRev()))
+            // * добавляем к имени суффикс .min
+            .pipe(gulpRename({ suffix: '.min' }))
+            // * пишем sourcemaps
+            // .pipe(gulpIf(isDev || isStaging, sourcemaps.write('.')))
+            // .pipe(
+            //     env.buildMode.isDev || env.buildMode.isStaging
+            //         ? sourcemaps.write('.')
+            //         : through2.obj(),
+            // )
+
+            // * кладем результат в папку сборки
+            .pipe(
+                gulp.dest(build.styles, {
+                    sourcemaps: env.buildMode.isDev || env.buildMode.isStaging ? '.' : false,
+                }),
+            )
+
+            // // * делаем запись в rev-manifest.json
+            // .pipe(
+            //     gulpIf(
+            //         env.buildMode.isStaging || env.buildMode.isProd,
+            //         gulpRev.manifest('rev-manifest.json', { base: 'out/', merge: true }),
+            //     ),
+            // )
+            // // * созраняем rev-manifest.json
+            // .pipe(
+            //     gulpIf(env.buildMode.isStaging || env.buildMode.isProd, gulp.dest(build.base)),
+            // )
+            .on('end', () => {
+                // * update dev server
+                browserSync.reload()
+            })
+    )
+}
+
+export function optimizeStyles() {
+    // * папка с PostCSS конфигом
+    // const postcssConfigDir = nodePath.resolve('.')
+
+    return (
+        gulp
+            .src(`${build.styles}**/*.min.css`)
+            // * подключаем plumber, чтобы gulp не падал при ошибке
+            .pipe(plumberWithErrorHandler(NOTIFICATION_HANDLER_TITLES.STYLES.OPTIMIZE))
+            // * обрабатываем полученный css с помощью postcss (dev mode by default)
+            .pipe(
+                postcss((file) =>
+                    postcssLoadConfig(
+                        {
+                            isMobileFirst: env.isMobileFirst,
+                            file,
+                            purgePaths: [
+                                `${build.html}**/*.html`,
+                                `${build.libs}**/*.js`,
+                                `${build.scripts}**/*.js`,
+                            ],
+                        },
+                        process.cwd(), // Принудительно ищем конфиг в папке src/frontend
+                    ),
+                ),
+            )
+            // * перезаписываем существующий *.min.css файл
+            .pipe(gulp.dest(build.styles))
+            .on('end', () => browserSync.reload())
+    )
+}
+
+// * --- REGISTER GULP TASK
+// * ----------------------
+gulp.task('styles', styles)

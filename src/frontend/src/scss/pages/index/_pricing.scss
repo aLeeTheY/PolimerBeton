@@ -1,0 +1,10 @@
+@use '../../abstracts/z_index' as *;
+
+.my-pricing {
+    z-index: z('my_pricing');
+    position: relative;
+
+    // &__content {
+    //     // empty
+    // }
+}

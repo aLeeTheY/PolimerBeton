@@ -1,0 +1,41 @@
+{% extends "base/base.njk" %}
+
+<!-- ? название текущей страницы в домене --->
+{% set current_page__page_name = 'limit_exceeded' %}
+
+<!-- ? передаем текстовые данные из файла переовдов *.json для <head> этой страницы -->
+{% set current_page__head_content = limit_exceeded.head %}
+
+{% block content %}
+    <div class="my-shadow-group">
+        <section id="limit-exceeded" class="my-server-response">
+            <div class="container my-wrapper my-server-response__content">
+                <h1 class="my-title my-title--server-response" data-variant="limit-exceeded">
+                    <span>{{ limit_exceeded.main_content.heading }}</span>
+                </h1>
+
+                <h2 class="my-subtitle my-subtitle--server-response">{{ limit_exceeded.main_content.subheading }}</h2>
+                <p class="my-subtitle my-subtitle--server-response">
+                    {{ limit_exceeded.main_content.unblock_time.label }}
+                    {% if is_django_build %}
+                        {% raw %}
+                            {% if unblock_time is not None %}
+                                {{ unblock_time|date:"d E Y H:i:s" }}
+                            {% else %}
+                                —
+                            {% endif %}
+                        {% endraw %}
+                    {% else %}
+                        {{ limit_exceeded.main_content.unblock_time.demo_data }}
+                    {% endif %}
+                </p>
+
+                <div class="my-default-button">
+                    <a class="my-default-button__link" href="@page/index.njk#feedback-form">
+                        {{ limit_exceeded.main_content.button_text }}
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

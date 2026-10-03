@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{{ subject }}</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                color: #000;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+            .wrapper {
+                max-width: 600px;
+                margin: 0 auto;
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                color: #000;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            p {
+                line-height: 1.6;
+                margin: 10px 0;
+            }
+            .user-data {
+                margin: 20px 0;
+                padding: 10px;
+                background: #f9f9f9;
+                border-left: 5px solid #4a148c;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1>{{ subject }}</h1>
+            <p>
+                Автооповещение с сайта {{ site_config.domain }}:
+                <strong>новая заявка на обратный звонок</strong>
+            </p>
+            <div class="user-data">
+                <p>
+                    <strong>ID клиента:</strong>
+                    {{ client_id }}
+                </p>
+                <p>
+                    <strong>Имя:</strong>
+                    {{ client_name }}
+                </p>
+                <p>
+                    <strong>Телефон:</strong>
+                    {{ client_phone }}
+                </p>
+                <p>
+                    <strong>Номер обращения:</strong>
+                    {{ request_number }}
+                </p>
+                <p>
+                    <strong>Дата и время обращения:</strong>
+                    {{ request_datetime }}
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

@@ -2,16 +2,16 @@
 name: polimerbeton--staging
 
 services:
-    web:
+    app:
         build:
-            context: ./src
-            dockerfile: Dockerfile.prod
-        image: polimerbeton-web:staging
-        container_name: polimerbeton-web--staging
+            context: .
+            dockerfile: src/Dockerfile.prod
+        image: polimerbeton-app:staging
+        container_name: polimerbeton-app--staging
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8080 --workers 3
         restart: always
         volumes:
-            - static_volume:/home/warden/www/polimerbeton/staticfiles
+            - static_volume:/home/warden/www/polimerbeton/backend/staticfiles
         expose:
             - 8080
         env_file:
@@ -21,45 +21,45 @@ services:
                 condition: service_healthy
 
     db:
-        image: postgres:17.6
+        image: postgres:18-alpine
         container_name: polimerbeton-db--staging
         restart: always
         env_file:
             - ./env/.env.staging.db
         volumes:
-            - postgres_data:/var/lib/postgresql/data/
+            - postgres_data:/var/lib/postgresql
         healthcheck:
-            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+            test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
             interval: 5s
             timeout: 5s
             retries: 10
 
     nginx-proxy:
         build:
-            context: ./web/nginx-proxy
-            dockerfile: Dockerfile.prod
+            context: ./deploy/nginx-proxy
+            dockerfile: Dockerfile
         container_name: nginx-proxy--staging
         restart: always
         ports:
             - 443:443
             - 80:80
         volumes:
-            - static_volume:/home/warden/www/polimerbeton/staticfiles
+            - static_volume:/home/warden/www/polimerbeton/backend/staticfiles
             - conf:/etc/nginx/conf.d
             - vhost:/etc/nginx/vhost.d
             - html:/usr/share/nginx/html
             - certs:/etc/nginx/certs:ro
             - /var/run/docker.sock:/tmp/docker.sock:ro
         depends_on:
-            - web
+            - app
 
     docker-gen:
-        image: nginxproxy/docker-gen:0.15
+        image: nginxproxy/docker-gen:0.17
         container_name: docker-gen--staging
         restart: always
         command: -notify-sighup nginx -watch -only-exposed /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
         volumes:
-            - ./web/templates/docker-gen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+            - ./deploy/templates/docker-gen/nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
             - conf:/etc/nginx/conf.d
             - vhost:/etc/nginx/vhost.d
             - html:/usr/share/nginx/html
@@ -67,7 +67,7 @@ services:
             - /var/run/docker.sock:/tmp/docker.sock:ro
 
     acme-companion:
-        image: nginxproxy/acme-companion:2.6
+        image: nginxproxy/acme-companion:2.8
         container_name: acme-companion--staging
         restart: always
         env_file:

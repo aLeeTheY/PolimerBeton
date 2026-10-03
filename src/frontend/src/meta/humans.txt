@@ -1,0 +1,28 @@
+/* TEAM */
+    Developer & Designer: Vladimir Nikulin
+    Contact: aleethey [at] gmail.com
+    GitHub: https://github.com/aLeeTheY
+    Telegram: @aLeeTheY
+    Twitter: @aLeeTheY
+    Location: Voronezh, Russia
+
+    Early Design Concept: Sergey Nikulin
+    Contact: NSV-BEL [at] yandex.ru
+    Location: Voronezh, Russia
+
+/* THANKS */
+    Sergey Nikulin: For the initial design sketch that started it all.
+
+/* SITE */
+    Last update: 2026/09/08
+    Language: Russian
+    Copyright: (c) 2026 Sergey Nikulin
+    License: PolyForm Noncommercial 1.0.0
+    Repository: https://github.com/aLeeTheY/PolimerBeton
+    Frontend: HTML5, SASS, TypeScript, Bootstrap, Three.js, Vanilla Tilt
+    Backend: Python, Django
+    Database: PostgreSQL
+    Software: VS Code, Figma, Photoshop, Blender
+    Build Tools: Gulp, Node.js, Poetry, Git
+    Testing & Quality: Playwright, Stylelint, ESLint, Prettier
+    Infrastructure: Docker, Nginx, GitHub Actions

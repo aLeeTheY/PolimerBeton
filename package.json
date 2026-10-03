@@ -1,0 +1,60 @@
+{
+    "name": "polimerbeton",
+    "version": "3.0.0",
+    "description": "📬 Multi-page responsive promotional website with a contact form and client database.",
+    "private": true,
+    "workspaces": [
+        "src/frontend"
+    ],
+    "homepage": "https://github.com/aLeeTheY/PolimerBeton#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aLeeTheY/PolimerBeton.git"
+    },
+    "bugs": {
+        "url": "https://github.com/aLeeTheY/PolimerBeton/issues"
+    },
+    "author": {
+        "name": "Vladimir Nikulin",
+        "email": "aleethey@gmail.com",
+        "url": "https://github.com/aLeeTheY"
+    },
+    "license": "PolyForm-Noncommercial-1.0.0",
+    "type": "module",
+    "devDependencies": {
+        "@commitlint/cli": "^21.2.3",
+        "@commitlint/config-conventional": "^21.2.3",
+        "@commitlint/format": "^21.2.3",
+        "@commitlint/types": "^21.2.3",
+        "@polimerbeton/frontend": "^3.0.0",
+        "@prettier/plugin-xml": "^3.4.2",
+        "@types/node": "^26.6.3",
+        "@types/yargs": "^17.0.35",
+        "conventional-changelog-angular": "^9.4.0",
+        "editorconfig-checker": "^7.0.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.6.0",
+        "prettier": "^3.9.9",
+        "prettier-plugin-jinja-template": "^2.2.0",
+        "prettier-plugin-sh": "^0.20.2",
+        "tsx": "^4.23.15",
+        "yargs": "^18.2.0"
+    },
+    "scripts": {
+        "__LINT__": "",
+        "format": "prettier . --write",
+        "__TEST__": "",
+        "test:editorconfig": "editorconfig-checker",
+        "__MARKDOWN__": "",
+        "md:encode": "npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern && npx tsx tools/transform-md.ts encode README.md README.EN.md",
+        "md:decode": "npx tsx tools/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern",
+        "__POST_INSTALL__": "",
+        "prepare": "husky",
+        "postinstall": "npm run md:decode"
+    },
+    "allowScripts": {
+        "@parcel/watcher@2.6.0": true,
+        "esbuild@0.28.2": true,
+        "puppeteer@2.1.1": true
+    }
+}
