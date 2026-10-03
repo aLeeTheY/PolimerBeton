@@ -31,15 +31,15 @@ jobs:
                       # 1. Забираем код
                       git pull
 
-                      # 2. Останавливаем и УДАЛЯЕМ только контейнер web (!!! docker compose >= V2 !!!)
-                      docker compose -f docker-compose.prod.yml rm -svf web
+                      # 2. Останавливаем и УДАЛЯЕМ только контейнер app (!!! docker compose >= V2 !!!)
+                      docker compose -f docker-compose.prod.yml rm -svf app
 
-                      # 3. Удаляем старый образ web и очищаем кэш сборки (это освободит место ПЕРЕД сборкой нового образа)
-                      docker image rm $(docker compose -f docker-compose.prod.yml images -q web) || true
+                      # 3. Удаляем старый образ app и очищаем кэш сборки (это освободит место ПЕРЕД сборкой нового образа)
+                      docker image rm $(docker compose -f docker-compose.prod.yml images -q app) || true
                       docker builder prune -f
 
-                      # 4. Собираем web и запускаем заново
-                      docker compose -f docker-compose.prod.yml up -d --build web
+                      # 4. Собираем app и запускаем заново
+                      docker compose -f docker-compose.prod.yml up -d --build app
 
                       # 5. Чистим кэш сборки и временные слои, если они остались
                       docker builder prune -f
