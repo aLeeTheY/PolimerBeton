@@ -55,3 +55,7 @@
 
 # gettext binary files
 *.mo binary
+
+# ! --- GITHUB LINGUIST SETTINGS
+# ! ----------------------------
+deploy/templates/docker-gen/** linguist-vendored
