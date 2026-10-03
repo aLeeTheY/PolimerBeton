@@ -41,9 +41,7 @@
     📬 Multi-page responsive promotional website with a contact form and client database.
     <br />
     <br />
-    <!-- <a href="ZAPOLNIT">Дизайн (макет)</a>
-    &middot; -->
-    <a href="https://polimerbeton-vrn.ru/"">Live Demo</a>
+    <a href="https://aleethey.github.io/PolimerBeton/">Live Demo</a>
     &middot;
     <a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Report a bug</a>
   </p>
@@ -108,7 +106,7 @@ Below you can see a **website preview** (_**Desktop + Mobile**, click the image 
 
 <div align="center">
 
-[![Website Preview][website-preview]](https://polimerbeton-vrn.ru/)
+[![Website Preview][website-preview]](https://aleethey.github.io/PolimerBeton/)
 
 </div>
 
