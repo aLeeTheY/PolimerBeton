@@ -30,8 +30,8 @@ COPY src ./src
 WORKDIR /usr/src/polimerbeton/src/frontend
 RUN npm run django -- --verbose
 
-#? --- Stage 2. Install Python dependencies
-#? ----------------------------------------
+#? --- Stage 2. Install Python Dev-dependencies
+#? --------------------------------------------
 FROM python:3.14-slim AS backend_builder
 WORKDIR /usr/src/polimerbeton/src/backend
 

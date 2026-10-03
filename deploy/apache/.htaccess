@@ -1,5 +1,5 @@
-# ! --- DANGER !!! | OLD CONFIGURATION !!!
-# ! --------------------------------------
+# ! --- DANGER !!! | OLD CONFIGURATION !!! | DON'T WORK !!!
+# ! -------------------------------------------------------
 
 <VirtualHost *:80>
     ServerAdmin Polimerbeton-vrn@yandex.ru

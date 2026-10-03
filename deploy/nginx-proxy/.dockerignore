@@ -5,6 +5,6 @@
 #? Ignore GitHub actions folder
 .github/
 
+#? Ignore other files
 .DS_Store
-
 *.log

@@ -27,11 +27,11 @@ DATABASES = {
 
 # ? --- DATABASE FIELDS ENCRYPTION
 # ? ------------------------------
-FIELD_ENCRYPTION_KEY = config("FIELD_ENCRYPTION_KEY").encode()
+FIELD_ENCRYPTION_KEY = config("DATABASE_FIELD_ENCRYPTION_KEY").encode()
 
 # ? --- CSRF
 # ? --------
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS").split(",")
+CSRF_TRUSTED_ORIGINS = config("DJANGO_CSRF_TRUSTED_ORIGINS").split(",")
 
 # ? --- SECURITY SETTINGS (SSL/HTTPS)
 # ? ---------------------------------

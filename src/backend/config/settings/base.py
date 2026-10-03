@@ -126,7 +126,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ? --- SITEMAP
 # ? -----------
-SITE_ID = config("SITE_ID", default=1, cast=int)
+SITE_ID = config("DJANGO_SITE_ID", default=1, cast=int)
 
 # ? --- EMAIL SERVICE CONFIGURATION
 # ? -------------------------------
