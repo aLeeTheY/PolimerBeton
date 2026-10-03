@@ -2,8 +2,8 @@
 # ! --------------------------------------------
 *
 
-# ! --- 2. Разрешаем Git наблюдать за любыми папками
-# ! ------------------------------------------------
+# ! --- 2. Разрешаем наблюдать за любыми папками
+# ! --------------------------------------------
 !*/
 !**/
 
@@ -14,14 +14,28 @@
 !**/*.gitignore
 !**/*.gitattributes
 
+# * BASH | BAT
+!**/*.sh
+!**/*.bat
+
 # * SERVICE FILES
 !**/*.browserslistrc
 !**/*.editorconfig
+!**/*.npmrc
 
 # * IGNORE FILES
 !**/*.dockerignore
 !**/*.prettierignore
 !**/*.stylelintignore
+
+# * DOCKER FILES
+!**/Dockerfile*
+
+# * PYTHON | POETRY
+!**/*.py
+
+!**/*.toml
+!**/*.lock
 
 # * CSS | SCSS | SASS
 !**/*.css
@@ -71,7 +85,7 @@
 !**/*.mp4
 !**/*.webm
 
-# * 3D
+# * 3D FILES
 !**/*.glb
 
 # * FONTS
@@ -88,6 +102,20 @@
 # * HUSKY
 !**/.husky/*
 
+# * LOCALES
+!**/*.mo
+!**/*.po
+
+# * ENV TEMPLATES FILES
+!**/*.template
+!**/*.tmpl
+
+# * DEPLOY FILES | NGINX | APACHE
+!**/vhost.d/default
+!**/*.conf
+
+!**/*.htaccess
+
 # * OTHER
 !**/*.txt
 
@@ -96,6 +124,29 @@
 
 # ! --- 4. Папки и подпапки под запретом
 # ! ------------------------------------
+**/staticfiles/
+
+# * DYNAMICALLY POPULATED BUILD FOLDERS (KEEP ONLY .gitkeep)
+src/backend/apps/MainApp/static/MainApp/**
+!src/backend/apps/MainApp/static/MainApp/.gitkeep
+
+src/backend/apps/MainApp/templates/MainApp/**
+!src/backend/apps/MainApp/templates/MainApp/.gitkeep
+
+src/backend/apps/MainApp/templates/meta/**
+!src/backend/apps/MainApp/templates/meta/.gitkeep
+
+# * PYTHON VIRTUAL ENVS & CACHE
+**/__pycache__/
+**/.venv/
+**/venv/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage/
+**/htmlcov/
+**/*.egg-info/
+
 **/.husky/_/
 
 **/node_modules/
@@ -104,16 +155,36 @@
 **/out/
 **/dist/
 **/build/
+**/public/
 
 **/archive/
-**/public/
 
 **/backup/
 **/old/
 
+**/debug__critical_css__screenshots/
+
 # ! --- 5. Файлы под запретом
 # ! -------------------------
 out.txt
+
+# * PYTHON / DJANGO TEMP & DB FILES
+*.sqlite3
+*.db3
+*.pyc
+*.pyo
+*.pyd
+
+# * ENV FILES
+*.env.dev
+
+*.env.staging
+*.env.staging.db
+*.env.staging.proxy-companion
+
+*.env.prod
+*.env.prod.db
+*.env.prod.proxy-companion
 
 # Playwright
 node_modules/
