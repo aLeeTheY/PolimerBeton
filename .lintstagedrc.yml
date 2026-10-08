@@ -9,6 +9,6 @@
             'npx --prefix src/frontend stylelint --allow-empty-input --max-warnings=0 --fix',
             'npx prettier --write',
         ],
-    '*.md': ['npx prettier --write', 'npx tsx cli/transform-md.ts encode'],
+    '*.md': ['npx prettier --write', 'npx tsx docs/utils/transform-md.ts encode'],
     '!(*.{js,mjs,cjs,ts,mts,cts}|*.scss|*.md)': 'npx prettier --ignore-unknown --write',
 }

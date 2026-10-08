@@ -46,8 +46,8 @@
         "__TEST__": "",
         "test:editorconfig": "editorconfig-checker",
         "__MARKDOWN__": "",
-        "md:encode": "npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern && npx tsx tools/transform-md.ts encode README.md README.EN.md",
-        "md:decode": "npx tsx tools/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern",
+        "md:encode": "npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern && npx tsx docs/utils/transform-md.ts encode README.md README.EN.md",
+        "md:decode": "npx tsx docs/utils/transform-md.ts decode README.md README.EN.md && npx prettier --write \"**/*.md\" --no-error-on-unmatched-pattern",
         "__POST_INSTALL__": "",
         "prepare": "husky",
         "postinstall": "npm run md:decode"
