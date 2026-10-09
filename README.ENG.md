@@ -366,7 +366,7 @@ PolimerBeton/
 │
 ├── docs/                                           # miscellaneous project files
 │   ├── assets/                                     # assets for README.md
-│   ├── database/                                   # database schema (excluding the SiteConfig model)
+│   ├── database/                                   # database schema
 │   └── utils/                                      # utility scripts for processing README.md
 │
 ├── env/                                            # environment variable (.env) file templates for different build scenarios (dev, prod, staging)
