@@ -44,9 +44,9 @@
 # Archives
 *.zip binary
 *.rar binary
+*.7z binary
 *.tar binary
 *.tar.gz binary
-*.7z binary
 *.gz binary
 *.tgz binary
 
@@ -55,6 +55,9 @@
 
 # gettext binary files
 *.mo binary
+
+# Map files
+*.map binary
 
 # ! --- GITHUB LINGUIST SETTINGS
 # ! ----------------------------
