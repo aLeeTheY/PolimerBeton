@@ -2,8 +2,8 @@
 
 <span id="readme-top"></span>
 
-<!-- ! --- PROJECT SHIELDS --->
-<!-- ! ------------------- --->
+<!-- ! --- REPO SHIELDS --->
+<!-- ! ---------------- --->
 
 <div align="center">
 
@@ -18,8 +18,8 @@
 
 </div>
 
-<!-- ! --- PROJECT HEADER --->
-<!-- ! ------------------ --->
+<!-- ! --- REPO HEADER --->
+<!-- ! --------------- --->
 
 <br />
 <div align="center">
@@ -39,10 +39,15 @@
 
 </div>
 
+<!-- ! --- REPO COVER --->
+<!-- ! -------------- --->
+
+![Repository Cover](docs/assets/00__repo_cover.png)
+<br />
+
 <!-- ! --- TABLE OF CONTENTS --->
 <!-- ! --------------------- --->
 
-<br />
 <details>
   <summary>📦 Table of Contents</summary>
   <ol>
@@ -244,9 +249,9 @@ To back up the site's high level of optimization, below are the **Google Lightho
 
 <div align="center">
 
-|                          🖥️ Desktop Version                           |                          📱 Mobile Version                          |
-| :-------------------------------------------------------------------: | :-----------------------------------------------------------------: |
-| ![Lighthouse Desktop](docs/assets/benchmark/lighthouse__desktop.avif) | ![Lighthouse Mobile](docs/assets/benchmark/lighthouse__mobile.avif) |
+|                          🖥️ Desktop Version                          |                         📱 Mobile Version                          |
+| :------------------------------------------------------------------: | :----------------------------------------------------------------: |
+| ![Lighthouse Desktop](docs/assets/benchmark/lighthouse__desktop.png) | ![Lighthouse Mobile](docs/assets/benchmark/lighthouse__mobile.png) |
 
 </div>
 
