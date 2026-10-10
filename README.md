@@ -2,8 +2,8 @@
 
 <span id="readme-top"></span>
 
-<!-- ! --- PROJECT SHIELDS --->
-<!-- ! ------------------- --->
+<!-- ! --- REPO SHIELDS --->
+<!-- ! ---------------- --->
 
 <div align="center">
 
@@ -16,10 +16,13 @@
 ![GitHub Last Commit][last-commit-shield]
 ![GitHub Repo Size][repo-size-shield]
 
+[![Русский](https://img.shields.io/badge/Русский-indigo?style=for-the-badge)](README.md)
+[![English](https://img.shields.io/badge/English-purple?style=for-the-badge)](README.ENG.md)
+
 </div>
 
-<!-- ! --- PROJECT HEADER --->
-<!-- ! ------------------ --->
+<!-- ! --- REPO HEADER --->
+<!-- ! --------------- --->
 
 <br />
 <div align="center">
@@ -29,20 +32,18 @@
     📬 Многостраничный адаптивный рекламный сайт с формой обратной связи и базой данных клиентов.
     <br />
     <br />
-    <a href="https://aleethey.github.io/PolimerBeton/">Демо</a>
+    <img src="docs/assets/00__repo_cover.png" alt="Обложка репозитория" width="100%" />
+    <hr />
+    <b><a href="https://aleethey.github.io/PolimerBeton/">Демо</a></b>
     &middot;
-    <a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Сообщить об ошибке</a>
+    <b><a href="https://github.com/aLeeTheY/PolimerBeton/issues/new?labels=bug&template=bug-report---.md">Сообщить об ошибке</a></b>
+    <hr />
   </p>
-
-[![Русский](https://img.shields.io/badge/Русский-blue)](README.md)
-[![English](https://img.shields.io/badge/English-blue)](README.ENG.md)
-
 </div>
 
 <!-- ! --- TABLE OF CONTENTS --->
 <!-- ! --------------------- --->
 
-<br />
 <details>
   <summary>📦 Содержание</summary>
   <ol>
@@ -244,9 +245,9 @@ _Для удобства вся информация разбита по кат�
 
 <div align="center">
 
-|                          🖥️ Desktop Version                           |                          📱 Mobile Version                          |
-| :-------------------------------------------------------------------: | :-----------------------------------------------------------------: |
-| ![Lighthouse Desktop](docs/assets/benchmark/lighthouse__desktop.avif) | ![Lighthouse Mobile](docs/assets/benchmark/lighthouse__mobile.avif) |
+|                          🖥️ Desktop Version                          |                         📱 Mobile Version                          |
+| :------------------------------------------------------------------: | :----------------------------------------------------------------: |
+| ![Lighthouse Desktop](docs/assets/benchmark/lighthouse__desktop.png) | ![Lighthouse Mobile](docs/assets/benchmark/lighthouse__mobile.png) |
 
 </div>
 
