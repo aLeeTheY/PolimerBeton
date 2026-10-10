@@ -25,7 +25,6 @@
         "@fullhuman/postcss-purgecss": "^8.0.0",
         "@playwright/test": "^1.64.0",
         "@prettier/plugin-xml": "^3.4.2",
-        "@stylistic/eslint-plugin": "^5.10.0",
         "@types/jquery": "^4.0.1",
         "@types/node": "^26.6.5",
         "@types/three": "^0.186.0",
