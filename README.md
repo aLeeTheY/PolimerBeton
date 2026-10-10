@@ -583,9 +583,9 @@ cp .env.prod.proxy-companion.template .env.prod.proxy-companion
 
 <div align="center">
 
-| Исходное значение                                                                                                      | Пример заполнения                                                             | Обязательность  |
-| :--------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------- | :-------------: |
-| <code encoded-by-transform-md="true">POSTGRES_DB=polimerbeton_db__prod</code>                                          | <code encoded-by-transform-md="true">POSTGRES_DB=polimerbeton_db__prod</code> |   опционально   |
+| Исходное значение                                                      | Пример заполнения                   | Обязательность  |
+| :--------------------------------------------------------------------- | :---------------------------------- | :-------------: |
+| <code encoded-by-transform-md="true">POSTGRES_DB=polimerbeton_db__prod</code>                                    | <code encoded-by-transform-md="true">POSTGRES_DB=polimerbeton_db__prod</code> |   опционально   |
 | <code encoded-by-transform-md="true">POSTGRES_USER=&lt;YOUR_DATABASE_USERNAME&gt;</code>                               | <code encoded-by-transform-md="true">POSTGRES_USER=admin</code>               | **обязательно** |
 | <code encoded-by-transform-md="true">POSTGRES_PASSWORD=&lt;YOUR_DATABASE_PASSWORD__DONT_MATCH_WITH_USERNAME&gt;</code> | <code encoded-by-transform-md="true">POSTGRES_PASSWORD=qwerty123456</code>    | **обязательно** |
 
