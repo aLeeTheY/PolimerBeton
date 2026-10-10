@@ -119,7 +119,8 @@ function serveHtmlDirectly(req, res, next) {
     res.end(content)
 }
 
-const middlewares = [subfolderMiddleware, cleanUrlMiddleware, serveHtmlDirectly]
+// const middlewares = [subfolderMiddleware, cleanUrlMiddleware]
+const middlewares = [subfolderMiddleware, cleanUrlMiddleware, serveHtmlDirectly] // !!! ONLY FOR DEV
 
 // * --- EXPORT GULP TASK FOR START DEV SERVER
 // * -----------------------------------------
@@ -143,8 +144,8 @@ export function server(cb) {
         notify: false,
         reloadDelay: 500,
 
-        snippet: false,
-        injectChanges: false,
+        snippet: true,
+        injectChanges: true,
         rewriteRules: false,
         minify: false,
 

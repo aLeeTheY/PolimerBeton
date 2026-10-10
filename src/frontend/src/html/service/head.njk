@@ -43,7 +43,7 @@
     <!-- ! 1. PRELOAD CRITICAL ASSETS | END --->
     <!-- ! -------------------------------- --->
 
-    <!-- ! 2. CRITICAL JS <head> SCRIPTS | START --->
+    <!-- ! 2. CRITICAL JS 'head' SCRIPTS | START --->
     <!-- ! ------------------------------------- --->
 
     <!-- * 1. If JS supports -> enable JS classes - -->
@@ -52,7 +52,7 @@
         document.documentElement.classList.add('js')
     </script>
 
-    <!-- * 2. Set current page name to <body> -->
+    <!-- * 2. Set current page name to 'body' -->
     <script>
         const pageName =
             window.location.pathname
@@ -72,7 +72,7 @@
     <!-- * 4. Inject inline avif/webp script polyfill | PLACE IT BEFORE ANY CSS FILES --->
     {{ inline_script('node_modules/gulp-web-images-css/plugin.js') }}
 
-    <!-- ! 2. CRITICAL JS <head> SCRIPTS | END --->
+    <!-- ! 2. CRITICAL JS 'head' SCRIPTS | END --->
     <!-- ! ----------------------------------- --->
 
     <!--! 3. CSS BLOCK | START --->
@@ -151,7 +151,7 @@
     <!--! 4. META TAGS | END --->
     <!--! ------------------ --->
 
-    <!-- ! 5. NON-CRITICAL (BASE) JS <head> SCRIPTS | START --->
+    <!-- ! 5. NON-CRITICAL (BASE) JS 'head' SCRIPTS | START --->
     <!-- ! ------------------------------------------------ --->
 
     <!-- * 1. Add tabbing class to body if user move in page with tab button -->
@@ -166,9 +166,9 @@
         })
     </script>
 
-    <!-- * 2. Other base non-inline JS scripts for <head> section -->
+    <!-- * 2. Other base non-inline JS scripts for 'head' section -->
     {% include "service/scripts__preload.njk" %}
 
-    <!-- ! 5. NON-CRITICAL (BASE) JS <head> SCRIPTS | END --->
+    <!-- ! 5. NON-CRITICAL (BASE) JS 'head' SCRIPTS | END --->
     <!-- ! ---------------------------------------------- --->
 </head>
