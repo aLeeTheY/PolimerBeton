@@ -42,7 +42,12 @@ const devTools = gulp.parallel(watch, server)
 // * ------------------------------------
 export const dev = gulp.series(clean, mainTasks, devTools)
 export const prod = gulp.series(
-    clean,
+    // * чистим dist/ полностью всегда при запуске prod
+    () => {
+        env.isForceClean = true
+        return clean()
+    },
+
     mainTasks,
 
     // ! --- между mainTasks и revise !!!
